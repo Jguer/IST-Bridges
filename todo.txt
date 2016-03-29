@@ -1,0 +1,2 @@
+- struct isla (all we are sure about)
+- n-1 (pass to norm)
