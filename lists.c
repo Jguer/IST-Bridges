@@ -9,9 +9,39 @@ struct _node {
     node *next;
 };
 
+struct _list {
+    node *head;
+};
+
 /* LIST */
 
+list *create_list()
+{
+    list *new_list = NULL;
 
+    /* Create List */
+    new_list = (list *)malloc(sizeof(list));
+    if(new_list == NULL)
+        memory_error("Unable to reserve list memory");
+
+    /* Set head to null */
+    new_list->head = NULL;
+
+    return new_list;
+}
+
+node *get_head(list *got_list)
+{
+    return got_list->head;
+}
+
+void push_node_to_list(list *got_list, node *got_node)
+{
+    got_node->next = got_list->head;
+    got_list->head = got_node;
+
+    return;
+}
 /* STACK */
 
 stack *create_stack()
@@ -20,7 +50,7 @@ stack *create_stack()
 
     new_stack = (stack *)malloc(sizeof(stack));
     if(new_stack == NULL)
-        memory_error("Unable to reserve memory");
+        memory_error("Unable to reserve stack memory");
 
     new_stack->size = 0;
     new_stack->head = NULL;
@@ -86,7 +116,7 @@ node *create_node(item new_item, node *next_node)
     new_node = (node *)malloc(sizeof(node));
 
     if (new_node == NULL)
-        memory_error("Unable to reserve memory");
+        memory_error("Unable to reserve node memory");
 
     /* Add item to node*/
     new_node->this = new_item;
