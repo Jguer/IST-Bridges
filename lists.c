@@ -26,6 +26,7 @@ list *create_list()
 
     /* Set head to null */
     new_list->head = NULL;
+    new_list->
 
     return new_list;
 }
@@ -63,9 +64,6 @@ void push_to_stack(stack *got_stack, item new_item)
     /* Node Creation */
     node *new_node;
     new_node = create_node(new_item, got_stack->head);
-
-    /* Prepend Node */
-    got_stack->head = new_node;
 
     /* Increase size of Stack */
     got_stack->size++;
