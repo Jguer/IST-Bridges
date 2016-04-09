@@ -61,11 +61,12 @@ stack *create_stack()
 void push_to_stack(stack *got_stack, item new_item)
 {
     /* Node Creation */
-    node *new_node;
+    node *new_node = NULL;
     new_node = create_node(new_item, got_stack->head);
 
     /* Increase size of Stack */
     got_stack->size++;
+    got_stack->head = new_node;
 
     return;
 }
