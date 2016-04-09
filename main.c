@@ -27,5 +27,7 @@ int main(int argc, char **argv)
 	read_line(map_file, lineData);
 	assign_values(lineData, &line, &col, &n_ilhas, &var);
 
+	fclose(map_file); /* -will be closed when end is reached. also when return is 0. to define later! */
+
     return 0;
 }
