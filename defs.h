@@ -30,6 +30,8 @@ typedef enum
 
 typedef struct _pos pos;
 
+char *get_filename_ext(char *filename);
+void file_error(char *msg);
 void memory_error(char *msg);
 /* POSITION */
 pos *create_pos(int x,int y);
