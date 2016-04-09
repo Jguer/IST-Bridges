@@ -26,7 +26,6 @@ list *create_list()
 
     /* Set head to null */
     new_list->head = NULL;
-    new_list->
 
     return new_list;
 }
