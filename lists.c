@@ -35,6 +35,17 @@ node *get_head(list *got_list)
     return got_list->head;
 }
 
+void push_item_to_list(list *got_list, item new_item)
+{
+    /* Node Creation */
+    node *new_node = NULL;
+    new_node = create_node(new_item, NULL);
+
+    /* Prepend node to list*/
+    push_node_to_list(got_list, new_node);
+    return;
+}
+
 void push_node_to_list(list *got_list, node *got_node)
 {
     got_node->next = got_list->head;
@@ -42,6 +53,39 @@ void push_node_to_list(list *got_list, node *got_node)
 
     return;
 }
+
+void print_list(list *got_list, void (*print_item)(item))
+{
+    node *aux_node;
+
+    for(aux_node = get_head(got_list);
+            aux_node != NULL;
+            aux_node = get_next_node(aux_node))
+    {
+        print_item(get_node_item(aux_node));
+    }
+}
+
+void free_list(list *got_list, void (*free_item)(item))
+{
+    node *got_node = NULL;
+    node *aux_node = NULL;
+
+    /* Free every node of stack*/
+    for(got_node = get_head(got_list);
+        got_node != NULL;
+        got_node = aux_node)
+    {
+        aux_node = get_next_node(got_node);
+        free_node(got_node, free_item);
+    }
+
+    /* Bring freedom to stack */
+    free(got_list);
+
+    return;
+}
+
 /* STACK */
 
 stack *create_stack()
@@ -86,6 +130,28 @@ node *pop_from_stack(stack *got_stack)
     return got_node;
 }
 
+int get_stack_size(stack *got_stack)
+{
+    return got_stack->size;
+}
+
+
+void print_stack(stack *got_stack, void (*print_item)(item))
+{
+    node *aux_node;
+
+    /* Print stack size to selected DEBUG_LOC*/
+    fprintf(DEBUG_LOC, "Size of stack: %d\n", get_stack_size(got_stack));
+
+    /* For each node print content*/
+    for(aux_node = got_stack->head;
+            aux_node != NULL;
+            aux_node = get_next_node(aux_node))
+    {
+        print_item(get_node_item(aux_node));
+    }
+}
+
 void free_stack(stack *got_stack, void (*free_item)(item))
 {
     node *got_node = NULL;
@@ -98,7 +164,7 @@ void free_stack(stack *got_stack, void (*free_item)(item))
         free_node(got_node, free_item);
     }
 
-    /* Bring freedom to stack */
+    /* Bring America to stack */
     free(got_stack);
 
     return;
@@ -135,7 +201,7 @@ node *get_next_node(node *got_node)
 
 void free_node(node *got_node, void (*free_item)(item))
 {
-    /* Free node item*/
+    /* Free node item */
     free_item(got_node->this);
 
     /* Free the node to save on the load */
