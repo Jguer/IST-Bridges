@@ -25,7 +25,7 @@ map *create_map()
 
 map* assign_to_map(map* new_map, int* linedata)
 {
-	assign_values(linedata, &new_map->nlines, &new_map->ncols, &new_map->nislas, &new_map->typevar);
+	assign_values(linedata, &new_map->nlines, &new_map->ncols, &new_map->nislas, &new_map->typevar, NULL);
 	return new_map;
 }
 

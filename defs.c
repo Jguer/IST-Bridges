@@ -39,15 +39,29 @@ void memory_error(char *msg)
   exit(1);
 }
 
-/* Assigns vector[] values to any other important values */
-void assign_values(int *vector, int *val0, int *val1, int *val2, int *val3)
+/* Assigns vector[] values to any other important values 
+ * Usage: assign_values(vector, &a, &b, &c, ..., NULL);
+*/
+void assign_values(int* vector, int* n_args, ...)
 {
-    *val0 = vector[0];
-    *val1 = vector[1];
-    *val2 = vector[2];
-    *val3 = vector[3];
-    return;
+   va_list ap;
+   int* n_arg = n_args;
+   int i = 0;
+
+   va_start(ap, n_args);
+
+   n_arg = n_args;
+
+   while(n_arg)
+   {
+     *n_arg = vector[i];
+     n_arg = va_arg(ap, int*);
+     ++i;
+   }
+
+   va_end(ap);
 }
+
 
 /* POSITION */
 pos *create_pos(int x,int y)
