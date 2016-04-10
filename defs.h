@@ -2,7 +2,7 @@
 *     File Name           :     Projects/bridges-aed/defs.h
 *     Created By          :     jguer
 *     Creation Date       :     [2016-03-31 15:12]
-*     Last Modified       :     [2016-03-31 15:22]
+*     Last Modified       :     [2016-04-10 00:39]
 *     Description         :
 **********************************************************************************/
 #ifndef defsHeader
@@ -21,6 +21,8 @@
 #define KCYN  "\x1B[36m"
 #define KWHT  "\x1B[37m"
 #define RESET "\033[0m"
+
+#define DEBUG_LOC stdout
 
 typedef void *item;
 typedef enum
@@ -41,6 +43,6 @@ int get_x(pos *gotpos);
 int get_y(pos *gotpos);
 
 void free_pos(item pos_to_free);
-void print_position(item gotpos);
+void print_pos(item gotpos);
 
 #endif

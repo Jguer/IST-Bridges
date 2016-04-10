@@ -2,12 +2,11 @@
 *     File Name           :     Projects/bridges-aed/defs.c
 *     Created By          :     jguer
 *     Creation Date       :     [2016-03-31 15:21]
-*     Last Modified       :     [2016-03-31 15:22]
+*     Last Modified       :     [2016-04-10 00:39]
 *     Description         :      Useful definitions for project
 **********************************************************************************/
 
 #include "defs.h"
-#include <string.h>
 
 struct _pos {
   int x;
@@ -15,7 +14,7 @@ struct _pos {
 };
 
 
-char *get_filename_ext(char *filename) 
+char *get_filename_ext(char *filename)
 {
     char *dot = strrchr(filename, '.');
     if(!dot || dot == filename) return "";
@@ -72,7 +71,7 @@ void free_pos(item pos_to_free)
   return;
 }
 
-void print_position(item gotpos)
+void print_pos(item gotpos)
 {
   printf("Position: %d %d\n", get_x((pos *) gotpos), get_y((pos *) gotpos));
   return;
