@@ -12,6 +12,9 @@ isla *create_isla(int name, int x, int y, int bridges_avb)
     pos *new_pos;
 
     new_isla = (isla *)malloc(sizeof(isla));
+    if(new_isla == NULL)
+        memory_error("Unable to create structure isla");
+
     new_pos = create_pos(x, y);
 
     new_isla->name = name;
@@ -41,7 +44,7 @@ void free_isla(item got_item)
     /* Free position of island for rich magnates */
     free_pos(got_isla->coords);
 
-    /* Bring democracy to the pointer*/
+    /* Bring democracy to the pointer */
     free(got_isla);
 
     return;
