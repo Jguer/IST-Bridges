@@ -25,14 +25,5 @@ int read_line(FILE* map_file, int *lineData)
     return 1;
 }
 
-/* Assigns lineData[] values to any other important values */
-void assign_values(int *linedata, int *val0, int *val1, int *val2, int *val3)
-{
-    *val0 = linedata[0];
-    *val1 = linedata[1];
-    *val2 = linedata[2];
-    *val3 = linedata[3];
-    return;
-}
 
 
