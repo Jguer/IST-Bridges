@@ -36,6 +36,9 @@ typedef struct _pos pos;
 char *get_filename_ext(char *filename);
 void file_error(char *msg);
 void memory_error(char *msg);
+
+void assign_values(int *vector, int *val0, int *val1, int *val2, int *val3);
+
 /* POSITION */
 pos *create_pos(int x,int y);
 

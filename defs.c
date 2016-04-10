@@ -39,6 +39,15 @@ void memory_error(char *msg)
   exit(1);
 }
 
+/* Assigns vector[] values to any other important values */
+void assign_values(int *vector, int *val0, int *val1, int *val2, int *val3)
+{
+    *val0 = vector[0];
+    *val1 = vector[1];
+    *val2 = vector[2];
+    *val3 = vector[3];
+    return;
+}
 
 /* POSITION */
 pos *create_pos(int x,int y)
