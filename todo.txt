@@ -1,2 +1,6 @@
-- struct isla (all we are sure about)
-- n-1 (pass to norm)
+-Ler do ficheiro para mapa.
+-A partir do mapa, para cada ponto construir estrutura com os adjacentes
+-Make list from structures
+-Random point
+-Save each step to stack
+-Roll back in case of fuckup
