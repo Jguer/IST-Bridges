@@ -13,7 +13,6 @@ struct _pos {
   int y;
 };
 
-
 char *get_filename_ext(char *filename)
 {
     char *dot = strrchr(filename, '.');

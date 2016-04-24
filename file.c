@@ -1,4 +1,4 @@
-#include "filereader.h"
+#include "file.h"
 
 /* Reads the integers from one line of the maps file
  * and stores them in vector lineData[] 

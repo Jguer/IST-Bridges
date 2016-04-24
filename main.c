@@ -5,17 +5,26 @@
 *
 * main.c
 ***************************************/
-#include "filereader.h"
+#include "file.h"
 #include "isla.h"
 #include "defs.h"
 #include "lists.h"
 #include "map.h"
+#include "bridge.h"
 
 int main(int argc, char **argv)
 {
     FILE *map_file;
     int lineData[4];
     map *the_map; /* only one and can be changed from map to map */
+<<<<<<< HEAD
+=======
+    isla *new_isla;
+    isla *new_isla1;
+    isla *new_isla2;
+    list *new_list;
+    int tester_int;
+>>>>>>> 454a62d9b26b5c812ea96293820353f36299436e
 
     if(argc != 2 || strcmp(get_filename_ext(argv[1]), "map"))
         file_error("Missing arguments or wrong extension specified on file input");
@@ -31,6 +40,9 @@ int main(int argc, char **argv)
 
     fclose(map_file); /* -will be closed when end is reached. also when return is 0. to define later! */
     free_map(the_map);
+
+    tester_int = randomize(5);
+    printf("\n%d\n", tester_int);
 
     return 0;
 }

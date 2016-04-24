@@ -1,5 +1,5 @@
-#ifndef FILEREADER_HEADER
-#define FILEREADER_HEADER
+#ifndef FILE_HEADER
+#define FILE_HEADER
 
 #include <stdio.h>
 #include <stdlib.h>
