@@ -19,6 +19,7 @@ int main(int argc, char **argv)
  	isla* new_isla;
  	list* isla_list;
 
+
     if(argc != 2 || strcmp(get_filename_ext(argv[1]), "map"))
         file_error("Missing arguments or wrong extension specified on file input");
 
@@ -26,6 +27,7 @@ int main(int argc, char **argv)
     if(map_file == NULL)
         file_error("Unable to open file specified");
 
+<<<<<<< HEAD
     while(read_line(map_file, lineData) != 0)
     {
     	/*Create new map*/
@@ -37,6 +39,9 @@ int main(int argc, char **argv)
     		/*Read isla, create struct isla, anda matrix, line by line*/
     		new_isla = setup_isla(lineData, new_isla);
     		push_item_to_list(isla_list, new_isla);
+=======
+    fclose(map_file); /* -will be closed when end is reached. also when return is 0. to define later! */
+>>>>>>> acce50d12e7ffc90ab5a9bb927b64a96784fc332
 
     	}
 
