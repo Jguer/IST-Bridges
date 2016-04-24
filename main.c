@@ -16,7 +16,8 @@ int main(int argc, char **argv)
 {
     FILE *map_file;
     int lineData[4];
-    map *the_map; /* only one and can be changed from map to map */
+ 	isla* new_isla;
+ 	list* isla_list;
 
     if(argc != 2 || strcmp(get_filename_ext(argv[1]), "map"))
         file_error("Missing arguments or wrong extension specified on file input");
@@ -25,14 +26,25 @@ int main(int argc, char **argv)
     if(map_file == NULL)
         file_error("Unable to open file specified");
 
-    /* test to creation and assignment of map */
-    read_line(map_file, lineData);
-    the_map = create_map();
-    the_map = assign_to_map(the_map, lineData);
+    while(read_line(map_file, lineData) != 0)
+    {
+    	/*Create new map*/
 
-    fclose(map_file); /* -will be closed when end is reached. also when return is 0. to define later! */
-    free_map(the_map);
+    	isla_list = create_list();
+    	/*Read its new islas*/
+    	while(read_line(map_file, lineData) == 1)
+    	{
+    		/*Read isla, create struct isla, anda matrix, line by line*/
+    		new_isla = setup_isla(lineData, new_isla);
+    		push_item_to_list(isla_list, new_isla);
 
+    	}
 
+    	/*Play the game*/
+    	/*free stuff, start over*/
+    	free_map(the_map);
+    }
+
+    fclose(map_file);
     return 0;
 }
