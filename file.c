@@ -13,17 +13,22 @@ int read_line(FILE* map_file, int *lineData)
         scanfresult = fscanf(map_file, "%d", &lineData[i]);
 
         /* if end of file: 0 */
-        if(scanfresult == EOF)
+        if(scanfresult == NULL)
             return 0;
         /* if end of map: -1 */
         else if(lineData[i] == -1)
             return -1;
-
         i++;
     }
-
     return 1;
 }
 
+
+isla *setup_isla(int *lineData, isla *new)
+{
+	new = create_isla(lineData[0], lineData[1], lineData[2], lineData[3]);
+
+	return new;
+}
 
 
