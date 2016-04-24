@@ -3,9 +3,11 @@
 struct _isla {
     int name;
     int bridges_avb;
+    int used[4];
+    isla *adj[4];
 };
 
-isla *create_isla(int name, int x, int y, int bridges_avb)
+isla *create_isla(int name, int bridges_avb)
 {
     isla *new_isla;
 
@@ -19,7 +21,6 @@ isla *create_isla(int name, int x, int y, int bridges_avb)
     return new_isla;
 }
 
-
 void print_isla(item got_item)
 {
     isla *got_isla = (isla *)got_item;
@@ -30,6 +31,20 @@ void print_isla(item got_item)
             got_isla->name, got_isla->bridges_avb);
     return;
 }
+
+isla *get_adj_isla(isla *got_isla, int index)
+{
+
+    return got_isla->adj[index];
+}
+
+
+void set_adj_isla(isla *got_isla, isla *adj_isla, int index)
+{
+    got_isla->adj[index] = adj_isla;
+    return;
+}
+
 
 void free_isla(item got_item)
 {
