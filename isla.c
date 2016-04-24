@@ -4,16 +4,19 @@ struct _isla {
     int name;
     int bridges_avb;
     int used[4];
+    pos *position;
     isla *adj[4];
 };
 
-isla *create_isla(int name, int bridges_avb)
+isla *create_isla(int name, int y, int x, int bridges_avb)
 {
     isla *new_isla;
 
     new_isla = (isla *)malloc(sizeof(isla));
     if(new_isla == NULL)
         memory_error("Unable to create structure isla");
+
+    new_isla->position = create_pos(x,y);
 
     new_isla->name = name;
     new_isla->bridges_avb = bridges_avb;
@@ -30,6 +33,11 @@ void print_isla(item got_item)
             KBLU "Bridges Available:" RESET " %d ",
             got_isla->name, got_isla->bridges_avb);
     return;
+}
+
+pos *get_pos_isla(isla *got_isla)
+{
+    return got_isla->position;
 }
 
 isla *get_adj_isla(isla *got_isla, int index)
@@ -49,6 +57,8 @@ void set_adj_isla(isla *got_isla, isla *adj_isla, int index)
 void free_isla(item got_item)
 {
     isla *got_isla = (isla *)got_item;
+
+    free_pos(got_isla->position);
 
     /* Bring democracy to the pointer */
     free(got_isla);
