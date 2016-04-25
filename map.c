@@ -76,7 +76,7 @@ void print_map(int x_max, int y_max, map* got_map)
 
     while(i < y_max+1)
     {
-            fprintf(DEBUG_LOC, KBLU "Row %d:\n" RESET, i);
+            fprintf(DEBUG_LOC, KYEL "Row %d:\n" RESET, i);
             j = 1;
 
         while(j < x_max+1)
