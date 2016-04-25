@@ -13,7 +13,7 @@ int read_line(FILE* map_file, int *lineData)
         scanfresult = fscanf(map_file, "%d", &lineData[i]);
 
         /* if end of file: 0 */
-        if(scanfresult == NULL)
+        if(scanfresult == EOF)
             return 0;
         /* if end of map: -1 */
         else if(lineData[i] == -1)
@@ -23,12 +23,14 @@ int read_line(FILE* map_file, int *lineData)
     return 1;
 }
 
-
-isla *setup_isla(int *lineData, isla *new)
+/*  Sets up an island by creating its structure
+ *  Points the correspondent position on the map to that structure
+ *  Add that isla to the list of islas
+ */
+void setup_isla(isla* isla_item, map* map_item, int *lineData, list *list_item)
 {
-	new = create_isla(lineData[0], lineData[1], lineData[2], lineData[3]);
-
-	return new;
+    isla_item = create_isla(lineData[0], lineData[1], lineData[2], lineData[3]);
+    set_tile(map_item, isla_item);
+    push_item_to_list(list_item, isla_item);
+    return;
 }
-
-
