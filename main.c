@@ -5,19 +5,16 @@
 *
 * main.c
 ***************************************/
+
 #include "file.h"
-#include "isla.h"
-#include "defs.h"
-#include "lists.h"
-#include "map.h"
-#include "bridge.h"
 
 int main(int argc, char **argv)
 {
     FILE *map_file;
     int lineData[4];
- 	isla* new_isla;
- 	list* isla_list;
+ 	isla *new_isla;
+ 	list *isla_list;
+    map *active_map;
 
 
     if(argc != 2 || strcmp(get_filename_ext(argv[1]), "map"))
@@ -27,29 +24,23 @@ int main(int argc, char **argv)
     if(map_file == NULL)
         file_error("Unable to open file specified");
 
-<<<<<<< HEAD
     while(read_line(map_file, lineData) != 0)
     {
-    	/*Create new map*/
+        /*Create new map*/
+        active_map = create_map(lineData[1], lineData[0], lineData[2], lineData[3]);
+        isla_list = create_list();
 
-    	isla_list = create_list();
-    	/*Read its new islas*/
-    	while(read_line(map_file, lineData) == 1)
-    	{
-    		/*Read isla, create struct isla, anda matrix, line by line*/
-    		new_isla = setup_isla(lineData, new_isla);
-    		push_item_to_list(isla_list, new_isla);
-=======
-    fclose(map_file); /* -will be closed when end is reached. also when return is 0. to define later! */
->>>>>>> acce50d12e7ffc90ab5a9bb927b64a96784fc332
+        /*Read isla, create struct isla, add to the map matrix, line by line*/
+        while(read_line(map_file, lineData) == 1)
+        {
+            new_isla = NULL;
+            setup_isla(new_isla, active_map, lineData, isla_list);
+        }
+        
+        fclose(map_file); 
 
-    	}
-
-    	/*Play the game*/
-    	/*free stuff, start over*/
-    	free_map(the_map);
+        /*Play the game*/
+        /*free stuff, start over*/
     }
-
-    fclose(map_file);
     return 0;
 }
