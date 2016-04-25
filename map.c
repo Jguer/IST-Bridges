@@ -105,7 +105,9 @@ void free_map(item got_item)
     {
         for (yi = 0; yi < get_y_max(got_map); yi ++)
         {
-            free_isla((item)get_tile(got_map, xi, yi));
+            if( get_tile(got_map, xi, yi) != 0) {
+                free_isla((item)get_tile(got_map, xi, yi));
+            }
         }
     }
 
