@@ -45,7 +45,6 @@ map *create_map(int x_max, int y_max, int n_bridges, int map_mode)
 
 isla *get_tile(map *got_map, int x, int y)
 {
-
     return got_map->tile[x][y];
 }
 
