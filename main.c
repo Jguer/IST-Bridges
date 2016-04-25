@@ -16,7 +16,6 @@ int main(int argc, char **argv)
  	list *isla_list;
     map *active_map;
 
-
     if(argc != 2 || strcmp(get_filename_ext(argv[1]), "map"))
         file_error("Missing arguments or wrong extension specified on file input");
 
@@ -37,10 +36,17 @@ int main(int argc, char **argv)
             setup_isla(new_isla, active_map, lineData, isla_list);
         }
         
-        fclose(map_file); 
+        /*tester: print map, print list*/
+        print_list(isla_list, print_isla);
+        printf("\n");
+        print_map(get_x_max(active_map), get_y_max(active_map), active_map);
+        printf("\n");
+
 
         /*Play the game*/
         /*free stuff, start over*/
     }
+
+    fclose(map_file); 
     return 0;
 }
