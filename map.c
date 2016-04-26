@@ -15,7 +15,7 @@ map *create_map(int x_max, int y_max, int n_bridges, int map_mode)
     map *new_map;
 
     new_map = (map *)malloc(sizeof(map));
-    if( NULL == new_map ) {
+    if(NULL == new_map ) {
         memory_error("Unable to allocate map");
     }
 
@@ -25,16 +25,16 @@ map *create_map(int x_max, int y_max, int n_bridges, int map_mode)
     new_map->map_mode = map_mode;
 
     /* Allocate x axis so we can have a nice tile[x] */
-    new_map->tile = (isla ***) calloc(x_max , sizeof(isla**));
-    if( NULL == new_map->tile)
+    new_map->tile = (isla ***) calloc(x_max, sizeof(isla**));
+    if(NULL == new_map->tile)
     {
-        memory_error("Unable to allocae x axis of map");
+        memory_error("Unable to allocate x axis of map");
     }
     /* Allocate y axis so we can have a nice tile[x][y] */
-    for ( i = 0; i < x_max; i++)
+    for (i = 0; i < x_max; i++)
     {
-        new_map->tile[i] = (isla **) calloc(y_max , sizeof(isla*));
-        if( NULL == new_map->tile[i] )
+        new_map->tile[i] = (isla **) calloc(y_max, sizeof(isla*));
+        if(NULL == new_map->tile[i] )
         {
             memory_error("Unable to allocate y axis of map");
         }
@@ -74,17 +74,17 @@ int get_y_max(map* got_map)
 
 void print_map(int x_max, int y_max, map* got_map)
 {
-    int i = 1, j = 1;
+    int i = 0, j = 0;
     isla* new;
 
     while(i < y_max)
     {
         fprintf(DEBUG_LOC, KYEL "Row %d:\n" KNRM, i);
-        j = 1;
+        j = 0;
 
         while(j < x_max)
         {
-            new = get_tile(got_map, j, i);
+            new = got_map->tile[i][j];
             if(new != NULL)
                 print_pos(get_pos_isla(new));
             j++;
@@ -109,7 +109,7 @@ void free_map(item got_item)
         for (yi = 0; yi < get_y_max(got_map); yi ++)
         {
             /* If Cuba is present spread democracy through object destruction */
-            if( get_tile(got_map, xi, yi) != NULL) {
+            if(get_tile(got_map, xi, yi) != NULL) {
                 free_isla((item)get_tile(got_map, xi, yi));
             }
         }
