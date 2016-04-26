@@ -41,6 +41,7 @@ int main(int argc, char **argv)
         printf("\n");
         print_map(get_x_max(active_map), get_y_max(active_map), active_map);
         printf("\n");
+        /* end of test */
 
         find_adj(active_map);
 
