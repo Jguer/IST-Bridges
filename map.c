@@ -47,9 +47,7 @@ isla *get_tile(map *got_map, int x, int y)
 {
     /* Base for work is 1-max but base for backend is 0-max-1
      * Example: (1,1)->(0,0)*/
-    x --;
-    y --;
-    return got_map->tile[x][y];
+    return got_map->tile[x - 1][y - 1];
 }
 
 void set_tile(map *got_map, isla* isla_to_add)
@@ -76,13 +74,13 @@ int get_y_max(map* got_map)
 
 void print_map(int x_max, int y_max, map* got_map)
 {
-    int i = 0, j = 0;
+    int i = 1, j = 1;
     isla* new;
 
     while(i < y_max)
     {
         fprintf(DEBUG_LOC, KYEL "Row %d:\n" RESET, i);
-        j = 0;
+        j = 1;
 
         while(j < x_max)
         {
