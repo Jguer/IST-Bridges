@@ -6,7 +6,7 @@
 * main.c
 ***************************************/
 
-#include "file.h"
+#include "bridge.h"
 
 int main(int argc, char **argv)
 {
@@ -41,6 +41,8 @@ int main(int argc, char **argv)
         printf("\n");
         print_map(get_x_max(active_map), get_y_max(active_map), active_map);
         printf("\n");
+
+        find_adj(active_map);
 
 
         /*Play the game*/
