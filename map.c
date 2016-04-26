@@ -30,7 +30,7 @@ map *create_map(int x_max, int y_max, int n_bridges, int map_mode)
     {
         memory_error("Unable to allocae x axis of map");
     }
-    /* Allocate y axis so we can have a nice tile[x] */
+    /* Allocate y axis so we can have a nice tile[x][y] */
     for ( i = 0; i < x_max; i++)
     {
         new_map->tile[i] = (isla **) calloc(y_max , sizeof(isla*));
@@ -45,6 +45,8 @@ map *create_map(int x_max, int y_max, int n_bridges, int map_mode)
 
 isla *get_tile(map *got_map, int x, int y)
 {
+    /* Base for work is 1-max but base for backend is 0-max-1
+     * Example: (1,1)->(0,0)*/
     x --;
     y --;
     return got_map->tile[x][y];
@@ -52,6 +54,7 @@ isla *get_tile(map *got_map, int x, int y)
 
 void set_tile(map *got_map, isla* isla_to_add)
 {
+    /* Once again position is shifted north-west by 1 */
     got_map->tile[get_x(get_pos_isla(isla_to_add)) - 1][ get_y(get_pos_isla(isla_to_add)) - 1] = isla_to_add;
     return;
 }
@@ -78,8 +81,8 @@ void print_map(int x_max, int y_max, map* got_map)
 
     while(i < y_max)
     {
-            fprintf(DEBUG_LOC, KYEL "Row %d:\n" RESET, i);
-            j = 0;
+        fprintf(DEBUG_LOC, KYEL "Row %d:\n" RESET, i);
+        j = 0;
 
         while(j < x_max)
         {
@@ -101,10 +104,13 @@ void free_map(item got_item)
     map *got_map = (map *)got_item;
     int xi, yi;
 
+    /* Go lenghtwise*/
     for (xi = 0; xi < get_x_max(got_map); xi ++)
     {
+        /* Go heightwise*/
         for (yi = 0; yi < get_y_max(got_map); yi ++)
         {
+            /* If Cuba is present spread democracy through object destruction */
             if( get_tile(got_map, xi, yi) != NULL) {
                 free_isla((item)get_tile(got_map, xi, yi));
             }
