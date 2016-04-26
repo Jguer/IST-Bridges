@@ -14,7 +14,7 @@ int randomize(int limit)
 isla* find_next_isla_x(map *got_map, int x, int static_y, int x_max)
 {
     isla *new = NULL;
-    while(new == NULL && x < x_max)
+    while(new == NULL && x <= x_max)
     {
         new = get_tile(got_map, x, static_y);
         x++;
@@ -26,7 +26,7 @@ isla* find_next_isla_x(map *got_map, int x, int static_y, int x_max)
 isla* find_next_isla_y(map *got_map, int static_x, int y, int y_max)
 {
     isla *new = NULL;
-    while(new == NULL && y < y_max)
+    while(new == NULL && y <= y_max)
     {
         new = get_tile(got_map, static_x, y);
         y++;
@@ -37,7 +37,7 @@ isla* find_next_isla_y(map *got_map, int static_x, int y, int y_max)
 /*sets all adjacent islas in a column*/
 void find_adj_y(isla* active_row_node, map *got_map)
 {
-    isla *new, *new_next;
+    isla *new = NULL, *new_next = NULL;
     int y_max, static_x, y;
 
     new = active_row_node;                                          /* new gets the first isla on the column */
@@ -47,7 +47,7 @@ void find_adj_y(isla* active_row_node, map *got_map)
     while(new != NULL)
     {
         y = get_y(get_pos_isla(new));                               /* gets the row from which we are working on */
-        new_next = find_next_isla_y(got_map, static_x, y, y_max);   /* gets the next isla in that column */
+        new_next = find_next_isla_y(got_map, static_x, y+1, y_max);   /* gets the next isla in that column */
         if(new_next != NULL)                                        /* if an isla is actually found, it's an adjacent */
         {
             set_adj_isla(new, new_next, 1);
@@ -59,13 +59,13 @@ void find_adj_y(isla* active_row_node, map *got_map)
 
 void find_adj(map* got_map)
 {
-    isla *new, *new_next;
-    int y, y_max, x;
-    y_max = get_y_max(got_map);
+    isla *new = NULL, *new_next = NULL;
+    int y = 1, y_max, x = 1;
 
+    y_max = get_y_max(got_map);
     new = find_next_isla_x(got_map, 1, 1, y_max);                   /* find the isla closest to map origin */
 
-    while(y < y_max)                                                /* check till last row */
+    while(y <= y_max)                                               /* check till last row */
     {
         while(new != NULL)                                          /* check till last cloumn */
         {
