@@ -105,16 +105,19 @@ void free_map(item got_item)
     /* Go lenghtwise*/
     for (xi = 0; xi < get_x_max(got_map); xi ++)
     {
+
         /* Go heightwise*/
         for (yi = 0; yi < get_y_max(got_map); yi ++)
         {
             /* If Cuba is present spread democracy through object destruction */
-            if(get_tile(got_map, xi, yi) != NULL) {
-                free_isla((item)get_tile(got_map, xi, yi));
+            if(got_map->tile[xi][yi] != NULL) {
             }
         }
+
+        free(got_map->tile[xi]);
     }
 
+    free(got_map->tile);
     free(got_map);
 
     return;

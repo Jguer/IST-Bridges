@@ -35,7 +35,7 @@ int main(int argc, char **argv)
             new_isla = NULL;
             setup_isla(new_isla, active_map, lineData, isla_list);
         }
-        
+
         /*tester: print map, print list*/
         print_list(isla_list, print_isla);
         printf("\n");
@@ -43,13 +43,15 @@ int main(int argc, char **argv)
         printf("\n");
         /* end of test */
 
-        find_adj(active_map);
+        /* find_adj(active_map); */
 
 
         /*Play the game*/
         /*free stuff, start over*/
+        free_list(isla_list, free_isla);
+        free_map(active_map);
     }
 
-    fclose(map_file); 
+    fclose(map_file);
     return 0;
 }

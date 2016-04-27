@@ -10,4 +10,5 @@ int get_n_bridges(map* got_map);
 int get_x_max(map* got_map);
 int get_y_max(map* got_map);
 void print_map(int x_max, int y_max, map* got_map);
+void free_map(item got_item);
 #endif
