@@ -27,4 +27,6 @@ node *get_next_node(node *got_node);
 item get_node_item(node *got_node);
 void free_node(node *got_node, void (*free_item)(item));
 
+
+void already_free(item got_item);
 #endif

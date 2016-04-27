@@ -62,8 +62,13 @@ void print_list(list *got_list, void (*print_item)(item))
             aux_node != NULL;
             aux_node = get_next_node(aux_node))
     {
+        printf("[ ");
         print_item(get_node_item(aux_node));
+        printf("] -> \n");
     }
+
+    printf("-> [ " KBLU "NULL" RESET " ]");
+
 }
 
 void free_list(list *got_list, void (*free_item)(item))
@@ -209,3 +214,4 @@ void free_node(node *got_node, void (*free_item)(item))
 
     return;
 }
+
