@@ -72,26 +72,60 @@ int get_y_max(map* got_map)
     return got_map->y_max;
 }
 
-void print_map(int x_max, int y_max, map* got_map)
+void print_map(map* got_map)
 {
-    int i = 0, j = 0;
-    isla* new;
+    int xi = 0, yi = 0;
 
-    while(i < y_max)
+    isla* to_print;
+    printf("Map Print:\n");
+
+    while(xi < get_x_max(got_map))
     {
-        fprintf(DEBUG_LOC, KYEL "Row %d:\n" KNRM, i);
-        j = 0;
+        fprintf(DEBUG_LOC, KYEL "Row %d:\n" KNRM, xi);
+        yi = 0;
 
-        while(j < x_max)
+        while(yi < get_y_max(got_map))
         {
-            new = got_map->tile[i][j];
-            if(new != NULL)
-                print_pos(get_pos_isla(new));
-            j++;
+            to_print = got_map->tile[xi][yi];
+            if(to_print != NULL)
+                print_pos(get_pos_isla(to_print));
+            yi++;
         }
         printf("\n");
 
-        i++;
+        xi++;
+    }
+
+    return;
+}
+
+void print_map_graphic(map* got_map)
+{
+    int xi = 0, yi = 0;
+
+    isla* to_print;
+
+    printf("Print map (Graphical):\n");
+    while(yi < get_y_max(got_map))
+    {
+        xi = 0;
+
+        while(xi < get_x_max(got_map))
+        {
+            to_print = got_map->tile[xi][yi];
+            if(to_print != NULL)
+            {
+                printf("1 ");
+            }
+            else 
+            {
+                printf("0 ");
+            }
+            xi++;
+        }
+        printf("\n");
+
+        yi++;
     }
 
     return;

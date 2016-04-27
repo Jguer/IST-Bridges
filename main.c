@@ -39,7 +39,8 @@ int main(int argc, char **argv)
         /*tester: print map, print list*/
         print_list(isla_list, print_isla);
         printf("\n");
-        print_map(get_x_max(active_map), get_y_max(active_map), active_map);
+        print_map(active_map);
+        print_map_graphic(active_map);
         printf("\n");
         /* end of test */
 

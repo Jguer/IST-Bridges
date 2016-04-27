@@ -57,6 +57,7 @@ void push_node_to_list(list *got_list, node *got_node)
 void print_list(list *got_list, void (*print_item)(item))
 {
     node *aux_node;
+    printf("Print list:\n");
 
     for(aux_node = get_head(got_list);
             aux_node != NULL;
