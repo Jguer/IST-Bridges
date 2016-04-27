@@ -47,7 +47,7 @@ void find_adj_y(isla* active_row_node, map *got_map)
     while(new != NULL)
     {
         y = get_y(get_pos_isla(new));                               /* gets the row from which we are working on */
-        new_next = find_next_isla_y(got_map, static_x, y+1, y_max);   /* gets the next isla in that column */
+        new_next = find_next_isla_y(got_map, static_x, y+1, y_max); /* gets the next isla in that column */
         if(new_next != NULL)                                        /* if an isla is actually found, it's an adjacent */
         {
             set_adj_isla(new, new_next, 1);
@@ -85,3 +85,27 @@ void find_adj(map* got_map)
     }
 }
 
+
+/******************************************************
+ * 1) find random isla in the list
+ * 2) find random isla-adj in isla structure
+ * 3) make them friends!
+ * 4) return friendship bond in form of bridge struct
+ ******************************************************/
+
+node* find_random_isla(map *got_map, list *isla_list)
+{
+	int n_rand, aux;
+	node *node = NULL;
+
+	n_rand = randomize(get_n_bridges(got_map));
+
+	while(aux < n_rand && node == NULL)
+	{
+		node = get_head(isla_list);
+		node = get_next_node(node);
+		aux++;
+	}
+
+	return node;
+}
