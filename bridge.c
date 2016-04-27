@@ -1,5 +1,6 @@
 #include "bridge.h"
 
+/* returns numbers in between [0, limit] */
 int randomize(int limit)
 {
     int generated = 0;
@@ -86,16 +87,18 @@ void find_adj(map* got_map)
 }
 
 
-/******************************************************
- * 1) find random isla in the list
- * 2) find random isla-adj in isla structure
- * 3) make them friends!
- * 4) return friendship bond in form of bridge struct
- ******************************************************/
+/*******************************************************
+ * Connect random islas funtions:
+ * (1) find random node in the list
+ * (2) find random isla-adj in isla/node chosen
+ * (3) make them friends!
+ * (4) return friendship bond in form of bridge struct
+ *******************************************************/
 
-node* find_random_isla(map *got_map, list *isla_list)
+/* step (1) */
+node* find_random_node(map *got_map, list *isla_list)
 {
-	int n_rand, aux;
+	int n_rand = 0, aux = 0;
 	node *node = NULL;
 
 	n_rand = randomize(get_n_bridges(got_map));
@@ -109,3 +112,37 @@ node* find_random_isla(map *got_map, list *isla_list)
 
 	return node;
 }
+
+/* step (2) */
+int find_random_adj(isla* main_isla)
+{
+	int index = 0;
+	isla* adj_isla = NULL;
+
+	while(adj_isla == NULL)
+	{
+		index = randomize(3);
+		adj_isla = get_adj_isla(main_isla, index);
+	}
+
+	return index;
+}
+
+/* step (3) and (4) */
+bridge* connect_islas(map* got_map, list* isla_list)
+{
+	isla* main_isla = NULL;
+	bridge* connected_bridge = NULL;
+	int index = 0;
+
+	main_isla = get_node_item(find_random_node(got_map, isla_list));
+	index = find_random_adj(main_isla);
+
+	/* set bridge now */
+
+	return connected_bridge;
+}
+
+/*********************************
+ * end of random isla functions 
+ *********************************/
