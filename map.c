@@ -117,7 +117,7 @@ void print_map_graphic(map* got_map)
             {
                 printf("1 ");
             }
-            else 
+            else
             {
                 printf("0 ");
             }
