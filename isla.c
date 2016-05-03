@@ -49,6 +49,7 @@ isla *get_adj_isla(isla *got_isla, int index)
 
 void set_adj_isla(isla *got_isla, isla *adj_isla, int index)
 {
+
     got_isla->adj[index] = adj_isla;
     return;
 }
