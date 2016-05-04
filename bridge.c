@@ -86,6 +86,7 @@ void find_adj(map* got_map)
     }
 }
 
+#ifdef DUDE
 
 /*******************************************************
  * Connect random islas funtions:
@@ -128,6 +129,8 @@ int find_random_adj(isla* main_isla)
     return index;
 }
 
+
+
 /* step (3) and (4) */
 bridge* connect_islas(map* got_map, list* isla_list)
 {
@@ -143,6 +146,7 @@ bridge* connect_islas(map* got_map, list* isla_list)
     return connected_bridge;
 }
 
+#endif
 /*********************************
  * end of random isla functions
  *********************************/
