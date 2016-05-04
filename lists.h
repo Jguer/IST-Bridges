@@ -3,13 +3,14 @@
 #include "defs.h"
 typedef struct _stack stack;
 typedef struct _node node;
-typedef struct _list list;
+typedef struct _stack list;
 
 /* LIST */
 list *create_list();
 node *get_head(list *got_list);
 void push_item_to_list(list *got_list, item new_item);
 void push_node_to_list(list *got_list, node *got_node);
+int get_list_size(list *got_list);
 void print_list(list *got_list, void (*print_item)(item));
 void free_list(list *got_list, void (*free_item)(item));
 

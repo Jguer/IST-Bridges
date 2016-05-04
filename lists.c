@@ -9,10 +9,6 @@ struct _node {
     node *next;
 };
 
-struct _list {
-    node *head;
-};
-
 /* LIST */
 
 list *create_list()
@@ -26,6 +22,9 @@ list *create_list()
 
     /* Set head to null */
     new_list->head = NULL;
+
+    /* Set size to 0 :( */
+    new_list->size = 0;
 
     return new_list;
 }
@@ -51,13 +50,23 @@ void push_node_to_list(list *got_list, node *got_node)
     got_node->next = got_list->head;
     got_list->head = got_node;
 
+    /* Increase List size :D */
+    got_list->size ++;
+
     return;
 }
+
+int get_list_size(list *got_list)
+{
+    return got_list->size;
+}
+
 
 void print_list(list *got_list, void (*print_item)(item))
 {
     node *aux_node;
     printf("Print list:\n");
+    fprintf(DEBUG_LOC, "Size of list: %d\n", get_list_size(got_list));
 
     for(aux_node = get_head(got_list);
             aux_node != NULL;
