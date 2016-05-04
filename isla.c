@@ -12,12 +12,13 @@ isla *create_isla(int name, int y, int x, int bridges_avb)
 {
     isla *new_isla;
 
+    /* Allocate isla */
     new_isla = (isla *)malloc(sizeof(isla));
     if(new_isla == NULL)
         memory_error("Unable to create structure isla");
 
+    /* Set isla parameters */
     new_isla->position = create_pos(x,y);
-
     new_isla->name = name;
     new_isla->bridges_avb = bridges_avb;
 
@@ -33,6 +34,11 @@ void print_isla(item got_item)
             KBLU "Bridges Available:" RESET " %d ",
             got_isla->name, got_isla->bridges_avb);
     return;
+}
+
+int get_name_isla(isla *got_isla)
+{
+    return got_isla->name;
 }
 
 pos *get_pos_isla(isla *got_isla)
