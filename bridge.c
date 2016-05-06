@@ -45,34 +45,31 @@ void find_adj_y(isla* active_row_node, map *got_map)
     y_max = get_y_max(got_map);
     static_x = get_x(get_pos_isla(active_row_node));                /* gets which column we are working on */
 
-    while(new != NULL)
+    y = get_y(get_pos_isla(new));                                   /* gets the row from which we are working on */
+    new_next = find_next_isla_y(got_map, static_x, y+1, y_max);     /* gets the next isla in that column */
+    if(new_next != NULL)                                            /* if an isla is actually found, it's an adjacent */
     {
-        y = get_y(get_pos_isla(new));                               /* gets the row from which we are working on */
-        new_next = find_next_isla_y(got_map, static_x, y+1, y_max); /* gets the next isla in that column */
-        if(new_next != NULL)                                        /* if an isla is actually found, it's an adjacent */
-        {
-            set_adj_isla(new, new_next, 1);
-            set_adj_isla(new_next, new, 0);
-        }
-        new = new_next;                                             /* start in the next found isla */
+        set_adj_isla(new, new_next, 1);
+        set_adj_isla(new_next, new, 0);
     }
 }
 
 void find_adj(map* got_map)
 {
     isla *new = NULL, *new_next = NULL;
-    int y = 1, y_max, x = 1;
+    int y = 1, y_max, x = 1, x_max;
 
     y_max = get_y_max(got_map);
-    new = find_next_isla_x(got_map, 1, 1, y_max);                   /* find the isla closest to map origin */
+    x_max = get_x_max(got_map);
 
     while(y <= y_max)                                               /* check till last row */
     {
+        new = find_next_isla_x(got_map, 1, y, x_max);  
         while(new != NULL)                                          /* check till last cloumn */
         {
             y = get_y(get_pos_isla(new));
             x = get_x(get_pos_isla(new));
-            new_next = find_next_isla_x(got_map, x+1, y, y_max);
+            new_next = find_next_isla_x(got_map, x+1, y, x_max);
             if(new_next != NULL)                                    /* if the row has more islas */
             {
                 set_adj_isla(new, new_next, 2);
@@ -84,6 +81,37 @@ void find_adj(map* got_map)
         }
         y++;
     }
+}
+
+
+void print_adj(list* isla_list)
+{
+    isla* new;
+    node* node;
+    int i = 0;
+
+    node = get_head(isla_list);
+
+    while(node != NULL)
+    {
+        new = get_node_item(node);
+        fprintf(DEBUG_LOC, KGRN "Isla: %d - " RESET, get_name_isla(new));
+        for(i=0; i<4; i++)
+        {
+            if(get_adj_isla(new, i) != NULL)
+            {
+                fprintf(DEBUG_LOC, KBLU "Adj %d:" RESET KGRN "%d ", i, get_name_isla(get_adj_isla(new, i)));
+            }
+            else
+            {
+                fprintf(DEBUG_LOC, KBLU "Adj %d:" RESET KGRN "X ", i);
+            }
+        }
+        printf("\n");
+
+        node = get_next_node(node);
+    }
+
 }
 
 #ifdef DUDE
