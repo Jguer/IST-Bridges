@@ -46,7 +46,8 @@ int main(int argc, char **argv)
         printf("\n");
         /* end of test */
 
-         find_adj(active_map); 
+        find_adj(active_map); 
+        print_adj(isla_list);
 
         /*Play the game*/
 
