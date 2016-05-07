@@ -11,6 +11,7 @@ struct _isla {
 isla *create_isla(int name, int y, int x, int bridges_avb)
 {
     isla *new_isla;
+    int i = 0;
 
     /* Allocate isla */
     new_isla = (isla *)malloc(sizeof(isla));
@@ -21,6 +22,11 @@ isla *create_isla(int name, int y, int x, int bridges_avb)
     new_isla->position = create_pos(x,y);
     new_isla->name = name;
     new_isla->bridges_avb = bridges_avb;
+
+    for(i=0; i<4; i++)
+    {
+        new_isla->adj[i] = NULL;
+    }
 
     return new_isla;
 }
@@ -55,7 +61,6 @@ isla *get_adj_isla(isla *got_isla, int index)
 
 void set_adj_isla(isla *got_isla, isla *adj_isla, int index)
 {
-
     got_isla->adj[index] = adj_isla;
     return;
 }
