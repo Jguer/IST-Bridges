@@ -23,7 +23,7 @@ isla **get_points(bridge *got_bridge)
 
 void free_bridge(bridge *got_bridge)
 {
-    free(bridge);
+    free(got_bridge);
 
     return;
 }
