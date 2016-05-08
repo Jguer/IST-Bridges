@@ -3,7 +3,7 @@
 struct _isla {
     int name;
     int bridges_avb;
-    int used[4];
+    item used[4];
     pos *position;
     isla *adj[4];
 };

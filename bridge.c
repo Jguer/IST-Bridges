@@ -2,6 +2,7 @@
 
 struct _bridge {
     isla *point[2];
+    int n_bridges;
 };
 
 bridge *create_bridge(isla *isla_eins, isla *isla_zwei)
@@ -12,6 +13,7 @@ bridge *create_bridge(isla *isla_eins, isla *isla_zwei)
 
     new_bridge->point[0] = isla_eins;
     new_bridge->point[1] = isla_zwei;
+    new_bridge->n_bridges = 0;
 
     return new_bridge;
 }
