@@ -89,11 +89,11 @@ void print_adj(list* isla_list)
         {
             if(get_adj_isla(new, i) != NULL)
             {
-                fprintf(DEBUG_LOC, KBLU "Adj %d:" RESET KGRN "%d ", i, get_name_isla(get_adj_isla(new, i)));
+                fprintf(DEBUG_LOC, KBLU "Adj %d:" RESET KGRN "%d " KNRM, i, get_name_isla(get_adj_isla(new, i)));
             }
             else
             {
-                fprintf(DEBUG_LOC, KBLU "Adj %d:" RESET KGRN "X ", i);
+                fprintf(DEBUG_LOC, KBLU "Adj %d:" RESET KGRN "X " KNRM, i);
             }
         }
         printf("\n");
