@@ -1,5 +1,33 @@
 #include "bridge.h"
 
+struct _bridge {
+    isla *point[2];
+};
+
+bridge *create_bridge(isla *isla_eins, isla *isla_zwei)
+{
+    bridge *new_bridge;
+
+    new_bridge = (bridge *)malloc(sizeof(bridge));
+
+    new_bridge->point[0] = isla_eins;
+    new_bridge->point[1] = isla_zwei;
+
+    return new_bridge;
+}
+
+isla **get_points(bridge *got_bridge)
+{
+    return got_bridge->point;
+}
+
+void free_bridge(bridge *got_bridge)
+{
+    free(bridge);
+
+    return;
+}
+
 /*find the next isla on a row*/
 isla* find_next_isla_x(map *got_map, int x, int static_y, int x_max)
 {
@@ -53,7 +81,7 @@ void find_adj(map* got_map)
 
     while(y <= y_max)                                               /* check till last row */
     {
-        new = find_next_isla_x(got_map, 1, y, x_max);  
+        new = find_next_isla_x(got_map, 1, y, x_max);
         while(new != NULL)                                          /* check till last cloumn */
         {
             y = get_y(get_pos_isla(new));
