@@ -5,11 +5,11 @@ struct _map {
     isla ***tile;
     int x_max;
     int y_max;
-    int n_bridges;
+    int n_islas;
     char map_mode;
 };
 
-map *create_map(int x_max, int y_max, int n_bridges, int map_mode)
+map *create_map(int x_max, int y_max, int n_islas, int map_mode)
 {
     int i;
     map *new_map;
@@ -21,7 +21,7 @@ map *create_map(int x_max, int y_max, int n_bridges, int map_mode)
 
     new_map->x_max= x_max;
     new_map->y_max= y_max;
-    new_map->n_bridges = n_bridges;
+    new_map->n_islas = n_islas;
     new_map->map_mode = map_mode;
 
     /* Allocate x axis so we can have a nice tile[x] */
@@ -57,9 +57,9 @@ void set_tile(map *got_map, isla* isla_to_add)
     return;
 }
 
-int get_n_bridges(map* got_map)
+int get_n_islas(map* got_map)
 {
-    return got_map->n_bridges;
+    return got_map->n_islas;
 }
 
 int get_x_max(map* got_map)
@@ -70,6 +70,11 @@ int get_x_max(map* got_map)
 int get_y_max(map* got_map)
 {
     return got_map->y_max;
+}
+
+char get_map_mode(map* got_map)
+{
+    return got_map->map_mode;
 }
 
 void print_map(map* got_map)
