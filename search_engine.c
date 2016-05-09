@@ -113,16 +113,16 @@ bool check_for_allzero(list *isla_list)
     isla *new_isla;
     node *new_node;
 
-    node = get_head(isla_list);
-    new_isla = get_node_item(node);
+    new_node = get_head(isla_list);
+    new_isla = get_node_item(new_node);
 
-    while(node != NULL)
+    while(new_node != NULL)
     {
         if(get_bridges_s_available(new_isla) != 0)
             return FALSE;
 
-        node = get_next_node(node);
-        new_isla = get_node_item(node);
+        new_node = get_next_node(new_node);
+        new_isla = get_node_item(new_node);
     }
     return TRUE;
 }
