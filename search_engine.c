@@ -42,7 +42,7 @@ isla *get_isla_for_dfs(list *isla_list)
     for(aux_node = get_head(isla_list); aux_node != NULL; aux_node = get_next_node(aux_node))
     {
         got_isla = (isla *)get_node_item(aux_node);
-        if((get_dfs_status_isla(got_isla) == 0) && (get_isla_bridge_s_avb(got_isla) != 0))
+        if((get_dfs_status_isla(got_isla) < 2) && (get_isla_bridge_s_avb(got_isla) != 0))
         {
             return got_isla;
         }
@@ -66,16 +66,16 @@ stack *DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
         if(_adj != NULL )
         {
             /* If islas are good for connect*/
-            if(is_connectable(edgy, _adj, i, got_map) == TRUE)
+            if(is_connectable(edgy, _adj, i, got_map) == TRUE && visited[get_name_isla(_adj)] != TRUE)
             {
                 /* Push to stack new bridge */
                 push_to_stack( bridge_stack, (item) create_bridge(edgy , _adj));
 
                 /* Augment new brigde structure count*/
                 increment_bridges_n_bridges(get_node_item(get_stack_head(bridge_stack)));
-            }
-            if(visited[get_name_isla(_adj)] != TRUE) /* If node hasn't been visited go in*/
-            {
+                dec_isla_bridge_s_avb(edgy);
+                dec_isla_bridge_s_avb(_adj);
+
                 DFS_engine(_adj, visited, got_map, bridge_stack); /* New recursion level */
             }
         }
@@ -90,32 +90,31 @@ stack *DFS_manager(list *isla_list, int mode, map* got_map)
     bool *visited = (bool *) calloc(get_list_size(isla_list) + 1, sizeof(bool));
     stack *new_stack = create_stack();
 
-    if(mode == 1) /* */
+    if(mode == 1) /* Connect all of them, doesn't matter if grouped or path*/
     {
         good_isla = get_isla_for_dfs(isla_list);
-        while( good_isla != NULL ) {
-            DFS_engine(get_node_item(get_head(isla_list)), visited, got_map, new_stack);
-            set_isla_dfs_status(good_isla, get_dfs_status_isla(good_isla) + 1);
+        while(good_isla != NULL ) {
+            printf("Going into isla %d \n", get_name_isla(good_isla));
+            DFS_engine( good_isla, visited, got_map, new_stack);
+            set_isla_dfs_status(good_isla, get_dfs_status_isla(good_isla) + 1); /* Increment DFS status of isla */
 
-            memset(visited, FALSE , sizeof(bool) * (get_list_size(isla_list)));
-            good_isla = get_isla_for_dfs(isla_list);
+            memset(visited, FALSE, sizeof(bool) * (get_list_size(isla_list))); /* Reset visited array to FALSE*/
+            good_isla = get_isla_for_dfs(isla_list); /* Get new isla for analysis*/
         }
     }
-    else if(mode == 2)
+    else if(mode == 2) /* Same as mode 1 but in the end check if path was generated */
     {
 
     }
-    else if(mode == 3)
+    else if(mode == 3) /* Connect all of them, forcebly a path */
     {
         DFS_engine(get_node_item(get_head(isla_list)), visited, got_map, new_stack);
     }
-    else
+    else /* Invalid Mode */
     {
-        /* Invalid Mode */
         fprintf(stderr, KYEL "Good Job, you officially failed at map making. " KRED " Invalid mode\n"KNRM);
     }
 
-    print_stack(new_stack, print_bridge);
     free(visited);
     return new_stack;
 }

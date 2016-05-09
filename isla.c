@@ -30,6 +30,7 @@ isla *create_isla(int name, int y, int x, int bridges_avb)
     for(i=0; i<4; i++)
     {
         new_isla->adj[i] = NULL;
+        new_isla->used[i] = NULL;
     }
 
     return new_isla;
