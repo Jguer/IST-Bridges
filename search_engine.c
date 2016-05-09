@@ -13,7 +13,7 @@ bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, map *got_map)
         {
             if(get_points(new_bridge, 0) != isla_a || get_points(new_bridge, 0) != isla_b)
             {
-                printf("SOMETHING IS VERY WRONG. CHECK is_connectable\n");
+                printf("\nSOMETHING IS VERY WRONG. CHECK is_connectable\n");
             }
         }
         /*--------------------------------------------*/
@@ -38,7 +38,7 @@ isla *get_isla_for_dfs(list *isla_list)
     for(aux_node = get_head(isla_list); aux_node != NULL; aux_node = get_next_node(aux_node))
     {
         got_isla = (isla *)get_node_item(aux_node);
-        if((get_dfs_status_isla(got_isla) == 0) && ( get_bridges_s_available(got_isla) != 0))
+        if((get_dfs_status_isla(got_isla) == 0) && (get_bridges_s_available(got_isla) != 0))
         {
             return got_isla;
         }
@@ -108,7 +108,21 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map)
     return;
 }
 
-void check_for_zero()
+bool check_for_allzero(list *isla_list)
 {
+    isla *new_isla;
+    node *new_node;
 
+    node = get_head(isla_list);
+    new_isla = get_node_item(node);
+
+    while(node != NULL)
+    {
+        if(get_bridges_s_available(new_isla) != 0)
+            return FALSE;
+
+        node = get_next_node(node);
+        new_isla = get_node_item(node);
+    }
+    return TRUE;
 }
