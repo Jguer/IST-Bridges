@@ -52,7 +52,7 @@ int main(int argc, char **argv)
         /*Play the game*/
 
         visited = (bool *) calloc(get_list_size(isla_list), sizeof(bool));
-        DFS_engine(isla_list, get_node_item(get_head(isla_list)), visited);
+        DFS_engine(isla_list, get_node_item(get_head(isla_list)), visited, active_map);
 
         /*free stuff, start over*/
         free(visited);
