@@ -4,7 +4,7 @@ bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, map *got_map)
 {
     bridge *new_bridge = NULL;
 
-    if(get_bridges_s_available(isla_a)>0 && get_bridges_s_available(isla_b)>0)/*mudar isto*/
+    if(get_bridges_s_available(isla_a) > 0 && get_bridges_s_available(isla_b) > 0)/*mudar isto*/
     {
         new_bridge = (bridge*)get_used_bridge(isla_a, adj_index);
 
@@ -14,7 +14,7 @@ bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, map *got_map)
             if(get_points(new_bridge, 0) != isla_a || get_points(new_bridge, 0) != isla_b)
             {
                 printf("SOMETHING IS VERY WRONG. CHECK is_connectable\n");
-            }  
+            }
         }
         /*--------------------------------------------*/
 
@@ -29,13 +29,6 @@ bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, map *got_map)
 
     return FALSE;
 }
-
-void engine_static_fire()
-{
-
-}
-
-<<<<<<< HEAD
 
 isla *get_isla_for_dfs(list *isla_list)
 {
@@ -54,7 +47,7 @@ isla *get_isla_for_dfs(list *isla_list)
     return NULL;
 }
 
-void DFS_manager(list *isla_list, int mode)
+void DFS_manager(list *isla_list, int mode, map* got_map)
 {
 
     bool *visited = (bool *) calloc(get_list_size(isla_list), sizeof(bool));
@@ -64,7 +57,7 @@ void DFS_manager(list *isla_list, int mode)
     {
         good_isla = get_isla_for_dfs(isla_list);
         while( good_isla != NULL ) {
-            DFS_engine(get_node_item(get_head(isla_list)), visited);
+            DFS_engine(get_node_item(get_head(isla_list)), visited, got_map);
             memset(visited, FALSE , sizeof(bool) * get_list_size(isla_list));
             good_isla = get_isla_for_dfs(isla_list);
         }
@@ -75,7 +68,7 @@ void DFS_manager(list *isla_list, int mode)
     }
     else if(mode == 3)
     {
-        DFS_engine(get_node_item(get_head(isla_list)), visited);
+        DFS_engine(get_node_item(get_head(isla_list)), visited, got_map);
     }
     else
     {
@@ -87,10 +80,7 @@ void DFS_manager(list *isla_list, int mode)
     return;
 }
 
-void DFS_engine(isla *edgy, bool *visited)
-=======
-void DFS_engine(list *head, isla *edgy, bool *visited, map* got_map)
->>>>>>> 3df531c0b34d9c3b6f7a0cf3c7389a1ca134f69a
+void DFS_engine(isla *edgy, bool *visited, map* got_map)
 {
     isla *_adj = NULL;
     unsigned int i = 0;
@@ -110,24 +100,13 @@ void DFS_engine(list *head, isla *edgy, bool *visited, map* got_map)
             }
             if(visited[get_name_isla(_adj)] != TRUE)
             {
-<<<<<<< HEAD
-                DFS_engine(_adj, visited);
-=======
-                DFS_engine(head, _adj, visited, got_map);
->>>>>>> 3df531c0b34d9c3b6f7a0cf3c7389a1ca134f69a
+                DFS_engine(_adj, visited, got_map);
             }
         }
     }
 
     return;
 }
-
-
-void engine_dry_run()
-{
-
-}
-
 
 void check_for_zero()
 {

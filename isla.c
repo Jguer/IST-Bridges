@@ -4,10 +4,10 @@ struct _isla {
     unsigned int name;
     unsigned int bridges_avb;
     unsigned int bridges_still_avb;
+    unsigned int dfsed; /* Visited flag for big group operations */
     item used[4];
     pos *position;
     isla *adj[4];
-    unsigned int dfsed; /* Visited flag for big group operations */
 };
 
 isla *create_isla(int name, int y, int x, int bridges_avb)
