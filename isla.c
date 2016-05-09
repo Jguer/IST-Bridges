@@ -47,6 +47,16 @@ int get_name_isla(isla *got_isla)
     return got_isla->name;
 }
 
+int get_bridges_avb(isla *got_isla)
+{
+    return got_isla->bridges_avb;
+}
+
+item get_used_bridge(isla* got_isla, int index)
+{
+    return got_isla->used[index];
+}
+
 pos *get_pos_isla(isla *got_isla)
 {
     return got_isla->position;
