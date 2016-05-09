@@ -11,12 +11,13 @@
 
 int main(int argc, char **argv)
 {
-    FILE *map_file;
+    FILE *map_file, *output_file;
     int lineData[4];
     isla *new_isla;
     list *isla_list;
     map *active_map;
     stack *got_stack;
+    int mode_result = 0;
 
     if(argc != 2 || strcmp(get_filename_ext(argv[1]), "map"))
         file_error("Missing arguments or wrong extension specified on file input");
@@ -24,6 +25,8 @@ int main(int argc, char **argv)
     map_file = fopen(argv[1], "r");
     if(map_file == NULL)
         file_error("Unable to open file specified");
+
+    output_file = change_file_ext(argv[1]);
 
     while(read_line(map_file, lineData) != 0)
     {
@@ -52,11 +55,16 @@ int main(int argc, char **argv)
         /*Play the game*/
         got_stack = DFS_manager(isla_list, 1, active_map);
 
+        /*Write in output file*/
+        print_output_per_map(active_map, output_file, get_map_mode(active_map), mode_result);
+
         /*free stuff, start over*/
         free_list(isla_list, free_isla);
         free_map(active_map);
     }
 
     fclose(map_file);
+    fclose(output_file);
+    
     return 0;
 }

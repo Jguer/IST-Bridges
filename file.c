@@ -34,3 +34,74 @@ void setup_isla(isla* isla_item, map* map_item, int *lineData, list *list_item)
     push_item_to_list(list_item, isla_item);
     return;
 }
+
+FILE *change_file_ext(char* original_name)
+{
+    FILE *outfile;
+    int Len;
+
+    Len = strlen(original_name);
+    
+    while(Len) 
+    {
+        if(original_name[Len] == '.') 
+        {
+            original_name[Len] = '\0';
+            break;
+        }
+        Len --;
+    }
+
+    strcat(original_name, ".sol");
+    outfile = fopen(original_name, "w");
+
+    return outfile;
+}
+
+void print_output_per_map(map *got_map, FILE *outfile, int mode, int mode_result)
+{
+    int sol_info = 0;
+
+    if(mode == 0)
+    {
+        switch(mode_result)
+        {
+            case NO_SOL: sol_info = 0;
+            case GOT_SOL: sol_info = 0;
+        }
+    }
+    else if(mode == 1)
+    {
+        switch(mode_result)
+        {
+            case ALL_CONCT: sol_info = 2;
+            case NOT_ALL_CONCT: sol_info = 1;
+            case NO_SOL: sol_info = 1;
+        }
+    }
+    else
+    {
+        switch(mode_result)
+        {
+            case ALL_CONCT: sol_info = 2;
+            case NO_SOL: sol_info = 1;
+        }
+    }
+
+    /* print first line */
+    fprintf(outfile, "%d %d %d %d\n", 
+        get_y_max(got_map), get_x_max(got_map), get_n_islas(got_map), sol_info);
+
+    if(mode_result != NO_SOL)
+    {
+        print_created_map();
+    }
+
+    fprintf(outfile, "-1\n");
+    return;
+}
+
+void print_created_map()
+{
+    return;
+}
