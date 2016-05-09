@@ -25,6 +25,11 @@
 
 #define DEBUG_LOC stdout
 
+#define NO_SOL 10
+#define GOT_SOL 11
+#define ALL_CONCT 12
+#define NOT_ALL_CONCT 13
+
 typedef void *item;
 typedef enum
 {
