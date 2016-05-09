@@ -1,4 +1,4 @@
 #include "isla.h"
 #include "lists.h"
 
-void DFS_engine(list *head, isla *edgy, bool *visited);
+void DFS_engine(isla *edgy, bool *visited);

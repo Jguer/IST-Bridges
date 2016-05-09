@@ -10,7 +10,7 @@ list *create_list();
 node *get_head(list *got_list);
 void push_item_to_list(list *got_list, item new_item);
 void push_node_to_list(list *got_list, node *got_node);
-int get_list_size(list *got_list);
+size_t get_list_size(list *got_list);
 void print_list(list *got_list, void (*print_item)(item));
 void free_list(list *got_list, void (*free_item)(item));
 
@@ -18,7 +18,7 @@ void free_list(list *got_list, void (*free_item)(item));
 stack *create_stack();
 void push_to_stack(stack *got_stack, item new_item);
 node *pop_from_stack(stack *got_stack);
-int get_stack_size(stack *got_stack);
+size_t get_stack_size(stack *got_stack);
 int is_stack_empty(stack *got_stack);
 void free_stack(stack *got_stack, void (*free_item)(item));
 void print_stack(stack *got_stack, void (*print_item)(item));

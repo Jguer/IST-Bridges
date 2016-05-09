@@ -1,6 +1,6 @@
 #include "lists.h"
 struct _stack {
-    int size;
+    size_t size;
     node *head;
 };
 
@@ -56,7 +56,7 @@ void push_node_to_list(list *got_list, node *got_node)
     return;
 }
 
-int get_list_size(list *got_list)
+size_t get_list_size(list *got_list)
 {
     return got_list->size;
 }
@@ -66,7 +66,7 @@ void print_list(list *got_list, void (*print_item)(item))
 {
     node *aux_node;
     printf("Print list:\n");
-    fprintf(DEBUG_LOC, "Size of list: %d\n", get_list_size(got_list));
+    fprintf(DEBUG_LOC, "Size of list: %lu\n", get_list_size(got_list));
 
     for(aux_node = get_head(got_list);
             aux_node != NULL;
@@ -145,7 +145,7 @@ node *pop_from_stack(stack *got_stack)
     return got_node;
 }
 
-int get_stack_size(stack *got_stack)
+size_t get_stack_size(stack *got_stack)
 {
     return got_stack->size;
 }
@@ -168,7 +168,7 @@ void print_stack(stack *got_stack, void (*print_item)(item))
     node *aux_node;
 
     /* Print stack size to selected DEBUG_LOC*/
-    fprintf(DEBUG_LOC, "Size of stack: %d\n", get_stack_size(got_stack));
+    fprintf(DEBUG_LOC, "Size of stack: %lu\n", get_stack_size(got_stack));
 
     /* For each node print content*/
     for(aux_node = got_stack->head;

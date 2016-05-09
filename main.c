@@ -13,10 +13,9 @@ int main(int argc, char **argv)
 {
     FILE *map_file;
     int lineData[4];
- 	isla *new_isla;
- 	list *isla_list;
+    isla *new_isla;
+    list *isla_list;
     map *active_map;
-    bool *visited;
 
     if(argc != 2 || strcmp(get_filename_ext(argv[1]), "map"))
         file_error("Missing arguments or wrong extension specified on file input");
@@ -51,11 +50,9 @@ int main(int argc, char **argv)
 
         /*Play the game*/
 
-        visited = (bool *) calloc(get_list_size(isla_list), sizeof(bool));
-        DFS_engine(isla_list, get_node_item(get_head(isla_list)), visited);
+
 
         /*free stuff, start over*/
-        free(visited);
         free_list(isla_list, free_isla);
         free_map(active_map);
     }
