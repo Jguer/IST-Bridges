@@ -16,6 +16,7 @@ int main(int argc, char **argv)
     isla *new_isla;
     list *isla_list;
     map *active_map;
+    stack *got_stack;
 
     if(argc != 2 || strcmp(get_filename_ext(argv[1]), "map"))
         file_error("Missing arguments or wrong extension specified on file input");
@@ -49,6 +50,7 @@ int main(int argc, char **argv)
         print_adj(isla_list);
 
         /*Play the game*/
+        got_stack = DFS_manager(isla_list, 1, active_map);
 
         /*free stuff, start over*/
         free_list(isla_list, free_isla);
