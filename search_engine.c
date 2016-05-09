@@ -4,22 +4,25 @@ bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, map *got_map)
 {
     bridge *new_bridge = NULL;
 
-    if(get_bridges_s_available(isla_a) > 0 && get_bridges_s_available(isla_b) > 0)/*mudar isto*/
+    if(get_bridges_s_available(isla_a) > 0 && get_bridges_s_available(isla_b) > 0)
     {
         new_bridge = (bridge*)get_used_bridge(isla_a, adj_index);
-
-        /* Just a little test for now -----------------*/
-        if(get_bridges_n_bridges(new_bridge) > 0)
+        if(new_bridge != NULL)
         {
-            if(get_points(new_bridge, 0) != isla_a || get_points(new_bridge, 0) != isla_b)
-            {
-                printf("\nSOMETHING IS VERY WRONG. CHECK is_connectable\n");
-            }
-        }
-        /*--------------------------------------------*/
 
-        if(get_bridges_n_bridges(new_bridge) >= 2)
-            return FALSE;
+            /* Just a little test for now -----------------*/
+            if(get_bridges_n_bridges(new_bridge) > 0)
+            {
+                if(get_points(new_bridge, 0) != isla_a || get_points(new_bridge, 0) != isla_b)
+                {
+                    printf("\nSOMETHING IS VERY WRONG. CHECK is_connectable\n");
+                }
+            }
+            /*--------------------------------------------*/
+
+            if(get_bridges_n_bridges(new_bridge) >= 2)
+                return FALSE;
+        }
 
         if(crossed_fire(isla_a, isla_b, got_map))
             return FALSE;
@@ -29,6 +32,7 @@ bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, map *got_map)
 
     return FALSE;
 }
+
 
 isla *get_isla_for_dfs(list *isla_list)
 {
