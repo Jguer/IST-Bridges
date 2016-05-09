@@ -18,9 +18,14 @@ bridge *create_bridge(isla *isla_eins, isla *isla_zwei)
     return new_bridge;
 }
 
-isla **get_points(bridge *got_bridge)
+isla *get_points(bridge *got_bridge, int index)
 {
-    return got_bridge->point;
+    return got_bridge->point[index];
+}
+
+int get_bridges_n_bridges(bridge* got_bridge)
+{
+    return got_bridge->n_bridges;
 }
 
 void free_bridge(bridge *got_bridge)
@@ -133,3 +138,132 @@ void print_adj(list* isla_list)
 
 }
 
+/* checks out for crossed bridges */
+bool crossed_fire(isla* isla_a, isla* isla_b, map* got_map)
+{
+    int a_x, a_y, b_x, b_y;
+    int max_x, max_y, min_x, min_y;
+
+    a_x = get_x(get_pos_isla(isla_a));
+    a_y = get_y(get_pos_isla(isla_a));
+    b_x = get_x(get_pos_isla(isla_b));
+    b_y = get_y(get_pos_isla(isla_b));
+
+    /* Two islas in a line */
+    if(a_y == b_y)
+    {
+        if(a_x > b_x)
+        {
+            max_x = a_x;
+            min_x = b_x;
+        }
+        else
+        {
+            max_x = b_x;
+            min_x = a_x;
+        }
+        min_x++;
+
+        while(min_x < max_x)
+        {
+            if(search_for_bridge_inCol(got_map, a_y, min_x) != NULL)
+                return TRUE;
+            min_x++;
+        }
+        return FALSE;
+    }
+
+    /* Two islas in a column */
+    else
+    {
+        if(a_y > b_y)
+        {
+            max_y = a_y;
+            min_y = b_y;
+        }
+        else
+        {
+            max_y = b_y;
+            min_y = a_y;
+        }
+        min_y++;
+
+        while(min_y < max_y)
+        {
+            if(search_for_bridge_inLine(got_map, a_x, min_y) != NULL)
+                return TRUE;
+            min_y++;
+        }
+        return FALSE;
+    }
+}
+
+/* It searches for a bridge in a line of the map */
+bridge* search_for_bridge_inLine(map* got_map, int isla_x, int static_y)
+{
+    isla *isla_found, *adj_found;
+    bridge* bridge_found = NULL;
+    int x_adj;
+
+    isla_found = find_next_isla_x(got_map, 0, static_y, isla_x);
+
+    if(isla_found != NULL)
+    {
+        adj_found =  get_adj_isla(isla_found, 2);
+        if(adj_found != NULL)
+        {
+            x_adj = get_x(get_pos_isla(adj_found));
+            if(x_adj > isla_x)
+            {
+                bridge_found = get_used_bridge(isla_found, 2);
+                if(bridge_found != NULL)
+                {
+                    return bridge_found;
+                }
+                else
+                    return NULL;
+            }
+            else
+                return NULL;
+        }
+        else
+            return NULL;
+    }
+    else
+        return NULL;
+}
+
+/* It searches for a bridge in a column of the map */
+bridge* search_for_bridge_inCol(map* got_map, int isla_y, int static_x)
+{
+    isla *isla_found, *adj_found;
+    bridge* bridge_found = NULL;
+    int y_adj;
+
+    isla_found = find_next_isla_y(got_map, 0, static_x, isla_y);
+
+    if(isla_found != NULL)
+    {
+        adj_found =  get_adj_isla(isla_found, 2);
+        if(adj_found != NULL)
+        {
+            y_adj = get_y(get_pos_isla(adj_found));
+            if(y_adj > isla_y)
+            {
+                bridge_found = get_used_bridge(isla_found, 2);
+                if(bridge_found != NULL)
+                {
+                    return bridge_found;
+                }
+                else
+                    return NULL;
+            }
+            else
+                return NULL;
+        }
+        else
+            return NULL;
+    }
+    else
+        return NULL;    
+}
