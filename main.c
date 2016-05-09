@@ -54,6 +54,7 @@ int main(int argc, char **argv)
 
         /*Play the game*/
         got_stack = DFS_manager(isla_list, 1, active_map);
+        print_stack(got_stack, print_bridge);
 
         /*Write in output file*/
         print_output_per_map(active_map, output_file, get_map_mode(active_map), mode_result);

@@ -35,6 +35,18 @@ void increment_bridges_n_bridges(bridge *got_bridge)
     return;
 }
 
+void print_bridge(item got_item)
+{
+    bridge* got_bridge = (bridge *)got_bridge;
+    fprintf(DEBUG_LOC,
+            KMAG "Isla 1 name:" RESET " %d, "
+            KMAG "Isla 2 name:" RESET " %d, "
+            KMAG "Bridges Connecting:" RESET " %d ",
+            get_name_isla(get_points(got_bridge, 0)), get_name_isla(get_points(got_bridge, 1)), get_bridges_n_bridges(got_bridge));
+
+    return;
+}
+
 void free_bridge(bridge *got_bridge)
 {
     free(got_bridge);
