@@ -1,8 +1,14 @@
 #include "search_engine.h"
 
-bool is_connectable(isla *isla_eins, isla *isla_zwei)
+bool is_connectable(isla *isla_a, isla *isla_b, int adj_index)
 {
-    return TRUE;
+    
+    if(get_bridges_avb(isla_a)>0 && get_bridges_avb(isla_b)>0)
+    {
+        
+    }
+
+    return FALSE;
 }
 
 void engine_static_fire()
@@ -32,9 +38,9 @@ void DFS_engine(list *head, isla *edgy, bool *visited)
             if(is_connectable(edgy, _adj) == TRUE)
             {
             }
-            if( visited[get_name_isla(_adj)] != TRUE)
+            if(visited[get_name_isla(_adj)] != TRUE)
             {
-                DFS_engine( head, _adj, visited);
+                DFS_engine(head, _adj, visited);
             }
         }
 
