@@ -4,7 +4,7 @@ bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, map *got_map)
 {
     bridge *new_bridge = NULL;
 
-    if(get_bridges_avb(isla_a)>0 && get_bridges_avb(isla_b)>0)
+    if(get_bridges_s_available(isla_a)>0 && get_bridges_s_available(isla_b)>0)/*mudar isto*/
     {
         new_bridge = (bridge*)get_used_bridge(isla_a, adj_index);
 
@@ -75,3 +75,7 @@ void engine_dry_run()
 }
 
 
+void check_for_zero()
+{
+
+}
