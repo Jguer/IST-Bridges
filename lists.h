@@ -19,6 +19,7 @@ stack *create_stack();
 void push_to_stack(stack *got_stack, item new_item);
 node *pop_from_stack(stack *got_stack);
 int get_stack_size(stack *got_stack);
+int is_stack_empty(stack *got_stack);
 void free_stack(stack *got_stack, void (*free_item)(item));
 void print_stack(stack *got_stack, void (*print_item)(item));
 

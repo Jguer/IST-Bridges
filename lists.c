@@ -151,6 +151,18 @@ int get_stack_size(stack *got_stack)
 }
 
 
+int is_stack_empty(stack *got_stack)
+{
+    if(got_stack->head == NULL)
+    {
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
+}
+
 void print_stack(stack *got_stack, void (*print_item)(item))
 {
     node *aux_node;
