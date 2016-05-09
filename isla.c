@@ -83,9 +83,20 @@ void set_isla_dfs_status(isla *got_isla, int value)
     return;
 }
 
-int get_bridges_s_available(isla *got_isla)
+int get_isla_bridge_s_avb(isla *got_isla)
 {
     return got_isla->bridges_still_avb;
+}
+
+void dec_isla_bridge_s_avb(isla *got_isla)
+{
+    if( get_isla_bridge_s_avb(got_isla) == 0 )
+    {
+        printf("You are trying to decrease 0 \n");
+        return;
+    }
+    got_isla->bridges_still_avb --;
+    return;
 }
 
 void set_adj_isla(isla *got_isla, isla *adj_isla, int index)
