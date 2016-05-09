@@ -23,9 +23,16 @@ isla *get_points(bridge *got_bridge, int index)
     return got_bridge->point[index];
 }
 
-int get_bridges_n_bridges(bridge* got_bridge)
+int get_bridges_n_bridges(bridge *got_bridge)
 {
     return got_bridge->n_bridges;
+}
+
+void increment_bridges_n_bridges(bridge *got_bridge)
+{
+    got_bridge->n_bridges ++;
+
+    return;
 }
 
 void free_bridge(bridge *got_bridge)
@@ -265,5 +272,5 @@ bridge* search_for_bridge_inCol(map* got_map, int isla_y, int static_x)
             return NULL;
     }
     else
-        return NULL;    
+        return NULL;
 }

@@ -17,6 +17,7 @@ void free_list(list *got_list, void (*free_item)(item));
 /* STACK */
 stack *create_stack();
 void push_to_stack(stack *got_stack, item new_item);
+node *get_stack_head(stack *got_stack);
 node *pop_from_stack(stack *got_stack);
 size_t get_stack_size(stack *got_stack);
 int is_stack_empty(stack *got_stack);

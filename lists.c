@@ -145,6 +145,11 @@ node *pop_from_stack(stack *got_stack)
     return got_node;
 }
 
+node *get_stack_head(stack *got_stack)
+{
+    return got_stack->head;
+}
+
 size_t get_stack_size(stack *got_stack)
 {
     return got_stack->size;

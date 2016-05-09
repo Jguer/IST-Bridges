@@ -47,43 +47,11 @@ isla *get_isla_for_dfs(list *isla_list)
     return NULL;
 }
 
-void DFS_manager(list *isla_list, int mode, map* got_map)
-{
-
-    bool *visited = (bool *) calloc(get_list_size(isla_list), sizeof(bool));
-    isla *good_isla;
-
-    if(mode == 1)
-    {
-        good_isla = get_isla_for_dfs(isla_list);
-        while( good_isla != NULL ) {
-            DFS_engine(get_node_item(get_head(isla_list)), visited, got_map);
-            memset(visited, FALSE , sizeof(bool) * get_list_size(isla_list));
-            good_isla = get_isla_for_dfs(isla_list);
-        }
-    }
-    else if(mode == 2)
-    {
-
-    }
-    else if(mode == 3)
-    {
-        DFS_engine(get_node_item(get_head(isla_list)), visited, got_map);
-    }
-    else
-    {
-        /* Invalid Mode */
-        fprintf(stderr, KYEL "Good Job, you officially failed at map making. " KRED " Invalid mode\n"KNRM);
-    }
-
-    free(visited);
-    return;
-}
-
-void DFS_engine(isla *edgy, bool *visited, map* got_map)
+stack *DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
 {
     isla *_adj = NULL;
     unsigned int i = 0;
+
     visited[get_name_isla(edgy)] = TRUE;
 
     /* Travel all nodes, list implementation may be underkill*/
@@ -96,19 +64,57 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map)
             /* If islas are good for connect*/
             if(is_connectable(edgy, _adj, i, got_map) == TRUE)
             {
-
+                push_to_stack( bridge_stack, (item) create_bridge(edgy , _adj));
+                increment_bridges_n_bridges(get_node_item(get_stack_head(bridge_stack)));
             }
             if(visited[get_name_isla(_adj)] != TRUE)
             {
-                DFS_engine(_adj, visited, got_map);
+                DFS_engine(_adj, visited, got_map, bridge_stack);
             }
         }
     }
 
-    return;
+    return bridge_stack;
 }
 
 void check_for_zero()
 {
 
 }
+
+stack *DFS_manager(list *isla_list, int mode, map* got_map)
+{
+    isla *good_isla;
+    bool *visited = (bool *) calloc(get_list_size(isla_list), sizeof(bool));
+    stack *new_stack = create_stack();
+
+    if(mode == 1)
+    {
+        good_isla = get_isla_for_dfs(isla_list);
+        while( good_isla != NULL ) {
+            DFS_engine(get_node_item(get_head(isla_list)), visited, got_map, new_stack);
+            set_isla_dfs_status(good_isla, get_dfs_status_isla(good_isla) + 1);
+
+            memset(visited, FALSE , sizeof(bool) * get_list_size(isla_list));
+            good_isla = get_isla_for_dfs(isla_list);
+        }
+    }
+    else if(mode == 2)
+    {
+
+    }
+    else if(mode == 3)
+    {
+        DFS_engine(get_node_item(get_head(isla_list)), visited, got_map, new_stack);
+    }
+    else
+    {
+        /* Invalid Mode */
+        fprintf(stderr, KYEL "Good Job, you officially failed at map making. " KRED " Invalid mode\n"KNRM);
+    }
+
+    free(visited);
+    return new_stack;
+}
+
+

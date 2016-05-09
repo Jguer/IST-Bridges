@@ -77,6 +77,12 @@ int get_dfs_status_isla(isla *got_isla)
     return got_isla->dfsed;
 }
 
+void set_isla_dfs_status(isla *got_isla, int value)
+{
+    got_isla->dfsed = value;
+    return;
+}
+
 int get_bridges_s_available(isla *got_isla)
 {
     return got_isla->bridges_still_avb;
