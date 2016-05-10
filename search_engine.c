@@ -218,3 +218,11 @@ bool check_for_allconnected(list *isla_list)
     return TRUE;
 }
 
+bool is_bridges_available(list *isla_list)
+{
+    int n_avb, n_total;
+
+    n_avb = get_numberof_bridges_avb(isla_list);
+
+    
+}

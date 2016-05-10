@@ -34,4 +34,6 @@ bool crossed_fire(isla* isla_a, isla* isla_b, map *got_map);
 bridge* search_for_bridge_inLine(map* got_map, int isla_x, int static_y);
 bridge* search_for_bridge_inCol(map* got_map, int isla_y, int static_x);
 
+int get_numberof_bridges_avb(list *isla_list);
+int get_numberof_bridges(list *isla_list);
 #endif
