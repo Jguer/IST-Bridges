@@ -104,12 +104,12 @@ bool is_prohibited(isla *victim_isla, int adj_index, list* probi_list)
         new_bridge = get_node_item(new_node);
 
         if(new_bridge == victim_bridge)
-            return FALSE;
+            return TRUE;
 
         new_node = get_next_node(new_node);
     }
 
-    return TRUE;
+    return FALSE;
 }
 
 
