@@ -34,3 +34,4 @@
 .ycm_extra_conf.pyc
 bridges
 __pycache__/*
+vgcore*
