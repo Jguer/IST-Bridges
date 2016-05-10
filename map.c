@@ -120,7 +120,7 @@ void print_map_graphic(map* got_map)
             to_print = got_map->tile[xi][yi];
             if(to_print != NULL)
             {
-                printf("1 ");
+                printf("%d ", get_name_isla(to_print));
             }
             else
             {
