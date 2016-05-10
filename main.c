@@ -6,8 +6,7 @@
 * main.c
 ***************************************/
 
-#include "bridge.h"
-#include "search_engine.h"
+#include "file.h"
 
 int main(int argc, char **argv)
 {
@@ -57,7 +56,7 @@ int main(int argc, char **argv)
         print_stack(got_stack, print_bridge);
 
         /*Write in output file*/
-        print_output_per_map(active_map, output_file, get_map_mode(active_map), mode_result);
+        print_output_per_map(active_map, output_file, mode_result, isla_list);
 
         /*free stuff, start over*/
         free_list(isla_list, free_isla);

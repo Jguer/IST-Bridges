@@ -58,9 +58,13 @@ FILE *change_file_ext(char* original_name)
     return outfile;
 }
 
-void print_output_per_map(map *got_map, FILE *outfile, int mode, int mode_result)
+void print_output_per_map(map *got_map, FILE *outfile, int mode_result, list* isla_list)
 {
     int sol_info = 0;
+    int mode = get_map_mode(got_map);
+
+    /* for testing */
+    mode_result = GOT_SOL;
 
     if(mode == 0)
     {
@@ -94,14 +98,26 @@ void print_output_per_map(map *got_map, FILE *outfile, int mode, int mode_result
 
     if(mode_result != NO_SOL)
     {
-        print_created_map();
+        print_created_map(isla_list);
     }
 
     fprintf(outfile, "-1\n");
     return;
 }
 
-void print_created_map()
+void print_created_map(list* isla_list)
 {
+
+    return;
+}
+
+
+void print_output_bridge(bridge* got_bridge, FILE* outfile)
+{
+    fprintf(outfile, "%d %d %d \n",
+            get_name_isla(get_points(got_bridge, 0)), 
+            get_name_isla(get_points(got_bridge, 1)), 
+            get_bridges_n_bridges(got_bridge));
+
     return;
 }
