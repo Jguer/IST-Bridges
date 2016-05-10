@@ -1,6 +1,119 @@
 #include "search_engine.h"
 
-bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, map *got_map)
+bool check_for_allzero(list *isla_list)
+{
+    isla *new_isla;
+    node *new_node;
+
+    new_node = get_head(isla_list);
+    new_isla = get_node_item(new_node);
+
+    while(new_node != NULL)
+    {
+        if(get_isla_bridge_s_avb(new_isla) != 0)
+            return FALSE;
+
+        new_node = get_next_node(new_node);
+        new_isla = get_node_item(new_node);
+    }
+    return TRUE;
+}
+
+bool is_connected(isla* new_isla, int adj_index)
+{
+    bridge* new_bridge = (bridge*)get_isla_used_bridge(new_isla, adj_index);
+
+    if(new_bridge != NULL)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+/* feels the vector inpath[] if islas are in path */
+void create_path_vector(isla *new_isla, bool *inpath)
+{
+    isla *_adj = NULL;
+    int i = 0;
+
+    for(_adj = get_isla_adj(new_isla, i); i < 4; i++)
+    {
+        /* Check if exists and check if visited*/
+        if(_adj != NULL && inpath[get_isla_name(_adj)] == FALSE && is_connected(new_isla, i) == TRUE)
+        {
+            inpath[get_isla_name(_adj)] = TRUE;
+            create_path_vector(_adj, inpath); /* New recursion level */
+        }
+    }
+    return;
+}
+
+/* checks for all connected in path */
+bool check_for_allconnected(list *isla_list)
+{
+    isla *new_isla = NULL;
+    node *new_node = NULL;
+    bool *inpath = (bool*)calloc(get_list_size(isla_list)+1, sizeof(bool));
+    int index = 0;
+
+    new_node = get_head(isla_list);
+    new_isla = get_node_item(new_node);
+
+    create_path_vector(new_isla, inpath);
+
+    while(index < (int) get_list_size(isla_list)+1)
+    {
+        if(inpath[index] == FALSE)
+            return FALSE;
+        index++;
+    }
+
+    return TRUE;
+}
+
+bool is_bridges_available(list *isla_list, list *probi_list)
+{
+    int n_avb, n_probi;
+    node* new_node;
+
+    n_avb = get_numberof_bridges_avb(isla_list);
+
+    while(new_node != NULL)
+    {
+        n_probi++;
+        new_node = get_next_node(new_node);
+    }
+
+    if(n_probi < n_avb)
+    {
+        return TRUE;
+    }
+    else
+        return FALSE;    
+}
+
+bool is_prohibited(isla *victim_isla, int adj_index, list* probi_list)
+{
+    bridge *victim_bridge, *new_bridge = NULL;
+    node* new_node =  NULL;
+
+    new_node = get_head(probi_list);
+    victim_bridge = get_isla_used_bridge(victim_isla, adj_index);
+
+    while(new_node != NULL)
+    {
+        new_bridge = get_node_item(new_node);
+
+        if(new_bridge == victim_bridge)
+            return FALSE;
+
+        new_node = get_next_node(new_node);
+    }
+
+    return TRUE;
+}
+
+
+bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, map *got_map, list *probi_list)
 {
     bridge *new_bridge = NULL;
 
@@ -30,6 +143,10 @@ bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, map *got_map)
 
         if(crossed_fire(isla_a, isla_b, got_map))
             return FALSE;
+
+        if(is_prohibited(isla_a, adj_index, probi_list))
+            return FALSE;
+
         return TRUE;
 
     }
@@ -146,81 +263,6 @@ stack *DFS_manager(list *isla_list, int mode, map* got_map)
     return new_stack;
 }
 
-bool check_for_allzero(list *isla_list)
-{
-    isla *new_isla;
-    node *new_node;
 
-    new_node = get_head(isla_list);
-    new_isla = get_node_item(new_node);
 
-    while(new_node != NULL)
-    {
-        if(get_isla_bridge_s_avb(new_isla) != 0)
-            return FALSE;
 
-        new_node = get_next_node(new_node);
-        new_isla = get_node_item(new_node);
-    }
-    return TRUE;
-}
-
-bool is_connected(isla* new_isla, int adj_index)
-{
-    bridge* new_bridge = (bridge*)get_isla_used_bridge(new_isla, adj_index);
-
-    if(new_bridge != NULL)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-/* feels the vector inpath[] if islas are in path */
-void create_path_vector(isla *new_isla, bool *inpath)
-{
-    isla *_adj = NULL;
-    int i = 0;
-
-    for(_adj = get_isla_adj(new_isla, i); i < 4; i++)
-    {
-        /* Check if exists and check if visited*/
-        if(_adj != NULL && inpath[get_isla_name(_adj)] == FALSE && is_connected(new_isla, i) == TRUE)
-        {
-            inpath[get_isla_name(_adj)] = TRUE;
-            create_path_vector(_adj, inpath); /* New recursion level */
-        }
-    }
-    return;
-}
-
-/* checks for all connected in path */
-bool check_for_allconnected(list *isla_list)
-{
-    isla *new_isla = NULL;
-    node *new_node = NULL;
-    bool *inpath = (bool*)calloc(get_list_size(isla_list)+1, sizeof(bool));
-    int index = 0;
-
-    new_node = get_head(isla_list);
-    new_isla = get_node_item(new_node);
-
-    create_path_vector(new_isla, inpath);
-
-    while(index < (int) get_list_size(isla_list)+1)
-    {
-        if(inpath[index] == FALSE)
-            return FALSE;
-        index++;
-    }
-
-    return TRUE;
-}
-
-bool is_bridges_available(list *isla_list)
-{
-    int n_avb, n_total;
-
-    n_avb = get_numberof_bridges_avb(isla_list);
-
-    
-}
