@@ -225,7 +225,7 @@ bridge* search_for_bridge_inLine(map* got_map, int isla_x, int static_y)
     bridge* bridge_found = NULL;
     int x_adj;
 
-    isla_found = find_next_isla_x(got_map, 1, static_y+1, isla_x);
+    isla_found = find_next_isla_x(got_map, 1, static_y, isla_x);
 
     if(isla_found != NULL)
     {
@@ -260,7 +260,7 @@ bridge* search_for_bridge_inCol(map* got_map, int isla_y, int static_x)
     bridge* bridge_found = NULL;
     int y_adj;
 
-    isla_found = find_next_isla_y(got_map, 1, static_x+1, isla_y);
+    isla_found = find_next_isla_y(got_map, 1, static_x, isla_y);
 
     if(isla_found != NULL)
     {
