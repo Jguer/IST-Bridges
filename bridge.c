@@ -42,7 +42,7 @@ void print_bridge(item got_item)
             KMAG "Isla 1 name:" RESET " %d, "
             KMAG "Isla 2 name:" RESET " %d, "
             KMAG "Bridges Connecting:" RESET " %d \n",
-            get_name_isla(get_points(got_bridge, 0)), get_name_isla(get_points(got_bridge, 1)), get_bridges_n_bridges(got_bridge));
+            get_isla_name(get_points(got_bridge, 0)), get_isla_name(get_points(got_bridge, 1)), get_bridges_n_bridges(got_bridge));
 
     return;
 }
@@ -87,14 +87,14 @@ void find_adj_y(isla* active_row_node, map *got_map)
 
     new = active_row_node;                                          /* new gets the first isla on the column */
     y_max = get_y_max(got_map);
-    static_x = get_x(get_pos_isla(active_row_node));                /* gets which column we are working on */
+    static_x = get_x(get_isla_pos(active_row_node));                /* gets which column we are working on */
 
-    y = get_y(get_pos_isla(new));                                   /* gets the row from which we are working on */
+    y = get_y(get_isla_pos(new));                                   /* gets the row from which we are working on */
     new_next = find_next_isla_y(got_map, static_x, y+1, y_max);     /* gets the next isla in that column */
     if(new_next != NULL)                                            /* if an isla is actually found, it's an adjacent */
     {
-        set_adj_isla(new, new_next, 1);
-        set_adj_isla(new_next, new, 0);
+        set_isla_adj(new, new_next, 1);
+        set_isla_adj(new_next, new, 0);
     }
 }
 
@@ -111,13 +111,13 @@ void find_adj(map* got_map)
         new = find_next_isla_x(got_map, 1, y, x_max);
         while(new != NULL)                                          /* check till last cloumn */
         {
-            y = get_y(get_pos_isla(new));
-            x = get_x(get_pos_isla(new));
+            y = get_y(get_isla_pos(new));
+            x = get_x(get_isla_pos(new));
             new_next = find_next_isla_x(got_map, x+1, y, x_max);
             if(new_next != NULL)                                    /* if the row has more islas */
             {
-                set_adj_isla(new, new_next, 2);
-                set_adj_isla(new_next, new, 3);
+                set_isla_adj(new, new_next, 2);
+                set_isla_adj(new_next, new, 3);
             }
 
             find_adj_y(new, got_map);                               /* find islas in  all column now */
@@ -139,12 +139,12 @@ void print_adj(list* isla_list)
     while(node != NULL)
     {
         new = get_node_item(node);
-        fprintf(DEBUG_LOC, KGRN "Isla: %d - " RESET, get_name_isla(new));
+        fprintf(DEBUG_LOC, KGRN "Isla: %d - " RESET, get_isla_name(new));
         for(i=0; i<4; i++)
         {
-            if(get_adj_isla(new, i) != NULL)
+            if(get_isla_adj(new, i) != NULL)
             {
-                fprintf(DEBUG_LOC, KBLU "Adj %d:" RESET KGRN "%d " KNRM, i, get_name_isla(get_adj_isla(new, i)));
+                fprintf(DEBUG_LOC, KBLU "Adj %d:" RESET KGRN "%d " KNRM, i, get_isla_name(get_isla_adj(new, i)));
             }
             else
             {
@@ -164,10 +164,10 @@ bool crossed_fire(isla* isla_a, isla* isla_b, map* got_map)
     int a_x, a_y, b_x, b_y;
     int max_x, max_y, min_x, min_y;
 
-    a_x = get_x(get_pos_isla(isla_a));
-    a_y = get_y(get_pos_isla(isla_a));
-    b_x = get_x(get_pos_isla(isla_b));
-    b_y = get_y(get_pos_isla(isla_b));
+    a_x = get_x(get_isla_pos(isla_a));
+    a_y = get_y(get_isla_pos(isla_a));
+    b_x = get_x(get_isla_pos(isla_b));
+    b_y = get_y(get_isla_pos(isla_b));
 
     /* Two islas in a line */
     if(a_y == b_y)
@@ -229,13 +229,13 @@ bridge* search_for_bridge_inLine(map* got_map, int isla_x, int static_y)
 
     if(isla_found != NULL)
     {
-        adj_found =  get_adj_isla(isla_found, 2);
+        adj_found =  get_isla_adj(isla_found, 2);
         if(adj_found != NULL)
         {
-            x_adj = get_x(get_pos_isla(adj_found));
+            x_adj = get_x(get_isla_pos(adj_found));
             if(x_adj > isla_x)
             {
-                bridge_found = get_used_bridge(isla_found, 2);
+                bridge_found = get_isla_used_bridge(isla_found, 2);
                 if(bridge_found != NULL)
                 {
                     return bridge_found;
@@ -264,13 +264,13 @@ bridge* search_for_bridge_inCol(map* got_map, int isla_y, int static_x)
 
     if(isla_found != NULL)
     {
-        adj_found =  get_adj_isla(isla_found, 1);
+        adj_found =  get_isla_adj(isla_found, 1);
         if(adj_found != NULL)
         {
-            y_adj = get_y(get_pos_isla(adj_found));
+            y_adj = get_y(get_isla_pos(adj_found));
             if(y_adj > isla_y)
             {
-                bridge_found = get_used_bridge(isla_found, 1);
+                bridge_found = get_isla_used_bridge(isla_found, 1);
                 if(bridge_found != NULL)
                 {
                     return bridge_found;
@@ -300,7 +300,7 @@ int get_numberof_bridges(list *isla_list)
     while(new_node != NULL)
     {
         new_isla = get_node_item(new_node);
-        n += get_bridges_avb(new_isla);
+        n += get_isla_bridges_avb(new_isla);
 
         new_node = get_next_node(new_node);
     }
@@ -317,15 +317,15 @@ void free_isla(item got_item)
 
     /* O say can you see
      * by the dawn's early light*/
-    free_pos(get_pos_isla(got_isla));
+    free_pos(get_isla_pos(got_isla));
 
     for(i = 0; i < 4; i++)
     {
-        active_bridge = get_used_bridge(got_isla, i);
+        active_bridge = get_isla_used_bridge(got_isla, i);
         if(active_bridge != NULL)
         {
             adj_isla = get_points(active_bridge, 0);
-            if(get_name_isla(adj_isla) == get_name_isla(got_isla))
+            if(get_isla_name(adj_isla) == get_isla_name(got_isla))
             {
                 adj_isla = get_points(active_bridge, 1);
             }

@@ -47,17 +47,17 @@ void print_isla(item got_item)
     return;
 }
 
-int get_name_isla(isla *got_isla)
+int get_isla_name(isla *got_isla)
 {
     return got_isla->name;
 }
 
-int get_bridges_avb(isla *got_isla)
+int get_isla_bridges_avb(isla *got_isla)
 {
     return got_isla->bridges_avb;
 }
 
-item get_used_bridge(isla *got_isla, int index)
+item get_isla_used_bridge(isla *got_isla, int index)
 {
     return got_isla->used[index];
 }
@@ -68,18 +68,18 @@ void set_isla_used_bridge(isla *got_isla, int index, item connected_bridge)
     return;
 }
 
-pos *get_pos_isla(isla *got_isla)
+pos *get_isla_pos(isla *got_isla)
 {
     return got_isla->position;
 }
 
-isla *get_adj_isla(isla *got_isla, int index)
+isla *get_isla_adj(isla *got_isla, int index)
 {
 
     return got_isla->adj[index];
 }
 
-int get_dfs_status_isla(isla *got_isla)
+int get_isla_dfs_status(isla *got_isla)
 {
     return got_isla->dfsed;
 }
@@ -106,7 +106,7 @@ void dec_isla_bridge_s_avb(isla *got_isla)
     return;
 }
 
-void set_adj_isla(isla *got_isla, isla *adj_isla, int index)
+void set_isla_adj(isla *got_isla, isla *adj_isla, int index)
 {
     got_isla->adj[index] = adj_isla;
     return;

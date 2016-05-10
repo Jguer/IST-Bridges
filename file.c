@@ -115,8 +115,8 @@ void print_created_map(list* isla_list)
 void print_output_bridge(bridge* got_bridge, FILE* outfile)
 {
     fprintf(outfile, "%d %d %d \n",
-            get_name_isla(get_points(got_bridge, 0)), 
-            get_name_isla(get_points(got_bridge, 1)), 
+            get_isla_name(get_points(got_bridge, 0)), 
+            get_isla_name(get_points(got_bridge, 1)), 
             get_bridges_n_bridges(got_bridge));
 
     return;

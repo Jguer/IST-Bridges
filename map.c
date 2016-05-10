@@ -53,7 +53,7 @@ isla *get_tile(map *got_map, int x, int y)
 void set_tile(map *got_map, isla* isla_to_add)
 {
     /* Once again position is shifted north-west by 1 */
-    got_map->tile[get_x(get_pos_isla(isla_to_add)) - 1][ get_y(get_pos_isla(isla_to_add)) - 1] = isla_to_add;
+    got_map->tile[get_x(get_isla_pos(isla_to_add)) - 1][ get_y(get_isla_pos(isla_to_add)) - 1] = isla_to_add;
     return;
 }
 
@@ -93,7 +93,7 @@ void print_map(map* got_map)
         {
             to_print = got_map->tile[xi][yi];
             if(to_print != NULL)
-                print_pos(get_pos_isla(to_print));
+                print_pos(get_isla_pos(to_print));
             yi++;
         }
         printf("\n");
@@ -120,7 +120,7 @@ void print_map_graphic(map* got_map)
             to_print = got_map->tile[xi][yi];
             if(to_print != NULL)
             {
-                printf("%d ", get_name_isla(to_print));
+                printf("%d ", get_isla_name(to_print));
             }
             else
             {

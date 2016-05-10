@@ -6,7 +6,7 @@ bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, map *got_map)
 
     if(get_isla_bridge_s_avb(isla_a) > 0 && get_isla_bridge_s_avb(isla_b) > 0)
     {
-        new_bridge = (bridge*)get_used_bridge(isla_a, adj_index);
+        new_bridge = (bridge*)get_isla_used_bridge(isla_a, adj_index);
         if(new_bridge != NULL)
         {
 
@@ -42,7 +42,7 @@ isla *get_isla_for_dfs(list *isla_list)
     for(aux_node = get_head(isla_list); aux_node != NULL; aux_node = get_next_node(aux_node))
     {
         got_isla = (isla *)get_node_item(aux_node);
-        if((get_dfs_status_isla(got_isla) < 1) && (get_isla_bridge_s_avb(got_isla) != 0))
+        if((get_isla_dfs_status(got_isla) < 1) && (get_isla_bridge_s_avb(got_isla) != 0))
         {
             return got_isla;
         }
@@ -59,23 +59,23 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
     unsigned int i = 0;
     bridge *new_bridge;
 
-    visited[get_name_isla(edgy)] = TRUE;
+    visited[get_isla_name(edgy)] = TRUE;
 
     /* Travel all nodes, list implementation may be underkill*/
     /* i gives NSEW*/
     for(i = 0; i < 4; i++)
     {
-        _adj = get_adj_isla(edgy, i);
+        _adj = get_isla_adj(edgy, i);
 
         /* Check if exists, check if visited and check if islas are good for connect*/
-        if(_adj != NULL && visited[get_name_isla(_adj)] == FALSE && is_connectable(edgy, _adj, i, got_map) == TRUE )
+        if(_adj != NULL && visited[get_isla_name(_adj)] == FALSE && is_connectable(edgy, _adj, i, got_map) == TRUE )
         {
-            printf("Looking %d , Isla1: %d Isla2: %d ; Available1: %d ; Available2: %d\n",i , get_name_isla(edgy), get_name_isla(_adj), get_isla_bridge_s_avb(edgy), get_isla_bridge_s_avb(_adj));
+            printf("Looking %d , Isla1: %d Isla2: %d ; Available1: %d ; Available2: %d\n",i , get_isla_name(edgy), get_isla_name(_adj), get_isla_bridge_s_avb(edgy), get_isla_bridge_s_avb(_adj));
 
-            new_bridge = get_used_bridge(edgy, i);
+            new_bridge = get_isla_used_bridge(edgy, i);
             if(new_bridge != NULL) /* If already bridge structure is linked in isla_struct*/
             {
-                increment_bridges_n_bridges(get_used_bridge(edgy,i));
+                increment_bridges_n_bridges(get_isla_used_bridge(edgy,i));
                 /* Push to stack new bridge */
                 push_to_stack(bridge_stack, (item)new_bridge);
             }
@@ -96,8 +96,8 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
 
     for(i = 0; i < 4; i++)
     {
-        _adj = get_adj_isla(edgy, i);
-        if(_adj != NULL && visited[get_name_isla(_adj)] == FALSE)
+        _adj = get_isla_adj(edgy, i);
+        if(_adj != NULL && visited[get_isla_name(_adj)] == FALSE)
         {
             DFS_engine(_adj, visited, got_map, bridge_stack); /* New recursion level */
         }
@@ -116,9 +116,9 @@ stack *DFS_manager(list *isla_list, int mode, map* got_map)
     {
         good_isla = get_isla_for_dfs(isla_list);
         while(good_isla != NULL ) {
-            printf("Going into isla %d \n", get_name_isla(good_isla));
+            printf("Going into isla %d \n", get_isla_name(good_isla));
             DFS_engine(good_isla, visited, got_map, new_stack);
-            set_isla_dfs_status(good_isla, get_dfs_status_isla(good_isla) + 1); /* Increment DFS status of isla */
+            set_isla_dfs_status(good_isla, get_isla_dfs_status(good_isla) + 1); /* Increment DFS status of isla */
 
             memset(visited, FALSE, sizeof(bool) * (get_list_size(isla_list))); /* Reset visited array to FALSE*/
             good_isla = get_isla_for_dfs(isla_list); /* Get new isla for analysis*/
@@ -162,7 +162,7 @@ bool check_for_allzero(list *isla_list)
 
 bool is_connected(isla* new_isla, int adj_index)
 {
-    bridge* new_bridge = (bridge*)get_used_bridge(new_isla, adj_index);
+    bridge* new_bridge = (bridge*)get_isla_used_bridge(new_isla, adj_index);
 
     if(new_bridge != NULL)
         return TRUE;
@@ -176,12 +176,12 @@ void create_path_vector(isla *new_isla, bool *inpath)
     isla *_adj = NULL;
     int i = 0;
 
-    for(_adj = get_adj_isla(new_isla, i); i < 4; i++)
+    for(_adj = get_isla_adj(new_isla, i); i < 4; i++)
     {
         /* Check if exists and check if visited*/
-        if(_adj != NULL && inpath[get_name_isla(_adj)] == FALSE && is_connected(new_isla, i) == TRUE)
+        if(_adj != NULL && inpath[get_isla_name(_adj)] == FALSE && is_connected(new_isla, i) == TRUE)
         {
-            inpath[get_name_isla(_adj)] = TRUE;
+            inpath[get_isla_name(_adj)] = TRUE;
             create_path_vector(_adj, inpath); /* New recursion level */
         }
     }
