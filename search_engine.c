@@ -62,14 +62,11 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
     /* i gives NSEW*/
     for(i = 0; i < 4; i++)
     {
-<<<<<<< HEAD
         /* Check if exists and check if visited*/
         if(_adj != NULL)
-=======
         _adj = get_adj_isla(edgy, i);
         /* Check if exists, check if visited and check if islas are good for connect*/
         if(_adj != NULL && visited[get_name_isla(_adj)] == FALSE && is_connectable(edgy, _adj, i, got_map) == TRUE )
->>>>>>> ce50352914eedea5914a1bd6948746accc7edf29
         {
             printf("Looking %d , Isla1: %d Isla2: %d ; Available1: %d ; Available2: %d\n",i , get_name_isla(edgy), get_name_isla(_adj), get_isla_bridge_s_avb(edgy), get_isla_bridge_s_avb(_adj));
             printf("Visited Vector: %d %d %d %d\n", visited[0], visited[1], visited[2], visited[3]);
