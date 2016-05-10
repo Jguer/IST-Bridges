@@ -57,7 +57,7 @@ isla *get_isla_for_dfs(list *isla_list)
 
 
 
-void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
+void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack, list *probi_list)
 {
     isla *_adj = NULL;
     unsigned int i = 0;
@@ -103,7 +103,7 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
         _adj = get_isla_adj(edgy, i);
         if(_adj != NULL && visited[get_isla_name(_adj)] == FALSE)
         {
-            DFS_engine(_adj, visited, got_map, bridge_stack); /* New recursion level */
+            DFS_engine(_adj, visited, got_map, bridge_stack, probi_list); /* New recursion level */
         }
     }
 
@@ -115,13 +115,13 @@ stack *DFS_manager(list *isla_list, int mode, map* got_map)
     isla *good_isla;
     bool *visited = (bool *) calloc(get_list_size(isla_list) + 1, sizeof(bool));
     stack *new_stack = create_stack();
-
+    list *probi_list = create_list();
     if(mode == 1) /* Connect all of them, doesn't matter if grouped or path*/
     {
         good_isla = get_isla_for_dfs(isla_list);
         while(good_isla != NULL ) {
             printf("Going into isla %d \n", get_isla_name(good_isla));
-            DFS_engine(good_isla, visited, got_map, new_stack);
+            DFS_engine(good_isla, visited, got_map, new_stack, probi_list);
             set_isla_dfs_status(good_isla, get_isla_dfs_status(good_isla) + 1); /* Increment DFS status of isla */
 
             memset(visited, FALSE, sizeof(bool) * (get_list_size(isla_list))); /* Reset visited array to FALSE*/
@@ -134,13 +134,14 @@ stack *DFS_manager(list *isla_list, int mode, map* got_map)
     }
     else if(mode == 3) /* Connect all of them, forcebly a path */
     {
-        DFS_engine(get_node_item(get_head(isla_list)), visited, got_map, new_stack);
+        DFS_engine(get_node_item(get_head(isla_list)), visited, got_map, new_stack, probi_list);
     }
     else /* Invalid Mode */
     {
         fprintf(stderr, KYEL "Good Job, you officially failed at map making. " KRED " Invalid mode\n"KNRM);
     }
 
+    free_list(probi_list, already_free);
     free(visited);
     return new_stack;
 }
