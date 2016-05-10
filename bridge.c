@@ -3,6 +3,7 @@
 struct _bridge {
     isla *point[2];
     int n_bridges;
+    bool bt_target; /* backtrack target */
 };
 
 bridge *create_bridge(isla *isla_eins, isla *isla_zwei, int used)
@@ -14,6 +15,7 @@ bridge *create_bridge(isla *isla_eins, isla *isla_zwei, int used)
     new_bridge->point[0] = isla_eins;
     new_bridge->point[1] = isla_zwei;
     new_bridge->n_bridges = used;
+    new_bridge->bt_target = FALSE;
 
     return new_bridge;
 }
@@ -27,6 +29,18 @@ int get_bridges_n_bridges(bridge *got_bridge)
 {
     return got_bridge->n_bridges;
 }
+
+void set_bridge_bt_target(bridge *got_bridge, int value)
+{
+    got_bridge->bt_target = value;
+    return;
+}
+
+bool get_bridge_bt_target(bridge *got_bridge)
+{
+    return got_bridge->bt_target;
+}
+
 
 void increment_bridges_n_bridges(bridge *got_bridge)
 {

@@ -116,7 +116,8 @@ stack *DFS_manager(list *isla_list, int mode, map* got_map)
     bool *visited = (bool *) calloc(get_list_size(isla_list) + 1, sizeof(bool));
     stack *new_stack = create_stack();
     list *probi_list = create_list();
-    if(mode == 1) /* Connect all of them, doesn't matter if grouped or path*/
+
+    if(mode == 1 || mode == 2) /* Connect all of them, doesn't matter if grouped or path*/
     {
         good_isla = get_isla_for_dfs(isla_list);
         while(good_isla != NULL ) {
@@ -128,10 +129,6 @@ stack *DFS_manager(list *isla_list, int mode, map* got_map)
             good_isla = get_isla_for_dfs(isla_list); /* Get new isla for analysis*/
         }
     }
-    else if(mode == 2) /* Same as mode 1 but in the end check if path was generated */
-    {
-
-    }
     else if(mode == 3) /* Connect all of them, forcebly a path */
     {
         DFS_engine(get_node_item(get_head(isla_list)), visited, got_map, new_stack, probi_list);
@@ -139,6 +136,11 @@ stack *DFS_manager(list *isla_list, int mode, map* got_map)
     else /* Invalid Mode */
     {
         fprintf(stderr, KYEL "Good Job, you officially failed at map making. " KRED " Invalid mode\n"KNRM);
+    }
+
+    if(mode == 2)
+    {
+        /* Check if all connected*/
     }
 
     free_list(probi_list, already_free);
