@@ -63,7 +63,7 @@ stack *DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
     for(_adj = get_adj_isla(edgy, i) ; i < 4; i++)
     {
         /* Check if exists and check if visited*/
-        if(_adj != NULL )
+        if(_adj != NULL)
         {
             /* If islas are good for connect*/
             if(is_connectable(edgy, _adj, i, got_map) == TRUE && visited[get_name_isla(_adj)] != TRUE)
@@ -95,7 +95,7 @@ stack *DFS_manager(list *isla_list, int mode, map* got_map)
         good_isla = get_isla_for_dfs(isla_list);
         while(good_isla != NULL ) {
             printf("Going into isla %d \n", get_name_isla(good_isla));
-            DFS_engine( good_isla, visited, got_map, new_stack);
+            DFS_engine(good_isla, visited, got_map, new_stack);
             set_isla_dfs_status(good_isla, get_dfs_status_isla(good_isla) + 1); /* Increment DFS status of isla */
 
             memset(visited, FALSE, sizeof(bool) * (get_list_size(isla_list))); /* Reset visited array to FALSE*/
@@ -137,3 +137,55 @@ bool check_for_allzero(list *isla_list)
     }
     return TRUE;
 }
+
+bool is_connected(isla* new_isla, int adj_index)
+{
+    bridge* new_bridge = (bridge*)get_used_bridge(new_isla, adj_index);
+
+    if(new_bridge != NULL)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+/* feels the vector inpath[] if islas are in path */
+void create_path_vector(isla *new_isla, bool *inpath)
+{
+    isla *_adj = NULL;
+    int i = 0;
+
+    for(_adj = get_adj_isla(new_isla, i); i < 4; i++)
+    {
+        /* Check if exists and check if visited*/
+        if(_adj != NULL && inpath[get_name_isla(_adj)] == FALSE && is_connected(new_isla, i) == TRUE)
+        {
+            inpath[get_name_isla(_adj)] = TRUE;
+            create_path_vector(_adj, inpath); /* New recursion level */         
+        }
+    }
+    return;
+}
+
+/* checks for all connected in path */
+bool check_for_allconnected(list *isla_list)
+{
+    isla *new_isla = NULL;
+    node *new_node = NULL;
+    bool *inpath = (bool*)calloc(get_list_size(isla_list)+1, sizeof(bool));
+    int index = 0;
+
+    new_node = get_head(isla_list);
+    new_isla = get_node_item(new_node);
+
+    create_path_vector(new_isla, inpath);
+
+    while(index < get_list_size(isla_list)+1)
+    {
+        if(inpath[index] == FALSE)
+            return FALSE;
+        index++;
+    }
+
+    return TRUE;
+}
+
