@@ -62,9 +62,8 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
     /* i gives NSEW*/
     for(i = 0; i < 4; i++)
     {
-        /* Check if exists and check if visited*/
-        if(_adj != NULL)
         _adj = get_adj_isla(edgy, i);
+
         /* Check if exists, check if visited and check if islas are good for connect*/
         if(_adj != NULL && visited[get_name_isla(_adj)] == FALSE && is_connectable(edgy, _adj, i, got_map) == TRUE )
         {
@@ -167,7 +166,7 @@ void create_path_vector(isla *new_isla, bool *inpath)
         if(_adj != NULL && inpath[get_name_isla(_adj)] == FALSE && is_connected(new_isla, i) == TRUE)
         {
             inpath[get_name_isla(_adj)] = TRUE;
-            create_path_vector(_adj, inpath); /* New recursion level */         
+            create_path_vector(_adj, inpath); /* New recursion level */
         }
     }
     return;
