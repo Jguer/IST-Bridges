@@ -242,3 +242,8 @@ void free_node(node *got_node, void (*free_item)(item))
     return;
 }
 
+
+void already_free(item got_item)
+{
+    return;
+}

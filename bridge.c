@@ -47,8 +47,9 @@ void print_bridge(item got_item)
     return;
 }
 
-void free_bridge(bridge *got_bridge)
+void free_bridge(item got_item)
 {
+    bridge *got_bridge = (bridge *)got_item;
     free(got_bridge);
 
     return;

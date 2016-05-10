@@ -10,7 +10,7 @@ isla *get_points(bridge *got_bridge, int index);
 int get_bridges_n_bridges(bridge* got_bridge);
 void increment_bridges_n_bridges(bridge *got_bridge);
 void print_bridge(item got_item);
-void free_bridge(bridge *got_bridge);
+void free_bridge(item);
 
 void find_adj(map* got_map);
 void find_adj_y(isla* active_row_node, map *got_map);

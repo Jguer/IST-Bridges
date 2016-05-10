@@ -94,13 +94,12 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
         if(_adj != NULL && visited[get_name_isla(_adj)] == FALSE && is_connectable(edgy, _adj, i, got_map) == TRUE )
         {
             printf("Looking %d , Isla1: %d Isla2: %d ; Available1: %d ; Available2: %d\n",i , get_name_isla(edgy), get_name_isla(_adj), get_isla_bridge_s_avb(edgy), get_isla_bridge_s_avb(_adj));
-            printf("Visited Vector: %d %d %d %d\n", visited[0], visited[1], visited[2], visited[3]);
 
-            if(get_used_bridge(edgy,i) != NULL) /* If already bridge structure is linked in isla_struct*/
+            new_bridge = get_used_bridge(edgy, i);
+            if(new_bridge != NULL) /* If already bridge structure is linked in isla_struct*/
             {
-                new_bridge = create_bridge(edgy, _adj, 2);
                 increment_bridges_n_bridges(get_used_bridge(edgy,i));
-                increment_bridges_n_bridges(get_used_bridge(_adj,get_opposite_dir(i)));
+                /* Push to stack new bridge */
                 push_to_stack(bridge_stack, (item)new_bridge);
             }
             else /* Create new link for isla_struct*/
@@ -108,9 +107,9 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
                 new_bridge = create_bridge(edgy, _adj, 1);
                 set_isla_used_bridge(edgy, i, new_bridge);
                 set_isla_used_bridge(_adj, get_opposite_dir(i), new_bridge);
+                /* Push to stack new bridge */
                 push_to_stack(bridge_stack, (item)new_bridge);
             }
-            /* Push to stack new bridge */
             /* Augment new brigde structure count*/
 
             dec_isla_bridge_s_avb(edgy);
