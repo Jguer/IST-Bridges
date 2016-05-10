@@ -42,7 +42,7 @@ isla *get_isla_for_dfs(list *isla_list)
     for(aux_node = get_head(isla_list); aux_node != NULL; aux_node = get_next_node(aux_node))
     {
         got_isla = (isla *)get_node_item(aux_node);
-        if((get_dfs_status_isla(got_isla) < 2) && (get_isla_bridge_s_avb(got_isla) != 0))
+        if((get_dfs_status_isla(got_isla) < 1) && (get_isla_bridge_s_avb(got_isla) != 0))
         {
             return got_isla;
         }
@@ -51,7 +51,7 @@ isla *get_isla_for_dfs(list *isla_list)
     return NULL;
 }
 
-stack *DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
+void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
 {
     isla *_adj = NULL;
     unsigned int i = 0;
@@ -60,28 +60,38 @@ stack *DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
 
     /* Travel all nodes, list implementation may be underkill*/
     /* i gives NSEW*/
-    for(_adj = get_adj_isla(edgy, i) ; i < 4; i++)
+    for(i = 0; i < 4; i++)
     {
+<<<<<<< HEAD
         /* Check if exists and check if visited*/
         if(_adj != NULL)
+=======
+        _adj = get_adj_isla(edgy, i);
+        /* Check if exists, check if visited and check if islas are good for connect*/
+        if(_adj != NULL && visited[get_name_isla(_adj)] == FALSE && is_connectable(edgy, _adj, i, got_map) == TRUE )
+>>>>>>> ce50352914eedea5914a1bd6948746accc7edf29
         {
-            /* If islas are good for connect*/
-            if(is_connectable(edgy, _adj, i, got_map) == TRUE && visited[get_name_isla(_adj)] != TRUE)
-            {
-                /* Push to stack new bridge */
-                push_to_stack( bridge_stack, (item) create_bridge(edgy , _adj));
-
-                /* Augment new brigde structure count*/
-                increment_bridges_n_bridges(get_node_item(get_stack_head(bridge_stack)));
-                dec_isla_bridge_s_avb(edgy);
-                dec_isla_bridge_s_avb(_adj);
-
-                DFS_engine(_adj, visited, got_map, bridge_stack); /* New recursion level */
-            }
+            printf("Looking %d , Isla1: %d Isla2: %d ; Available1: %d ; Available2: %d\n",i , get_name_isla(edgy), get_name_isla(_adj), get_isla_bridge_s_avb(edgy), get_isla_bridge_s_avb(_adj));
+            printf("Visited Vector: %d %d %d %d\n", visited[0], visited[1], visited[2], visited[3]);
+            /* Push to stack new bridge */
+            push_to_stack( bridge_stack, (item) create_bridge(edgy , _adj));
+            /* Augment new brigde structure count*/
+            increment_bridges_n_bridges(get_node_item(get_stack_head(bridge_stack)));
+            dec_isla_bridge_s_avb(edgy);
+            dec_isla_bridge_s_avb(_adj);
         }
     }
 
-    return bridge_stack;
+    for(i = 0; i < 4; i++)
+    {
+        _adj = get_adj_isla(edgy, i);
+        if(_adj != NULL && visited[get_name_isla(_adj)] == FALSE)
+        {
+            DFS_engine(_adj, visited, got_map, bridge_stack); /* New recursion level */
+        }
+    }
+
+    return;
 }
 
 stack *DFS_manager(list *isla_list, int mode, map* got_map)
