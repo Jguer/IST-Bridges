@@ -13,11 +13,7 @@ bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, map *got_map)
             /* Just a little test for now -----------------*/
             if(get_bridges_n_bridges(new_bridge) > 0)
             {
-                if(get_points(new_bridge, 0) != isla_a && get_points(new_bridge, 1) != isla_a)
-                {
-                    printf("\nSOMETHING IS VERY WRONG. CHECK is_connectable\n");
-                }
-                if(get_points(new_bridge, 0) != isla_b && get_points(new_bridge, 1) != isla_b)
+                if(get_points(new_bridge, 0) != isla_a || get_points(new_bridge, 0) != isla_b)
                 {
                     printf("\nSOMETHING IS VERY WRONG. CHECK is_connectable\n");
                 }
@@ -205,7 +201,7 @@ bool check_for_allconnected(list *isla_list)
 
     create_path_vector(new_isla, inpath);
 
-    while(index < get_list_size(isla_list)+1)
+    while(index < (int) get_list_size(isla_list)+1)
     {
         if(inpath[index] == FALSE)
             return FALSE;
