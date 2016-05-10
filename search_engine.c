@@ -88,7 +88,7 @@ bool is_bridges_available(list *isla_list, list *probi_list)
         return TRUE;
     }
     else
-        return FALSE;    
+        return FALSE;
 }
 
 bool is_prohibited(isla *victim_isla, int adj_index, list* probi_list)
@@ -189,7 +189,7 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack, li
         _adj = get_isla_adj(edgy, i);
 
         /* Check if exists, check if visited and check if islas are good for connect*/
-        if(_adj != NULL && visited[get_isla_name(_adj)] == FALSE && is_connectable(edgy, _adj, i, got_map) == TRUE )
+        if(_adj != NULL && visited[get_isla_name(_adj)] == FALSE && is_connectable(edgy, _adj, i, got_map, probi_list) == TRUE )
         {
             printf("Looking %d , Isla1: %d Isla2: %d ; Available1: %d ; Available2: %d\n",i , get_isla_name(edgy), get_isla_name(_adj), get_isla_bridge_s_avb(edgy), get_isla_bridge_s_avb(_adj));
 
