@@ -2,7 +2,7 @@
 *     File Name           :     Projects/bridges-aed/defs.h
 *     Created By          :     jguer
 *     Creation Date       :     [2016-03-31 15:12]
-*     Last Modified       :     [2016-05-10 17:37]
+*     Last Modified       :     [2016-05-10 20:19]
 *     Description         :
 **********************************************************************************/
 #ifndef defsHeader
@@ -54,4 +54,6 @@ int get_y(pos *gotpos);
 void free_pos(item pos_to_free);
 void print_pos(item gotpos);
 
+int get_opposite_dir(int dir);
 #endif
+

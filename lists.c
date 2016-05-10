@@ -136,12 +136,14 @@ node *pop_from_stack(stack *got_stack)
 
     /* Get stack head*/
     got_node = got_stack->head;
-
-    /* Change stack head to next node*/
-    got_stack->head = got_node->next;
+    if(got_node != NULL)
+    {
+        /* Change stack head to next node*/
+        got_stack->head = got_node->next;
+        got_stack->size--;
+    }
 
     /* Reduce stack size */
-    got_stack->size--;
     return got_node;
 }
 

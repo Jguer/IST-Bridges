@@ -2,7 +2,7 @@
 *     File Name           :     Projects/bridges-aed/defs.c
 *     Created By          :     jguer
 *     Creation Date       :     [2016-03-31 15:21]
-*     Last Modified       :     [2016-04-27 11:18]
+*     Last Modified       :     [2016-05-10 20:19]
 *     Description         :      Useful definitions for project
 **********************************************************************************/
 
@@ -96,3 +96,28 @@ void print_pos(item gotpos)
     printf("Position: %d %d\n", get_x((pos *) gotpos), get_y((pos *) gotpos));
     return;
 }
+
+int get_opposite_dir(int dir)
+{
+    int anti_dir = 4;
+    switch(dir) {
+    case 0:
+        anti_dir = 1;
+        break;
+    case 1:
+        anti_dir = 0;
+        break;
+    case 2:
+        anti_dir = 3;
+        break;
+    case 3:
+        anti_dir = 2;
+        break;
+    default :
+        printf("Invalid use case");
+        return 0;
+    }
+    return anti_dir;
+}
+
+

@@ -97,7 +97,7 @@ int get_isla_bridge_s_avb(isla *got_isla)
 
 void dec_isla_bridge_s_avb(isla *got_isla)
 {
-    if( get_isla_bridge_s_avb(got_isla) == 0 )
+    if(get_isla_bridge_s_avb(got_isla) == 0)
     {
         printf("You are trying to decrease 0 \n");
         return;
@@ -113,14 +113,4 @@ void set_adj_isla(isla *got_isla, isla *adj_isla, int index)
 }
 
 
-void free_isla(item got_item)
-{
-    isla *got_isla = (isla *)got_item;
 
-    free_pos(got_isla->position);
-
-    /* Bring democracy to the pointer */
-    free(got_isla);
-
-    return;
-}

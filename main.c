@@ -59,7 +59,7 @@ int main(int argc, char **argv)
         print_output_per_map(active_map, output_file, mode_result, isla_list);
 
         /*free stuff, start over*/
-        /* free_stack(got_stack, already_free); */
+        free_stack(got_stack, already_free); 
         free_list(isla_list, free_isla);
         free_map(active_map);
     }

@@ -307,3 +307,36 @@ int get_numberof_bridges(list *isla_list)
 
     return n/2;
 }
+
+void free_isla(item got_item)
+{
+    isla *got_isla = (isla *)got_item;
+    isla *adj_isla = NULL;
+    bridge *active_bridge;
+    int i = 0;
+
+    /* O say can you see
+     * by the dawn's early light*/
+    free_pos(get_pos_isla(got_isla));
+
+    for(i = 0; i < 4; i++)
+    {
+        active_bridge = get_used_bridge(got_isla, i);
+        if(active_bridge != NULL)
+        {
+            adj_isla = get_points(active_bridge, 0);
+            if(get_name_isla(adj_isla) == get_name_isla(got_isla))
+            {
+                adj_isla = get_points(active_bridge, 1);
+            }
+
+            set_isla_used_bridge(adj_isla, get_opposite_dir(i), NULL );
+            free_bridge(active_bridge);
+        }
+    }
+
+    /* Bring democracy to the pointer */
+    free(got_isla);
+
+    return;
+}
