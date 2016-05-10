@@ -18,5 +18,6 @@ int get_bridges_avb(isla *got_isla);
 item get_used_bridge(isla* got_isla, int index);
 void print_isla(item got_item);
 void free_isla(item got_item);
+void set_isla_used_bridge(isla *got_isla, int index, item connected_bridge);
 
 #endif

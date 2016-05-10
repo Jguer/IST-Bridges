@@ -5,7 +5,7 @@
 
 typedef struct _bridge bridge;
 
-bridge *create_bridge(isla *isla_eins, isla *isla_zwei);
+bridge *create_bridge(isla *isla_eins, isla *isla_zwei, int used);
 isla *get_points(bridge *got_bridge, int index);
 int get_bridges_n_bridges(bridge* got_bridge);
 void increment_bridges_n_bridges(bridge *got_bridge);

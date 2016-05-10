@@ -5,7 +5,7 @@ struct _bridge {
     int n_bridges;
 };
 
-bridge *create_bridge(isla *isla_eins, isla *isla_zwei)
+bridge *create_bridge(isla *isla_eins, isla *isla_zwei, int used)
 {
     bridge *new_bridge;
 
@@ -13,7 +13,7 @@ bridge *create_bridge(isla *isla_eins, isla *isla_zwei)
 
     new_bridge->point[0] = isla_eins;
     new_bridge->point[1] = isla_zwei;
-    new_bridge->n_bridges = 0;
+    new_bridge->n_bridges = used;
 
     return new_bridge;
 }
