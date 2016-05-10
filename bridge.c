@@ -289,6 +289,7 @@ bridge* search_for_bridge_inCol(map* got_map, int isla_y, int static_x)
 }
 
 
+
 int get_numberof_bridges(list *isla_list)
 {
     isla *new_isla;
@@ -301,6 +302,25 @@ int get_numberof_bridges(list *isla_list)
     {
         new_isla = get_node_item(new_node);
         n += get_isla_bridges_avb(new_isla);
+
+        new_node = get_next_node(new_node);
+    }
+
+    return n/2;
+}
+
+int get_numberof_bridges_avb(list *isla_list)
+{
+    isla *new_isla;
+    node *new_node;
+    int n = 0;
+
+    new_node = get_head(isla_list);
+
+    while(new_node != NULL)
+    {
+        new_isla = get_node_item(new_node);
+        n += get_isla_bridge_s_avb(new_isla);
 
         new_node = get_next_node(new_node);
     }
