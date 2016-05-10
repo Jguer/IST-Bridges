@@ -295,7 +295,6 @@ int get_numberof_bridges(list *isla_list)
     int n = 0;
 
     new_node = get_head(isla_list);
-    new_isla = get_node_item(new_node);
 
     while(new_node != NULL)
     {
