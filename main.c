@@ -17,6 +17,7 @@ int main(int argc, char **argv)
     map *active_map;
     stack *got_stack;
     int mode_result = 0;
+    bool fuck_up = FALSE;
 
     if(argc != 2 || strcmp(get_filename_ext(argv[1]), "map"))
         file_error("Missing arguments or wrong extension specified on file input");
@@ -50,16 +51,24 @@ int main(int argc, char **argv)
 
         find_adj(active_map);
         print_adj(isla_list);
+        fuck_up = initial_fuck_up(isla_list);
 
-        /*Play the game*/
-        got_stack = DFS_manager(isla_list, 1, active_map);
-        print_stack(got_stack, print_bridge);
+        /* verify if initial fuck up, if yes: rage quit */
+        if(fuck_up != TRUE)
+        {
+            /*Play the game*/
+            got_stack = DFS_manager(isla_list, 1, active_map);
+            print_stack(got_stack, print_bridge);
+        }
+        else
+            mode_result = NO_SOL;
 
         /*Write in output file*/
         print_output_per_map(active_map, output_file, mode_result, isla_list);
 
         /*free stuff, start over*/
-        free_stack(got_stack, already_free); 
+        if(fuck_up != TRUE)
+            free_stack(got_stack, already_free); 
         free_list(isla_list, free_isla);
         free_map(active_map);
     }
