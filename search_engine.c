@@ -347,7 +347,7 @@ stack *DFS_manager(list *isla_list, int mode, map* got_map)
     return new_stack;
 }
 
-isla* reset_dfed_values(list *isla_list)
+void reset_dfed_values(list *isla_list)
 {
     isla *new_isla;
     node *new_node;
@@ -362,5 +362,5 @@ isla* reset_dfed_values(list *isla_list)
 
         new_node = get_next_node(new_node);
     }
-    return TRUE;
+    return;
 }
