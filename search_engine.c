@@ -294,6 +294,7 @@ void backtrack_engine(bool zeroed, bool stack_empty, map *got_map, stack *got_st
     isla   *try_isla;
     list   *probi_list;
 
+    printf("Trying to backtack \n");
     /* If we already determined it is zeroed */
     if(zeroed == TRUE)
     {
@@ -306,7 +307,7 @@ void backtrack_engine(bool zeroed, bool stack_empty, map *got_map, stack *got_st
     }
 
     /* Free prohibition list from head bridge */
-    free_connected_nodes(get_head(get_bridge_probi_list(get_node_item(get_stack_head(got_stack)))), free_bridge);
+    /* free_connected_nodes(get_head(get_bridge_probi_list(get_node_item(get_stack_head(got_stack)))), free_bridge); */
     /* Push head to prohibited list of head->next */
     push_item_to_list(get_bridge_probi_list(last_point), get_node_item(get_stack_head(got_stack)));
 
