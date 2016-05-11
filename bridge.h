@@ -37,4 +37,6 @@ bridge* search_for_bridge_inCol(map* got_map, int isla_y, int static_x);
 int get_numberof_bridges_avb(list *isla_list);
 int get_numberof_bridges(list *isla_list);
 
+bool initial_fuck_up(list *isla_list);
+
 #endif
