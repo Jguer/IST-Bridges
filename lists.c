@@ -101,6 +101,7 @@ void free_list(list *got_list, void (*free_item)(item))
     return;
 }
 
+
 /* STACK */
 
 stack *create_stack()
@@ -244,6 +245,19 @@ void free_node(node *got_node, void (*free_item)(item))
     return;
 }
 
+void free_connected_nodes(node *got_node, void (*free_item)(item))
+{
+    node *aux_node = NULL;
+
+    /* Free every node connected*/
+    while(got_node != NULL)
+    {
+        aux_node = get_next_node(got_node);
+        free_node(got_node, free_item);
+        got_node = aux_node;
+    }
+    return;
+}
 
 void already_free(item got_item)
 {

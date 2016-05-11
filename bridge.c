@@ -63,7 +63,7 @@ void print_bridge(item got_item)
 void free_bridge(item got_item)
 {
     bridge *got_bridge = (bridge *)got_item;
-    free_list(got_bridge->probi_list, free_bridge);
+    free(got_bridge->probi_list);
     free(got_bridge);
 
     return;

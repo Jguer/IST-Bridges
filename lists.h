@@ -29,6 +29,7 @@ node *create_node(item new_item, node *next_node);
 node *get_next_node(node *got_node);
 item get_node_item(node *got_node);
 void free_node(node *got_node, void (*free_item)(item));
+void free_connected_nodes(node *got_node, void (*free_item)(item));
 
 
 void already_free(item got_item);
