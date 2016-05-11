@@ -1,13 +1,13 @@
 #include "isla.h"
 
 struct _isla {
+    isla *adj[4];
+    item used[4];
+    pos *position;
     unsigned int name;
     unsigned int bridges_avb;
     unsigned int bridges_still_avb;
     unsigned int dfsed; /* Visited flag for big group operations */
-    item used[4];
-    pos *position;
-    isla *adj[4];
 };
 
 isla *create_isla(int name, int y, int x, int bridges_avb)
@@ -29,7 +29,7 @@ isla *create_isla(int name, int y, int x, int bridges_avb)
 
     for(i=0; i<4; i++)
     {
-        new_isla->adj[i] = NULL;
+        new_isla->adj[i]  = NULL;
         new_isla->used[i] = NULL;
     }
 
@@ -125,8 +125,8 @@ void set_isla_adj(isla *got_isla, isla *adj_isla, int index)
 
 int get_adj_number(isla* new_isla)
 {
-    int n_adj = 0;
-    int i = 0;
+    int n_adj  = 0;
+    int i      = 0;
     isla* _adj = NULL;
 
     for(i = 0; i < 4; i++)

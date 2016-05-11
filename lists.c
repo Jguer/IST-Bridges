@@ -86,6 +86,11 @@ void free_list(list *got_list, void (*free_item)(item))
     node *got_node = NULL;
     node *aux_node = NULL;
 
+    if( got_list == NULL )
+    {
+        return;
+    }
+
     /* Free every node of stack*/
     for(got_node = get_head(got_list);
         got_node != NULL;

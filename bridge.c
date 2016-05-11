@@ -2,8 +2,8 @@
 
 struct _bridge {
     isla *point[2];
-    int n_bridges;
-    bool bt_target; /* backtrack target */
+    list *probi_list;
+    int  n_bridges;
 };
 
 bridge *create_bridge(isla *isla_eins, isla *isla_zwei, int used)
@@ -14,10 +14,10 @@ bridge *create_bridge(isla *isla_eins, isla *isla_zwei, int used)
     if( new_bridge == NULL )
         memory_error("Unable to create structure bridge");
 
-    new_bridge->point[0]  = isla_eins;
-    new_bridge->point[1]  = isla_zwei;
-    new_bridge->n_bridges = used;
-    new_bridge->bt_target = FALSE;
+    new_bridge->point[0]   = isla_eins;
+    new_bridge->point[1]   = isla_zwei;
+    new_bridge->n_bridges  = used;
+    new_bridge->probi_list = create_list();
 
     return new_bridge;
 }
@@ -27,22 +27,14 @@ isla *get_points(bridge *got_bridge, int index)
     return got_bridge->point[index];
 }
 
+list *get_bridge_probi_list(bridge *got_bridge)
+{
+    return got_bridge->probi_list;
+}
 int get_bridges_n_bridges(bridge *got_bridge)
 {
     return got_bridge->n_bridges;
 }
-
-void set_bridge_bt_target(bridge *got_bridge, int value)
-{
-    got_bridge->bt_target = value;
-    return;
-}
-
-bool get_bridge_bt_target(bridge *got_bridge)
-{
-    return got_bridge->bt_target;
-}
-
 
 void increment_bridges_n_bridges(bridge *got_bridge)
 {
@@ -71,6 +63,7 @@ void print_bridge(item got_item)
 void free_bridge(item got_item)
 {
     bridge *got_bridge = (bridge *)got_item;
+    free_list(got_bridge->probi_list, free_bridge);
     free(got_bridge);
 
     return;
@@ -390,6 +383,7 @@ bridge *connect_islas(isla *isla_a, isla *isla_b, int index)
 
     if(got_bridge != NULL) /* If already bridge structure is linked in isla_struct*/
     {
+        /* Augment new brigde structure count*/
         increment_bridges_n_bridges(get_isla_used_bridge(isla_a, index));
     }
     else /* Create new link for isla_struct*/
@@ -398,6 +392,10 @@ bridge *connect_islas(isla *isla_a, isla *isla_b, int index)
         set_isla_used_bridge(isla_a, index, got_bridge);
         set_isla_used_bridge(isla_b, get_opposite_dir(index), got_bridge);
     }
+
+    /* Decrease available connections in islas */
+    dec_isla_bridge_s_avb(isla_a);
+    dec_isla_bridge_s_avb(isla_b);
 
     return got_bridge;
 }
@@ -419,7 +417,7 @@ stack *gen_essential_bridges(list *isla_list)
             for(i=0; i<4; i++)
             {
                 _adj = get_isla_adj(new_isla, i);
-                if(_adj != NULL)            
+                if(_adj != NULL)
                     connect_islas();
             }
         }
@@ -429,7 +427,7 @@ stack *gen_essential_bridges(list *isla_list)
 
         new_node = get_next_node(new_node);
     }
- 
+
     return initial_stack;
 }
 */
@@ -446,7 +444,7 @@ bool initial_fuck_up(list *isla_list)
     {
         new_isla = get_node_item(new_node);
 
-        /* 
+        /*
          * check if the sum of bridges from adj islas are less
          * than the number of bridges of the isla being tested
          */

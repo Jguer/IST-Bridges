@@ -143,8 +143,11 @@ bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, map *got_map, lis
         if(crossed_fire(isla_a, isla_b, got_map))
             return FALSE;
 
-        if(is_prohibited(isla_a, adj_index, probi_list))
-            return FALSE;
+        if( probi_list != NULL )
+        {
+            if(is_prohibited(isla_a, adj_index, probi_list))
+                return FALSE;
+        }
 
         return TRUE;
 
@@ -152,7 +155,6 @@ bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, map *got_map, lis
 
     return FALSE;
 }
-
 
 isla *get_isla_for_dfs(list *isla_list)
 {
@@ -171,8 +173,6 @@ isla *get_isla_for_dfs(list *isla_list)
     return NULL;
 }
 
-
-
 void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack, list *probi_list)
 {
     isla *_adj = NULL;
@@ -186,31 +186,12 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack, li
     for(i = 0; i < 4; i++)
     {
         _adj = get_isla_adj(edgy, i);
-
         /* Check if exists, check if visited and check if islas are good for connect*/
         if(_adj != NULL && visited[get_isla_name(_adj)] == FALSE && is_connectable(edgy, _adj, i, got_map, probi_list) == TRUE )
         {
             printf("Looking %d , Isla1: %d Isla2: %d ; Available1: %d ; Available2: %d\n",i , get_isla_name(edgy), get_isla_name(_adj), get_isla_bridge_s_avb(edgy), get_isla_bridge_s_avb(_adj));
-
-            new_bridge = get_isla_used_bridge(edgy, i);
-            if(new_bridge != NULL) /* If already bridge structure is linked in isla_struct*/
-            {
-                increment_bridges_n_bridges(get_isla_used_bridge(edgy,i));
-                /* Push to stack new bridge */
-                push_to_stack(bridge_stack, (item)new_bridge);
-            }
-            else /* Create new link for isla_struct*/
-            {
-                new_bridge = create_bridge(edgy, _adj, 1);
-                set_isla_used_bridge(edgy, i, new_bridge);
-                set_isla_used_bridge(_adj, get_opposite_dir(i), new_bridge);
-                /* Push to stack new bridge */
-                push_to_stack(bridge_stack, (item)new_bridge);
-            }
-            /* Augment new brigde structure count*/
-
-            dec_isla_bridge_s_avb(edgy);
-            dec_isla_bridge_s_avb(_adj);
+            new_bridge = connect_islas(edgy, _adj, i);
+            push_to_stack(bridge_stack, (item)new_bridge);
         }
     }
 
@@ -250,49 +231,13 @@ void remove_bridge(bridge *got_bridge)
 
     if( get_bridges_n_bridges(got_bridge) == 2)
     {
-        printf("Decreasing Available\n");
         dec_bridge_n_bridges(got_bridge);
-    }
-    else
-    {
-        printf("Freeing Available\n");
-        free_bridge(got_bridge);
     }
 
     return;
 }
 
-void backtrack_engine(bool zeroed, bool stack_empty, stack *got_stack, bridge *last_point, list *probi_list, list *isla_list)
-{
-    node   *aux_node;
-    bridge *aux_bridge;
-
-    /* If we already determined its zero */
-    if(zeroed == TRUE)
-    {
-        return;
-    }
-
-    /* Bummer, that did not work. Get over depression and get on re(cursing) */
-    /* Pop stack until last point */
-    while( (bridge *)get_node_item(get_stack_head(got_stack)) != last_point)
-    {
-        aux_node = pop_from_stack(got_stack); /* Pop node from stack */
-        aux_bridge = (bridge *) get_node_item(aux_node);
-
-        remove_bridge(aux_bridge);
-        free_node(aux_node, already_free);
-    }
-
-    /* That did not check out, so let us check for all zero on map*/
-    zeroed = check_for_allzero(isla_list);
-    if(zeroed == TRUE)
-    {
-        return;
-    }
-}
-
-void DFS_ignition(stack *new_stack, isla *first_isla, map *got_map, list *probi_list, list *isla_list, int mode)
+void DFS_ignition(stack *new_stack, isla *first_isla, map *got_map, list *isla_list, list *probi_list, int mode)
 {
     isla *aux_isla = first_isla;
     bool *visited  = (bool *) calloc(get_list_size(isla_list) + 1, sizeof(bool));
@@ -323,6 +268,44 @@ void DFS_ignition(stack *new_stack, isla *first_isla, map *got_map, list *probi_
     return;
 }
 
+void backtrack_engine(bool zeroed, bool stack_empty, map *got_map, stack *got_stack, bridge *last_point, list *isla_list, int mode)
+{
+    node   *aux_node;
+    bridge *aux_bridge;
+    list   *probi_list;
+
+    /* If we already determined its zero */
+    if(zeroed == TRUE)
+    {
+        return;
+    }
+
+    /* Free prohibition list from head bridge */
+    free_list(get_bridge_probi_list(get_node_item(get_stack_head(got_stack))), free_bridge);
+    /* Push head to prohibited list of head->next */
+    push_item_to_list(get_bridge_probi_list(last_point), get_node_item(get_stack_head(got_stack)));
+
+    /* Bummer, that did not work. Get over depression and get on re(cursing) */
+    /* Pop stack until last point */
+    while( (bridge *)get_node_item(get_stack_head(got_stack)) != last_point )
+    {
+        aux_node = pop_from_stack(got_stack); /* Pop node from stack */
+        aux_bridge = (bridge *) get_node_item(aux_node);
+
+        remove_bridge(aux_bridge);
+        free_node(aux_node, already_free);
+    }
+
+    probi_list = get_bridge_probi_list(get_node_item(get_stack_head(got_stack)));
+    DFS_ignition(got_stack, get_points(last_point, 0), got_map, isla_list, probi_list, mode);
+
+    /* That did not check out, so let us check for all zero on map*/
+    zeroed = check_for_allzero(isla_list);
+    if(zeroed == TRUE)
+    {
+        return;
+    }
+}
 
 stack *DFS_manager(list *isla_list, int mode, map* got_map)
 {
@@ -330,19 +313,17 @@ stack *DFS_manager(list *isla_list, int mode, map* got_map)
     bool zeroed      = FALSE;
     bool stack_empty = FALSE;
     stack *new_stack = create_stack();
-    list *probi_list = create_list();
 
     good_isla = get_isla_for_dfs(isla_list);
-    DFS_ignition(new_stack, good_isla, got_map, probi_list, isla_list, mode);
+    DFS_ignition(new_stack, good_isla, got_map, isla_list, NULL, mode);
 
     if(mode == 2)
     {
         /* Check if all connected*/
     }
 
-    /* zeroed = check_for_allzero(isla_list);
-    backtrack_engine(zeroed, stack_empty, new_stack, get_node_item(get_next_node(get_stack_head(new_stack))), probi_list, isla_list); */
+    zeroed = check_for_allzero(isla_list);
+    backtrack_engine(zeroed, stack_empty, got_map, new_stack, get_node_item(get_next_node(get_stack_head(new_stack))), isla_list, mode);
 
-    free_list(probi_list, already_free);
     return new_stack;
 }
