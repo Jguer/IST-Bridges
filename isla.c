@@ -112,5 +112,19 @@ void set_isla_adj(isla *got_isla, isla *adj_isla, int index)
     return;
 }
 
+int get_adj_number(isla* new_isla)
+{
+    int n_adj = 0;
+    int i = 0;
+    isla* _adj = NULL;
 
+    for(i = 0; i < 4; i++)
+    {
+        _adj = get_isla_adj(new_isla, i);
+
+        if(_adj != NULL)
+            n_adj++;
+    }
+    return n_adj;
+}
 

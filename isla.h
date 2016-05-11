@@ -19,4 +19,5 @@ void set_isla_dfs_status(isla *got_isla, int value);
 int get_isla_bridge_s_avb(isla *got_isla);
 void dec_isla_bridge_s_avb(isla *got_isla);
 void set_isla_adj(isla *got_isla, isla *adj_isla, int index);
+int get_adj_number(isla* new_isla);
 #endif
