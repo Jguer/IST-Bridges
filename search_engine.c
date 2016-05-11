@@ -237,6 +237,24 @@ void remove_bridge(bridge *got_bridge)
     return;
 }
 
+void reset_dfsed_values(list *isla_list)
+{
+    isla *new_isla;
+    node *new_node;
+
+    new_node = get_head(isla_list);
+
+    while(new_node != NULL)
+    {
+        new_isla = get_node_item(new_node);
+
+        set_isla_dfs_status(new_isla, 0);
+
+        new_node = get_next_node(new_node);
+    }
+    return;
+}
+
 void DFS_ignition(stack *new_stack, isla *first_isla, map *got_map, list *isla_list, list *probi_list, int mode)
 {
     isla *aux_isla = first_isla;
@@ -264,6 +282,7 @@ void DFS_ignition(stack *new_stack, isla *first_isla, map *got_map, list *isla_l
         fprintf(stderr, KYEL "Good Job, you officially failed at map making. " KRED " Invalid mode\n"KNRM);
     }
 
+    reset_dfsed_values(isla_list);
     free(visited);
     return;
 }
@@ -328,20 +347,4 @@ stack *DFS_manager(list *isla_list, int mode, map* got_map)
     return new_stack;
 }
 
-void reset_dfed_values(list *isla_list)
-{
-    isla *new_isla;
-    node *new_node;
 
-    new_node = get_head(isla_list);
-
-    while(new_node != NULL)
-    {
-        new_isla = get_node_item(new_node);
-
-        set_isla_dfs_status(new_isla, 0);
-
-        new_node = get_next_node(new_node);
-    }
-    return;
-}
