@@ -291,10 +291,16 @@ void backtrack_engine(bool zeroed, bool stack_empty, map *got_map, stack *got_st
 {
     node   *aux_node;
     bridge *aux_bridge;
+    isla   *try_isla;
     list   *probi_list;
 
-    /* If we already determined its zero */
+    /* If we already determined it is zeroed */
     if(zeroed == TRUE)
+    {
+        return;
+    }
+
+    if(stack_empty == TRUE)
     {
         return;
     }
@@ -316,7 +322,9 @@ void backtrack_engine(bool zeroed, bool stack_empty, map *got_map, stack *got_st
     }
 
     probi_list = get_bridge_probi_list(get_node_item(get_stack_head(got_stack)));
-    DFS_ignition(got_stack, get_points(last_point, 0), got_map, isla_list, probi_list, mode);
+
+    try_isla = get_isla_for_dfs(isla_list);
+    DFS_ignition(got_stack, try_isla, got_map, isla_list, probi_list, mode);
 
     /* That did not check out, so let us check for all zero on map*/
     zeroed = check_for_allzero(isla_list);
@@ -324,6 +332,14 @@ void backtrack_engine(bool zeroed, bool stack_empty, map *got_map, stack *got_st
     {
         return;
     }
+
+    if(get_next_node(get_stack_head(got_stack)) == NULL)
+    {
+        stack_empty = TRUE;
+        return;
+    }
+
+    backtrack_engine(zeroed, stack_empty, got_map, got_stack, get_node_item(get_next_node(get_stack_head(got_stack))), isla_list, mode);
 
 }
 

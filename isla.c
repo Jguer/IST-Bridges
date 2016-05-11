@@ -99,7 +99,7 @@ void dec_isla_bridge_s_avb(isla *got_isla)
 {
     if(get_isla_bridge_s_avb(got_isla) == 0)
     {
-        printf("You are trying to decrease 0 \n");
+        printf("You are trying to decrease 0.\n");
         return;
     }
     got_isla->bridges_still_avb --;
@@ -112,7 +112,7 @@ void inc_isla_bridge_s_avb(isla *got_isla)
 
     if( get_isla_bridges_avb(got_isla) < get_isla_bridge_s_avb(got_isla) )
     {
-        printf("You are trying to increase beyond bridges_avb");
+        printf("You are trying to increase beyond bridges_avb.\n");
     }
     return;
 }

@@ -38,12 +38,22 @@ int get_bridges_n_bridges(bridge *got_bridge)
 
 void increment_bridges_n_bridges(bridge *got_bridge)
 {
+    if(get_bridges_n_bridges(got_bridge) == 2)
+    {
+        printf("You are trying to increase n_bridges beyond 2\n");
+        return;
+    }
     got_bridge->n_bridges ++;
     return;
 }
 
 void dec_bridge_n_bridges(bridge *got_bridge)
 {
+    if(get_bridges_n_bridges(got_bridge) == 0)
+    {
+        printf("You are trying to decrease n_bridges beyond 0\n");
+        return;
+    }
     got_bridge->n_bridges --;
     return;
 }
