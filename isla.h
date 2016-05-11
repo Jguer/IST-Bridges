@@ -17,6 +17,7 @@ pos  *get_isla_pos(isla *got_isla);
 isla *get_isla_adj(isla *got_isla, int index);
 int  get_isla_dfs_status(isla *got_isla);
 int  get_isla_bridge_s_avb(isla *got_isla);
+int get_adj_number(isla* new_isla);
 
 
 /* - Set - */
@@ -25,5 +26,4 @@ void inc_isla_bridge_s_avb(isla *got_isla);
 void set_isla_dfs_status(isla *got_isla, int value);
 void dec_isla_bridge_s_avb(isla *got_isla);
 void set_isla_adj(isla *got_isla, isla *adj_isla, int index);
-
 #endif

@@ -381,3 +381,94 @@ void free_isla(item got_item)
 
     return;
 }
+
+bridge *connect_islas(isla *isla_a, isla *isla_b, int index)
+{
+    bridge *got_bridge =  NULL;
+
+    got_bridge = get_isla_used_bridge(isla_a, index);
+
+    if(got_bridge != NULL) /* If already bridge structure is linked in isla_struct*/
+    {
+        increment_bridges_n_bridges(get_isla_used_bridge(isla_a, index));
+    }
+    else /* Create new link for isla_struct*/
+    {
+        got_bridge = create_bridge(isla_a, isla_b, 1);
+        set_isla_used_bridge(isla_a, index, got_bridge);
+        set_isla_used_bridge(isla_b, get_opposite_dir(index), got_bridge);
+    }
+
+    return got_bridge;
+}
+/*
+stack *gen_essential_bridges(list *isla_list)
+{
+    stack *initial_stack = NULL;
+    int n_bridges, n_adj;
+    int i = 0;
+
+    while(new_node != NULL)
+    {
+        new_isla = get_node_item(new_node);
+        n_adj = get_adj_number(new_isla);
+        n_bridges = get_isla_bridges_avb(new_isla);
+
+        if(n_adj < n_bridges)
+        {
+            for(i=0; i<4; i++)
+            {
+                _adj = get_isla_adj(new_isla, i);
+                if(_adj != NULL)            
+                    connect_islas();
+            }
+        }
+        else if(n_adj == n_bridges)
+        {
+        }
+
+        new_node = get_next_node(new_node);
+    }
+ 
+    return initial_stack;
+}
+*/
+/* A function that detects if the map is already fucked up or not */
+bool initial_fuck_up(list *isla_list)
+{
+    isla *new_isla, *_adj;
+    node *new_node;
+    int n_total_bridges = 0, i = 0;
+
+    new_node = get_head(isla_list);
+
+    while(new_node != NULL)
+    {
+        new_isla = get_node_item(new_node);
+
+        /* 
+         * check if the sum of bridges from adj islas are less
+         * than the number of bridges of the isla being tested
+         */
+        for(i = 0; i < 4; i++)
+        {
+            _adj = get_isla_adj(new_isla, i);
+
+            if(_adj != NULL)
+            {
+                if(get_isla_bridges_avb(_adj) >= 2)
+                    n_total_bridges += 2;
+                else if(get_isla_bridges_avb(_adj) == 1)
+                    n_total_bridges += 1;
+            }
+        }
+
+        if(n_total_bridges < get_isla_bridges_avb(new_isla))
+            return FALSE;
+
+        n_total_bridges = 0; i = 0;
+
+        new_node = get_next_node(new_node);
+    }
+    return TRUE;
+}
