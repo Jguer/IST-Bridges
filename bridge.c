@@ -8,12 +8,14 @@ struct _bridge {
 
 bridge *create_bridge(isla *isla_eins, isla *isla_zwei, int used)
 {
-    bridge *new_bridge;
+    bridge *new_bridge = NULL;
 
     new_bridge = (bridge *)malloc(sizeof(bridge));
+    if( new_bridge == NULL )
+        memory_error("Unable to create structure bridge");
 
-    new_bridge->point[0] = isla_eins;
-    new_bridge->point[1] = isla_zwei;
+    new_bridge->point[0]  = isla_eins;
+    new_bridge->point[1]  = isla_zwei;
     new_bridge->n_bridges = used;
     new_bridge->bt_target = FALSE;
 
@@ -45,7 +47,12 @@ bool get_bridge_bt_target(bridge *got_bridge)
 void increment_bridges_n_bridges(bridge *got_bridge)
 {
     got_bridge->n_bridges ++;
+    return;
+}
 
+void dec_bridge_n_bridges(bridge *got_bridge)
+{
+    got_bridge->n_bridges --;
     return;
 }
 

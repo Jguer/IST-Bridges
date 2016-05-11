@@ -6,15 +6,14 @@ bool check_for_allzero(list *isla_list)
     node *new_node;
 
     new_node = get_head(isla_list);
-    new_isla = get_node_item(new_node);
 
     while(new_node != NULL)
     {
+        new_isla = get_node_item(new_node);
         if(get_isla_bridge_s_avb(new_isla) != 0)
             return FALSE;
 
         new_node = get_next_node(new_node);
-        new_isla = get_node_item(new_node);
     }
     return TRUE;
 }
@@ -227,44 +226,123 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack, li
     return;
 }
 
-stack *DFS_manager(list *isla_list, int mode, map* got_map)
+void remove_bridge(bridge *got_bridge)
 {
-    isla *good_isla;
-    bool *visited = (bool *) calloc(get_list_size(isla_list) + 1, sizeof(bool));
-    stack *new_stack = create_stack();
-    list *probi_list = create_list();
+    isla *aux_isla = NULL;
+    isla *empty = NULL;
+    int i = 0;
+    int f = 0;
+
+    for( i = 0; i < 2; i++ )
+    {
+        aux_isla = get_points(got_bridge, i);
+        inc_isla_bridge_s_avb(aux_isla);
+
+        for( f = 0; f < 4; f++ )
+        {
+            if( get_isla_used_bridge(aux_isla, f) == got_bridge && get_bridges_n_bridges(got_bridge) == 1 )
+            {
+                set_isla_used_bridge(aux_isla, f, empty);
+            }
+        }
+
+    }
+
+    if( get_bridges_n_bridges(got_bridge) == 2)
+    {
+        printf("Decreasing Available\n");
+        dec_bridge_n_bridges(got_bridge);
+    }
+    else
+    {
+        printf("Freeing Available\n");
+        free_bridge(got_bridge);
+    }
+
+    return;
+}
+
+void backtrack_engine(bool zeroed, bool stack_empty, stack *got_stack, bridge *last_point, list *probi_list, list *isla_list)
+{
+    node   *aux_node;
+    bridge *aux_bridge;
+
+    /* If we already determined its zero */
+    if(zeroed == TRUE)
+    {
+        return;
+    }
+
+    /* Bummer, that did not work. Get over depression and get on re(cursing) */
+    /* Pop stack until last point */
+    while( (bridge *)get_node_item(get_stack_head(got_stack)) != last_point)
+    {
+        aux_node = pop_from_stack(got_stack); /* Pop node from stack */
+        aux_bridge = (bridge *) get_node_item(aux_node);
+
+        remove_bridge(aux_bridge);
+        free_node(aux_node, already_free);
+    }
+
+    /* That did not check out, so let us check for all zero on map*/
+    zeroed = check_for_allzero(isla_list);
+    if(zeroed == TRUE)
+    {
+        return;
+    }
+}
+
+void DFS_ignition(stack *new_stack, isla *first_isla, map *got_map, list *probi_list, list *isla_list, int mode)
+{
+    isla *aux_isla = first_isla;
+    bool *visited  = (bool *) calloc(get_list_size(isla_list) + 1, sizeof(bool));
+
+    if( visited == NULL )
+        memory_error("Unable to allocate visited vector");
 
     if(mode == 1 || mode == 2) /* Connect all of them, doesn't matter if grouped or path*/
     {
-        good_isla = get_isla_for_dfs(isla_list);
-        while(good_isla != NULL ) {
-            printf("Going into isla %d \n", get_isla_name(good_isla));
-            DFS_engine(good_isla, visited, got_map, new_stack, probi_list);
-            set_isla_dfs_status(good_isla, get_isla_dfs_status(good_isla) + 1); /* Increment DFS status of isla */
-
+        while(aux_isla != NULL ) {
+            printf("Going into isla %d \n", get_isla_name(aux_isla));
+            DFS_engine(aux_isla, visited, got_map, new_stack, probi_list);
+            set_isla_dfs_status(aux_isla, get_isla_dfs_status(aux_isla) + 1); /* Increment DFS status of isla */
             memset(visited, FALSE, sizeof(bool) * (get_list_size(isla_list))); /* Reset visited array to FALSE*/
-            good_isla = get_isla_for_dfs(isla_list); /* Get new isla for analysis*/
+            aux_isla = get_isla_for_dfs(isla_list); /* Get new isla for analysis*/
         }
     }
     else if(mode == 3) /* Connect all of them, forcebly a path */
     {
-        DFS_engine(get_node_item(get_head(isla_list)), visited, got_map, new_stack, probi_list);
+        DFS_engine(aux_isla, visited, got_map, new_stack, probi_list);
     }
     else /* Invalid Mode */
     {
         fprintf(stderr, KYEL "Good Job, you officially failed at map making. " KRED " Invalid mode\n"KNRM);
     }
 
+    free(visited);
+    return;
+}
+
+
+stack *DFS_manager(list *isla_list, int mode, map* got_map)
+{
+    isla *good_isla  = NULL;
+    bool zeroed      = FALSE;
+    bool stack_empty = FALSE;
+    stack *new_stack = create_stack();
+    list *probi_list = create_list();
+
+    good_isla = get_isla_for_dfs(isla_list);
+    DFS_ignition(new_stack, good_isla, got_map, probi_list, isla_list, mode);
+
     if(mode == 2)
     {
         /* Check if all connected*/
     }
 
+    /* zeroed = check_for_allzero(isla_list);
+    backtrack_engine(zeroed, stack_empty, new_stack, get_node_item(get_next_node(get_stack_head(new_stack))), probi_list, isla_list); */
+
     free_list(probi_list, already_free);
-    free(visited);
     return new_stack;
 }
-
-
-
-

@@ -21,11 +21,11 @@ isla *create_isla(int name, int y, int x, int bridges_avb)
         memory_error("Unable to create structure isla");
 
     /* Set isla parameters */
-    new_isla->position = create_pos(x,y);
-    new_isla->name = name;
-    new_isla->bridges_avb = bridges_avb;
+    new_isla->position          = create_pos(x,y);
+    new_isla->name              = name;
+    new_isla->bridges_avb       = bridges_avb;
     new_isla->bridges_still_avb = bridges_avb;
-    new_isla->dfsed = 0;
+    new_isla->dfsed             = 0;
 
     for(i=0; i<4; i++)
     {
@@ -103,6 +103,17 @@ void dec_isla_bridge_s_avb(isla *got_isla)
         return;
     }
     got_isla->bridges_still_avb --;
+    return;
+}
+
+void inc_isla_bridge_s_avb(isla *got_isla)
+{
+    got_isla->bridges_still_avb ++;
+
+    if( get_isla_bridges_avb(got_isla) < get_isla_bridge_s_avb(got_isla) )
+    {
+        printf("You are trying to increase beyond bridges_avb");
+    }
     return;
 }
 
