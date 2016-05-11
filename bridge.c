@@ -377,7 +377,7 @@ void free_isla(item got_item)
 
 bridge *connect_islas(isla *isla_a, isla *isla_b, int index)
 {
-    bridge *got_bridge =  NULL;
+    bridge *got_bridge = NULL;
 
     got_bridge = get_isla_used_bridge(isla_a, index);
 
@@ -456,12 +456,13 @@ bool initial_fuck_up(list *isla_list)
             }
         }
 
+        /* if there aren't enough bridges for an isla */
         if(n_total_bridges < get_isla_bridges_avb(new_isla))
-            return FALSE;
+            return TRUE;
 
         n_total_bridges = 0; i = 0;
 
         new_node = get_next_node(new_node);
     }
-    return TRUE;
+    return FALSE;
 }
