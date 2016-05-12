@@ -2,7 +2,7 @@
 
 struct _isla {
     isla *adj[4];
-    item used[4];
+    item used[4][2];
     pos *position;
     unsigned int name;
     unsigned int bridges_avb;
@@ -13,7 +13,8 @@ struct _isla {
 isla *create_isla(int name, int y, int x, int bridges_avb)
 {
     isla *new_isla;
-    int i = 0;
+    int dir = 0;
+    int i   = 0;
 
     /* Allocate isla */
     new_isla = (isla *)malloc(sizeof(isla));
@@ -27,10 +28,13 @@ isla *create_isla(int name, int y, int x, int bridges_avb)
     new_isla->bridges_still_avb = bridges_avb;
     new_isla->dfsed             = 0;
 
-    for(i=0; i<4; i++)
+    for(dir = 0; dir < 4; dir++)
     {
         new_isla->adj[i]  = NULL;
-        new_isla->used[i] = NULL;
+        for(i = 0; i < 2; i++ )
+        {
+            new_isla->used[dir][i] = NULL;
+        }
     }
 
     return new_isla;
@@ -57,14 +61,14 @@ int get_isla_bridges_avb(isla *got_isla)
     return got_isla->bridges_avb;
 }
 
-item get_isla_used_bridge(isla *got_isla, int index)
+item get_isla_used_bridge(isla *got_isla, int dir, int index)
 {
-    return got_isla->used[index];
+    return got_isla->used[dir][index];
 }
 
-void set_isla_used_bridge(isla *got_isla, int index, item connected_bridge)
+void set_isla_used_bridge(isla *got_isla, int dir, int index, item connected_bridge)
 {
-    got_isla->used[index] = connected_bridge;
+    got_isla->used[dir][index] = connected_bridge;
     return;
 }
 

@@ -287,23 +287,25 @@ void DFS_ignition(stack *new_stack, isla *first_isla, map *got_map, list *isla_l
     return;
 }
 
-void backtrack_engine(bool zeroed, bool stack_empty, map *got_map, stack *got_stack, bridge *last_point, list *isla_list, int mode)
+int backtrack_engine(bool zeroed, bool stack_empty, map *got_map, stack *got_stack, bridge *last_point, list *isla_list, int mode)
 {
     node   *aux_node;
     bridge *aux_bridge;
     isla   *try_isla;
     list   *probi_list;
 
-    printf("Trying to backtack \n");
+    printf("Trying to backtack. Last stack \n");
+    printf("On this jolly morning we are removing Bridge with: Isla0 %d Isla1 %d \n " , get_point )
+    print_stack(got_stack, print_bridge);
     /* If we already determined it is zeroed */
     if(zeroed == TRUE)
     {
-        return;
+        return GOT_SOL;
     }
 
     if(stack_empty == TRUE)
     {
-        return;
+        return NO_SOL;
     }
 
     /* Free prohibition list from head bridge */
@@ -331,17 +333,18 @@ void backtrack_engine(bool zeroed, bool stack_empty, map *got_map, stack *got_st
     zeroed = check_for_allzero(isla_list);
     if(zeroed == TRUE)
     {
-        return;
+        return GOT_SOL;
     }
 
     if(get_next_node(get_stack_head(got_stack)) == NULL)
     {
         stack_empty = TRUE;
-        return;
+        return NO_SOL;
     }
 
     backtrack_engine(zeroed, stack_empty, got_map, got_stack, get_node_item(get_next_node(get_stack_head(got_stack))), isla_list, mode);
 
+    return 0;
 }
 
 stack *DFS_manager(list *isla_list, int mode, map* got_map)
