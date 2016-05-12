@@ -100,19 +100,16 @@ bool is_bridges_available(list *isla_list)
 
 bool is_prohibited(isla *victim_isla, int dir, list* probi_list)
 {
-    bridge *search_bridge0 = NULL, *search_bridge1;
     bridge *aux_bridge    = NULL;
     node   *aux_node      = NULL;
 
     aux_node = get_head(probi_list);
-    search_bridge0 = get_isla_used_bridge(victim_isla, dir, 0);
-    search_bridge1 = get_isla_used_bridge(victim_isla, dir, 1);
 
     while(aux_node != NULL)
     {
         aux_bridge = get_node_item(aux_node);
 
-        if(search_bridge0 == aux_bridge || search_bridge1 == aux_bridge)
+        if(get_points(aux_bridge, 0) == victim_isla || get_points(aux_bridge, 0))
             return TRUE;
 
         aux_node = get_next_node(aux_node);
@@ -140,21 +137,13 @@ bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, map *got_map, lis
                 {
                     return FALSE;
                 }
-
-                if(get_points(new_bridge, 0) != isla_a && get_points(new_bridge, 1) != isla_a)
-                {
-                    printf("\nSOMETHING IS VERY WRONG. CHECK is_connectable\n");
-                }
-                if(get_points(new_bridge, 0) != isla_b && get_points(new_bridge, 1) != isla_b)
-                {
-                    printf("\nSOMETHING IS VERY WRONG. CHECK is_connectable\n");
-                }
             }
         }
 
         if(crossed_fire(isla_a, isla_b, got_map))
             return FALSE;
-        if( probi_list != NULL )
+
+        if(probi_list != NULL)
         {
             if(is_prohibited(isla_a, adj_index, probi_list))
                 return FALSE;
