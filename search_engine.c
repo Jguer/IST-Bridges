@@ -110,7 +110,7 @@ bool is_prohibited(isla *victim_isla, int dir, list* probi_list)
     for(i = 0 ; i < 2; i++)
     {
         search_bridge = get_isla_used_bridge(victim_isla, dir, i);
-        if(search_bridge == NULL)
+        if(search_bridge != NULL)
         {
             aux_node = get_head(probi_list);
             while(aux_node != NULL)
