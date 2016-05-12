@@ -109,7 +109,7 @@ bool is_prohibited(isla *victim_isla, int dir, list* probi_list)
     {
         aux_bridge = get_node_item(aux_node);
 
-        if(get_points(aux_bridge, 0) == victim_isla || get_points(aux_bridge, 0))
+        if(get_points(aux_bridge, 0) == victim_isla || get_points(aux_bridge, 1))
             return TRUE;
 
         aux_node = get_next_node(aux_node);
