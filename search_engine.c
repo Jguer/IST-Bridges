@@ -100,31 +100,24 @@ bool is_bridges_available(list *isla_list)
 
 bool is_prohibited(isla *victim_isla, int dir, list* probi_list)
 {
-    bridge *search_bridge = NULL;
+    bridge *search_bridge0 = NULL, *search_bridge1;
     bridge *aux_bridge    = NULL;
     node   *aux_node      = NULL;
 
-    int i = 0;
+    aux_node = get_head(probi_list);
+    search_bridge0 = get_isla_used_bridge(victim_isla, dir, 0); 
+    search_bridge1 = get_isla_used_bridge(victim_isla, dir, 1);   
 
-
-    for(i = 0 ; i < 2; i++)
+    while(aux_node != NULL)
     {
-        search_bridge = get_isla_used_bridge(victim_isla, dir, i);
-        if(search_bridge != NULL)
-        {
-            aux_node = get_head(probi_list);
-            while(aux_node != NULL)
-            {
-                aux_bridge = get_node_item(aux_node);
-                if(aux_bridge == search_bridge)
-                {
-                    return TRUE;
-                }
-                aux_node = get_next_node(aux_node);
-            }
-        }
-    }
+        aux_bridge = get_node_item(aux_node);
 
+        if(search_bridge0 == aux_bridge || search_bridge1 == aux_bridge)
+            return TRUE; 
+
+        aux_node = get_next_node(aux_node);
+        
+    }
     return FALSE;
 }
 
