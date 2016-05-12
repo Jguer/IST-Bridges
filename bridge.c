@@ -2,6 +2,7 @@
 
 struct _bridge {
     isla *point[2];
+    int written;
     list *probi_list;
 };
 
@@ -16,11 +17,21 @@ bridge *create_bridge(isla *point_one, isla *point_two)
     new_bridge->point[0]   = point_one;
     new_bridge->point[1]   = point_two;
     new_bridge->probi_list = create_list();
+    new_bridge->written    = 0;
 
     return new_bridge;
 }
 
+void set_bridge_written(bridge *got_bridge, int value)
+{
+    got_bridge->written = value;
+    return;
+}
 
+bool get_bridge_written(bridge *got_bridge)
+{
+    return got_bridge->written;
+}
 
 isla *get_points(bridge *got_bridge, int index)
 {
@@ -43,7 +54,7 @@ void print_bridge(item got_item)
     return;
 }
 
-/* Just to know if there is a bridge in an isla direction */
+/* Just to know if there is any bridge in an isla direction */
 bridge *is_bridge(isla *new_isla, int dir)
 {
     bridge *got_bridge = NULL;
