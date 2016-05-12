@@ -20,6 +20,8 @@ bridge *create_bridge(isla *point_one, isla *point_two)
     return new_bridge;
 }
 
+
+
 isla *get_points(bridge *got_bridge, int index)
 {
     return got_bridge->point[index];
@@ -39,6 +41,19 @@ void print_bridge(item got_item)
             get_isla_name(get_points(got_bridge, 0)), get_isla_name(get_points(got_bridge, 1)));
 
     return;
+}
+
+/* Just to know if there is a bridge in an isla direction */
+bridge *is_bridge(isla *new_isla, int dir)
+{
+    bridge *got_bridge = NULL;
+
+    got_bridge = (bridge *)get_isla_used_bridge(new_isla, dir, 0);
+
+    if(got_bridge == NULL)
+        got_bridge = get_isla_used_bridge(new_isla, dir, 1);
+
+    return got_bridge;
 }
 
 void free_bridge(item got_item)
@@ -230,7 +245,7 @@ bridge* search_for_bridge_inLine(map* got_map, int isla_x, int static_y)
             x_adj = get_x(get_isla_pos(adj_found));
             if(x_adj > isla_x)
             {
-                bridge_found = get_isla_used_bridge(isla_found, 2);
+                bridge_found = is_bridge(isla_found, 2);
                 if(bridge_found != NULL)
                 {
                     return bridge_found;
@@ -265,7 +280,7 @@ bridge* search_for_bridge_inCol(map* got_map, int isla_y, int static_x)
             y_adj = get_y(get_isla_pos(adj_found));
             if(y_adj > isla_y)
             {
-                bridge_found = get_isla_used_bridge(isla_found, 1);
+                bridge_found = is_bridge(isla_found, 1);
                 if(bridge_found != NULL)
                 {
                     return bridge_found;
@@ -328,25 +343,30 @@ void free_isla(item got_item)
     isla *got_isla = (isla *)got_item;
     isla *adj_isla = NULL;
     bridge *active_bridge;
-    int i = 0;
+    int dir = 0, index = 0;
 
     /* O say can you see
      * by the dawn's early light*/
     free_pos(get_isla_pos(got_isla));
 
-    for(i = 0; i < 4; i++)
+    for(dir = 0; dir < 4; dir++)
     {
-        active_bridge = get_isla_used_bridge(got_isla, i);
-        if(active_bridge != NULL)
+        index = 0;
+        while(index <= 1)
         {
-            adj_isla = get_points(active_bridge, 0);
-            if(get_isla_name(adj_isla) == get_isla_name(got_isla))
+            active_bridge = get_isla_used_bridge(got_isla, dir, index);
+            if(active_bridge != NULL)
             {
-                adj_isla = get_points(active_bridge, 1);
-            }
+                adj_isla = get_points(active_bridge, 0);
+                if(get_isla_name(adj_isla) == get_isla_name(got_isla))
+                {
+                    adj_isla = get_points(active_bridge, 1);
+                }
 
-            set_isla_used_bridge(adj_isla, get_opposite_dir(i), NULL );
-            free_bridge(active_bridge);
+                set_isla_used_bridge(adj_isla, get_opposite_dir(dir), index, NULL);
+                free_bridge(active_bridge);
+            }
+            index++;
         }
     }
 
@@ -356,22 +376,21 @@ void free_isla(item got_item)
     return;
 }
 
-bridge *connect_islas(isla *isla_a, isla *isla_b, int index)
+bridge *connect_islas(isla *isla_a, isla *isla_b, int dir)
 {
     bridge *got_bridge = NULL;
 
-    got_bridge = get_isla_used_bridge(isla_a, index);
-
-    if(got_bridge != NULL) /* If already bridge structure is linked in isla_struct*/
+    if(get_isla_used_bridge(isla_a, dir, 0) == NULL)
     {
-        /* Augment new brigde structure count*/
-        increment_bridges_n_bridges(get_isla_used_bridge(isla_a, index));
+        got_bridge = create_bridge(isla_a, isla_b);
+        set_isla_used_bridge(isla_a, dir, 0, (bridge *)got_bridge);
+        set_isla_used_bridge(isla_b, get_opposite_dir(dir), 0, (bridge *)got_bridge);
     }
-    else /* Create new link for isla_struct*/
+    else if(get_isla_used_bridge(isla_a, dir, 1) == NULL)
     {
-        got_bridge = create_bridge(isla_a, isla_b, 1);
-        set_isla_used_bridge(isla_a, index, got_bridge);
-        set_isla_used_bridge(isla_b, get_opposite_dir(index), got_bridge);
+        got_bridge = create_bridge(isla_a, isla_b);
+        set_isla_used_bridge(isla_a, dir, 1, (bridge *)got_bridge);
+        set_isla_used_bridge(isla_b, get_opposite_dir(dir), 1, (bridge *)got_bridge);
     }
 
     /* Decrease available connections in islas */
