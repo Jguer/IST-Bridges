@@ -83,17 +83,10 @@ void print_list(list *got_list, void (*print_item)(item))
 
 void free_list(list *got_list, void (*free_item)(item))
 {
-    node *got_node = NULL;
-    node *aux_node = NULL;
+    node *got_node = get_head(got_list);
 
-    /* Free every node of stack*/
-    for(got_node = get_head(got_list);
-        got_node != NULL;
-        got_node = aux_node)
-    {
-        aux_node = get_next_node(got_node);
-        free_node(got_node, free_item);
-    }
+    /* Free every node of list*/
+    free_connected_nodes(got_node, free_item);
 
     /* Bring freedom to stack */
     free(got_list);

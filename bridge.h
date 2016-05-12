@@ -6,9 +6,9 @@
 typedef struct _bridge bridge;
 /* ----- BRIDGE ----- */
 /* - Object -*/
-bridge *create_bridge(isla *isla_eins, isla *isla_zwei, int used);
-void print_bridge(item got_item);
-void free_bridge(item);
+bridge *create_bridge(isla *isla_eins, isla *isla_zwei);
+void   print_bridge(item got_item);
+void   free_bridge(item);
 
 /* - Get - */
 isla *get_points(bridge *got_bridge, int index);

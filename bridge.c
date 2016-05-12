@@ -3,10 +3,9 @@
 struct _bridge {
     isla *point[2];
     list *probi_list;
-    int  n_bridges;
 };
 
-bridge *create_bridge(isla *isla_eins, isla *isla_zwei, int used)
+bridge *create_bridge(isla *point_one, isla *point_two)
 {
     bridge *new_bridge = NULL;
 
@@ -14,9 +13,8 @@ bridge *create_bridge(isla *isla_eins, isla *isla_zwei, int used)
     if( new_bridge == NULL )
         memory_error("Unable to create structure bridge");
 
-    new_bridge->point[0]   = isla_eins;
-    new_bridge->point[1]   = isla_zwei;
-    new_bridge->n_bridges  = used;
+    new_bridge->point[0]   = point_one;
+    new_bridge->point[1]   = point_two;
     new_bridge->probi_list = create_list();
 
     return new_bridge;
@@ -31,32 +29,6 @@ list *get_bridge_probi_list(bridge *got_bridge)
 {
     return got_bridge->probi_list;
 }
-int get_bridges_n_bridges(bridge *got_bridge)
-{
-    return got_bridge->n_bridges;
-}
-
-void increment_bridges_n_bridges(bridge *got_bridge)
-{
-    if(get_bridges_n_bridges(got_bridge) == 2)
-    {
-        printf("You are trying to increase n_bridges beyond 2\n");
-        return;
-    }
-    got_bridge->n_bridges ++;
-    return;
-}
-
-void dec_bridge_n_bridges(bridge *got_bridge)
-{
-    if(get_bridges_n_bridges(got_bridge) == 0)
-    {
-        printf("You are trying to decrease n_bridges beyond 0\n");
-        return;
-    }
-    got_bridge->n_bridges --;
-    return;
-}
 
 void print_bridge(item got_item)
 {
@@ -64,8 +36,7 @@ void print_bridge(item got_item)
     fprintf(DEBUG_LOC,
             KMAG "Isla 1 name:" RESET " %d, "
             KMAG "Isla 2 name:" RESET " %d, "
-            KMAG "Bridges Connecting:" RESET " %d \n",
-            get_isla_name(get_points(got_bridge, 0)), get_isla_name(get_points(got_bridge, 1)), get_bridges_n_bridges(got_bridge));
+            get_isla_name(get_points(got_bridge, 0)), get_isla_name(get_points(got_bridge, 1)));
 
     return;
 }
