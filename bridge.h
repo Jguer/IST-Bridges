@@ -12,13 +12,10 @@ void   free_bridge(item);
 
 /* - Get - */
 isla *get_points(bridge *got_bridge, int index);
-int  get_bridges_n_bridges(bridge* got_bridge);
 int  get_numberof_bridges(list *isla_list);
 list *get_bridge_probi_list(bridge *got_bridge);
 
 /* - Set - */
-void increment_bridges_n_bridges(bridge *got_bridge);
-void dec_bridge_n_bridges(bridge *got_bridge);
 
 /* ----- ADJ ----- */
 /* - Object - */

@@ -20,12 +20,18 @@ bool check_for_allzero(list *isla_list)
 
 bool is_connected(isla* new_isla, int adj_index)
 {
-    bridge* new_bridge = (bridge*)get_isla_used_bridge(new_isla, adj_index);
+    bridge* new_bridge;
+    int i = 0;
 
-    if(new_bridge != NULL)
-        return TRUE;
-    else
-        return FALSE;
+    for( i = 0; i < 2; i++)
+    {
+        new_bridge = (bridge*)get_isla_used_bridge(new_isla, adj_index, i);
+
+        if(new_bridge != NULL)
+            return TRUE;
+    }
+
+    return FALSE;
 }
 
 /* feels the vector inpath[] if islas are in path */
@@ -34,8 +40,9 @@ void create_path_vector(isla *new_isla, bool *inpath)
     isla *_adj = NULL;
     int i = 0;
 
-    for(_adj = get_isla_adj(new_isla, i); i < 4; i++)
+    for(i = 0 ; i < 4; i++)
     {
+        _adj = get_isla_adj(new_isla, i);
         /* Check if exists and check if visited*/
         if(_adj != NULL && inpath[get_isla_name(_adj)] == FALSE && is_connected(new_isla, i) == TRUE)
         {
@@ -69,10 +76,11 @@ bool check_for_allconnected(list *isla_list)
     return TRUE;
 }
 
-bool is_bridges_available(list *isla_list, list *probi_list)
+bool is_bridges_available(list *isla_list)
 {
-    int n_avb, n_probi;
-    node* new_node;
+    int n_avb      = 0;
+    int n_probi    = 0;
+    node* new_node = NULL;
 
     n_avb = get_numberof_bridges_avb(isla_list);
 
@@ -90,22 +98,31 @@ bool is_bridges_available(list *isla_list, list *probi_list)
         return FALSE;
 }
 
-bool is_prohibited(isla *victim_isla, int adj_index, list* probi_list)
+bool is_prohibited(isla *victim_isla, int dir, list* probi_list)
 {
-    bridge *victim_bridge, *new_bridge = NULL;
-    node* new_node =  NULL;
+    bridge *search_bridge = NULL;
+    bridge *aux_bridge    = NULL;
+    node   *aux_node      = NULL;
 
-    new_node = get_head(probi_list);
-    victim_bridge = get_isla_used_bridge(victim_isla, adj_index);
+    int i = 0;
 
-    while(new_node != NULL)
+
+    for(i = 0 ; i < 2; i++)
     {
-        new_bridge = get_node_item(new_node);
-
-        if(new_bridge == victim_bridge)
-            return TRUE;
-
-        new_node = get_next_node(new_node);
+        search_bridge = get_isla_used_bridge(victim_isla, dir, i);
+        if(search_bridge == NULL)
+        {
+            aux_node = get_head(probi_list);
+            while(aux_node != NULL)
+            {
+                aux_bridge = get_node_item(aux_node);
+                if(aux_bridge == search_bridge)
+                {
+                    return TRUE;
+                }
+                aux_node = get_next_node(aux_node);
+            }
+        }
     }
 
     return FALSE;
@@ -115,16 +132,22 @@ bool is_prohibited(isla *victim_isla, int adj_index, list* probi_list)
 bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, map *got_map, list *probi_list)
 {
     bridge *new_bridge = NULL;
+    int i = 0;
+    int bridge_counter = 0;
 
     if(get_isla_bridge_s_avb(isla_a) > 0 && get_isla_bridge_s_avb(isla_b) > 0)
     {
-        new_bridge = (bridge*)get_isla_used_bridge(isla_a, adj_index);
-        if(new_bridge != NULL)
+        for(i = 0; i < 2; i++)
         {
-
-            /* Just a little test for now -----------------*/
-            if(get_bridges_n_bridges(new_bridge) > 0)
+            new_bridge = (bridge*)get_isla_used_bridge(isla_a, adj_index, i);
+            if(new_bridge != NULL)
             {
+                bridge_counter ++;
+                if(bridge_counter >= 2)
+                {
+                    return FALSE;
+                }
+
                 if(get_points(new_bridge, 0) != isla_a && get_points(new_bridge, 1) != isla_a)
                 {
                     printf("\nSOMETHING IS VERY WRONG. CHECK is_connectable\n");
@@ -134,25 +157,17 @@ bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, map *got_map, lis
                     printf("\nSOMETHING IS VERY WRONG. CHECK is_connectable\n");
                 }
             }
-            /*--------------------------------------------*/
-
-            if(get_bridges_n_bridges(new_bridge) >= 2)
-                return FALSE;
         }
 
         if(crossed_fire(isla_a, isla_b, got_map))
             return FALSE;
-
         if( probi_list != NULL )
         {
             if(is_prohibited(isla_a, adj_index, probi_list))
                 return FALSE;
         }
-
         return TRUE;
-
     }
-
     return FALSE;
 }
 
@@ -176,28 +191,28 @@ isla *get_isla_for_dfs(list *isla_list)
 void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack, list *probi_list)
 {
     isla *_adj = NULL;
-    unsigned int i = 0;
+    unsigned int dir = 0;
     bridge *new_bridge;
 
     visited[get_isla_name(edgy)] = TRUE;
 
     /* Travel all nodes, list implementation may be underkill*/
     /* i gives NSEW*/
-    for(i = 0; i < 4; i++)
+    for(dir = 0; dir < 4; dir++)
     {
-        _adj = get_isla_adj(edgy, i);
+        _adj = get_isla_adj(edgy, dir);
         /* Check if exists, check if visited and check if islas are good for connect*/
-        if(_adj != NULL && visited[get_isla_name(_adj)] == FALSE && is_connectable(edgy, _adj, i, got_map, probi_list) == TRUE )
+        if(_adj != NULL && visited[get_isla_name(_adj)] == FALSE && is_connectable(edgy, _adj, dir, got_map, probi_list) == TRUE )
         {
-            printf("Looking %d , Isla1: %d Isla2: %d ; Available1: %d ; Available2: %d\n",i , get_isla_name(edgy), get_isla_name(_adj), get_isla_bridge_s_avb(edgy), get_isla_bridge_s_avb(_adj));
-            new_bridge = connect_islas(edgy, _adj, i);
+            printf("Looking %d , Isla1: %d Isla2: %d ; Available1: %d ; Available2: %d\n", dir , get_isla_name(edgy), get_isla_name(_adj), get_isla_bridge_s_avb(edgy), get_isla_bridge_s_avb(_adj));
+            new_bridge = connect_islas(edgy, _adj, dir);
             push_to_stack(bridge_stack, (item)new_bridge);
         }
     }
 
-    for(i = 0; i < 4; i++)
+    for(dir = 0; dir < 4; dir++)
     {
-        _adj = get_isla_adj(edgy, i);
+        _adj = get_isla_adj(edgy, dir);
         if(_adj != NULL && visited[get_isla_name(_adj)] == FALSE)
         {
             DFS_engine(_adj, visited, got_map, bridge_stack, probi_list); /* New recursion level */
@@ -210,28 +225,24 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack, li
 void remove_bridge(bridge *got_bridge)
 {
     isla *aux_isla = NULL;
-    isla *empty = NULL;
-    int i = 0;
-    int f = 0;
+    int i     = 0;
+    int dir   = 0;
+    int point = 0;
 
-    for( i = 0; i < 2; i++ )
+    for( point = 0; point < 2; point++ )
     {
-        aux_isla = get_points(got_bridge, i);
+        aux_isla = get_points(got_bridge, point);
         inc_isla_bridge_s_avb(aux_isla);
-
-        for( f = 0; f < 4; f++ )
+        for( dir = 0; dir < 4; dir++ )
         {
-            if( get_isla_used_bridge(aux_isla, f) == got_bridge && get_bridges_n_bridges(got_bridge) == 1 )
+            for( i = 0; i < 2; i++ )
             {
-                set_isla_used_bridge(aux_isla, f, empty);
+                if( get_isla_used_bridge(aux_isla, dir, i) == got_bridge )
+                {
+                    set_isla_used_bridge(aux_isla, dir, i, NULL);
+                }
             }
         }
-
-    }
-
-    if( get_bridges_n_bridges(got_bridge) == 2)
-    {
-        dec_bridge_n_bridges(got_bridge);
     }
 
     return;
@@ -295,7 +306,7 @@ int backtrack_engine(bool zeroed, bool stack_empty, map *got_map, stack *got_sta
     list   *probi_list;
 
     printf("Trying to backtack. Last stack \n");
-    printf("On this jolly morning we are removing Bridge with: Isla0 %d Isla1 %d \n " , get_point )
+    printf("On this jolly morning we are removing Bridge with: Isla0 %d Isla1 %d \n ", get_isla_name(get_points(last_point, 0)), get_isla_name(get_points(last_point, 1)));
     print_stack(got_stack, print_bridge);
     /* If we already determined it is zeroed */
     if(zeroed == TRUE)
@@ -356,11 +367,6 @@ stack *DFS_manager(list *isla_list, int mode, map* got_map)
 
     good_isla = get_isla_for_dfs(isla_list);
     DFS_ignition(new_stack, good_isla, got_map, isla_list, NULL, mode);
-
-    if(mode == 2)
-    {
-        /* Check if all connected*/
-    }
 
     zeroed = check_for_allzero(isla_list);
     backtrack_engine(zeroed, stack_empty, got_map, new_stack, get_node_item(get_next_node(get_stack_head(new_stack))), isla_list, mode);
