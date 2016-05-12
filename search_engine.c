@@ -105,18 +105,18 @@ bool is_prohibited(isla *victim_isla, int dir, list* probi_list)
     node   *aux_node      = NULL;
 
     aux_node = get_head(probi_list);
-    search_bridge0 = get_isla_used_bridge(victim_isla, dir, 0); 
-    search_bridge1 = get_isla_used_bridge(victim_isla, dir, 1);   
+    search_bridge0 = get_isla_used_bridge(victim_isla, dir, 0);
+    search_bridge1 = get_isla_used_bridge(victim_isla, dir, 1);
 
     while(aux_node != NULL)
     {
         aux_bridge = get_node_item(aux_node);
 
         if(search_bridge0 == aux_bridge || search_bridge1 == aux_bridge)
-            return TRUE; 
+            return TRUE;
 
         aux_node = get_next_node(aux_node);
-        
+
     }
     return FALSE;
 }
@@ -298,8 +298,9 @@ int backtrack_engine(bool zeroed, bool stack_empty, map *got_map, stack *got_sta
     isla   *try_isla;
     list   *probi_list;
 
+    printf("Last Point: %d-%d \n", get_isla_name(get_points(last_point, 0)), get_isla_name(get_points(last_point, 1)));
+    printf("To remove : %d-%d \n", get_isla_name(get_points(get_node_item(get_head(got_stack)), 0)), get_isla_name(get_points(get_node_item(get_head(got_stack)), 1)));
     printf("Trying to backtack. Last stack \n");
-    printf("On this jolly morning we are removing Bridge with: Isla0 %d Isla1 %d \n ", get_isla_name(get_points(last_point, 0)), get_isla_name(get_points(last_point, 1)));
     print_stack(got_stack, print_bridge);
     /* If we already determined it is zeroed */
     if(zeroed == TRUE)

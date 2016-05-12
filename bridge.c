@@ -37,7 +37,7 @@ void print_bridge(item got_item)
     bridge* got_bridge = (bridge *)got_item;
     fprintf(DEBUG_LOC,
             KMAG "Isla 1 name:" RESET " %d, "
-            KMAG "Isla 2 name:" RESET " %d, ",
+            KMAG "Isla 2 name:" RESET " %d \n",
             get_isla_name(get_points(got_bridge, 0)), get_isla_name(get_points(got_bridge, 1)));
 
     return;
