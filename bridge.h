@@ -14,6 +14,7 @@ void   free_bridge(item);
 isla *get_points(bridge *got_bridge, int index);
 int  get_numberof_bridges(list *isla_list);
 list *get_bridge_probi_list(bridge *got_bridge);
+int get_isla_n_bridges(isla *new_isla, int dir);
 
 /* - Set - */
 
@@ -33,7 +34,6 @@ isla*   find_next_isla_x(map *got_map, int x, int static_y, int x_max);
 bridge* search_for_bridge_inLine(map* got_map, int isla_x, int static_y);
 bridge* search_for_bridge_inCol(map* got_map, int isla_y, int static_x);
 bridge  *connect_islas(isla *isla_a, isla *isla_b, int index);
-
 bool initial_fuck_up(list *isla_list);
 
 #endif

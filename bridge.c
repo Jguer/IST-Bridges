@@ -65,6 +65,23 @@ void free_bridge(item got_item)
     return;
 }
 
+int get_isla_n_bridges(isla *new_isla, int dir)
+{
+    int bridge_counter = 0, i = 0;
+    bridge *new_bridge = NULL;
+
+    for(i = 0; i < 2; i++)
+    {
+        new_bridge = (bridge*)get_isla_used_bridge(new_isla, dir, i);
+        if(new_bridge != NULL)
+        {
+            bridge_counter ++;
+        }
+    }
+    return bridge_counter;
+}
+
+
 /*find the next isla on a row*/
 isla* find_next_isla_x(map *got_map, int x, int static_y, int x_max)
 {
@@ -399,38 +416,7 @@ bridge *connect_islas(isla *isla_a, isla *isla_b, int dir)
 
     return got_bridge;
 }
-/*
-stack *gen_essential_bridges(list *isla_list)
-{
-    stack *initial_stack = NULL;
-    int n_bridges, n_adj;
-    int i = 0;
 
-    while(new_node != NULL)
-    {
-        new_isla = get_node_item(new_node);
-        n_adj = get_adj_number(new_isla);
-        n_bridges = get_isla_bridges_avb(new_isla);
-
-        if(n_adj < n_bridges)
-        {
-            for(i=0; i<4; i++)
-            {
-                _adj = get_isla_adj(new_isla, i);
-                if(_adj != NULL)
-                    connect_islas();
-            }
-        }
-        else if(n_adj == n_bridges)
-        {
-        }
-
-        new_node = get_next_node(new_node);
-    }
-
-    return initial_stack;
-}
-*/
 /* A function that detects if the map is already fucked up or not */
 bool initial_fuck_up(list *isla_list)
 {

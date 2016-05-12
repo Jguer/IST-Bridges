@@ -125,24 +125,10 @@ bool is_prohibited(isla *victim_isla, int dir, list* probi_list)
 
 bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, map *got_map, list *probi_list)
 {
-    bridge *new_bridge = NULL;
-    int i = 0;
-    int bridge_counter = 0;
-
     if(get_isla_bridge_s_avb(isla_a) > 0 && get_isla_bridge_s_avb(isla_b) > 0)
     {
-        for(i = 0; i < 2; i++)
-        {
-            new_bridge = (bridge*)get_isla_used_bridge(isla_a, adj_index, i);
-            if(new_bridge != NULL)
-            {
-                bridge_counter ++;
-                if(bridge_counter >= 2)
-                {
-                    return FALSE;
-                }
-            }
-        }
+        if(get_isla_n_bridges(isla_a, adj_index) >= 2)
+            return FALSE;
 
         if(crossed_fire(isla_a, isla_b, got_map))
             return FALSE;
@@ -361,4 +347,42 @@ stack *DFS_manager(list *isla_list, int mode, map* got_map)
     return new_stack;
 }
 
+stack *gen_essential_bridges(list *isla_list)
+{
+    stack *initial_stack = NULL;
+    int n_bridges, n_adj;
+    int dir = 0;
+    bridge *new_bridge = NULL;
+    node *new_node = NULL;
+    isla *new_isla = NULL, *_adj = NULL;
 
+    initial_stack = create_stack();
+    new_node = get_head(isla_list);
+
+    while(new_node != NULL)
+    {
+        new_isla = get_node_item(new_node);
+        n_adj = get_adj_number(new_isla);
+        n_bridges = get_isla_bridges_avb(new_isla);
+
+        if(n_adj < n_bridges)
+        {
+            for(dir=0; dir<4; dir++)
+            {
+                _adj = get_isla_adj(new_isla, dir);
+                if(_adj != NULL)
+                {
+                    if(is_connected(new_isla, dir) == FALSE && is_connected(_adj, get_opposite_dir(dir)) == FALSE)
+                    {
+                        new_bridge = connect_islas(new_isla, _adj, dir);
+                        push_to_stack(initial_stack, (item)new_bridge);                    
+                    }
+                }
+            }
+        }
+
+        new_node = get_next_node(new_node);
+    }
+
+    return initial_stack;
+}

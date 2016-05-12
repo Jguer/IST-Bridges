@@ -16,6 +16,7 @@ int main(int argc, char **argv)
     list *isla_list;
     map *active_map;
     stack *got_stack;
+    stack *tester_stack;
     int mode_result = 0;
     bool fuck_up = FALSE;
 
@@ -56,6 +57,8 @@ int main(int argc, char **argv)
         /* verify if initial fuck up, if yes: rage quit */
         if(fuck_up != TRUE)
         {
+            tester_stack = gen_essential_bridges(isla_list);
+            print_stack(tester_stack, print_bridge);
             /*Play the game*/
             got_stack = DFS_manager(isla_list, 1, active_map);
             print_stack(got_stack, print_bridge);
