@@ -293,7 +293,7 @@ int backtrack_engine(bool zeroed, bool stack_empty, map *got_map, stack *got_sta
     }
 
     /* Free prohibition list from head bridge */
-    /* free_connected_nodes(get_head(get_bridge_probi_list(get_node_item(get_stack_head(got_stack)))), free_bridge); */
+    free_connected_nodes(get_head(get_bridge_probi_list(get_node_item(get_stack_head(got_stack)))), free_bridge);
     /* Push head to prohibited list of head->next */
     push_item_to_list(get_bridge_probi_list(last_point), get_node_item(get_stack_head(got_stack)));
 
@@ -314,14 +314,16 @@ int backtrack_engine(bool zeroed, bool stack_empty, map *got_map, stack *got_sta
     DFS_ignition(got_stack, try_isla, got_map, isla_list, probi_list, mode);
 
     /* That did not check out, so let us check for all zero on map*/
-    zeroed = check_for_allzero(isla_list);
-    if(zeroed == TRUE)
+    if(check_for_allzero(isla_list) == TRUE)
     {
+        zeroed = TRUE;
+        free_connected_nodes(get_head(get_bridge_probi_list(last_point)), free_bridge);
         return GOT_SOL;
     }
 
     if(get_next_node(get_stack_head(got_stack)) == NULL)
     {
+        free_connected_nodes(get_head(get_bridge_probi_list(last_point)), free_bridge);
         stack_empty = TRUE;
         return NO_SOL;
     }

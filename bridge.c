@@ -59,6 +59,7 @@ bridge *is_bridge(isla *new_isla, int dir)
 void free_bridge(item got_item)
 {
     bridge *got_bridge = (bridge *)got_item;
+
     free(got_bridge->probi_list);
     free(got_bridge);
 
