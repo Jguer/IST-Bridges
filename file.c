@@ -58,15 +58,68 @@ FILE *change_file_ext(char* original_name)
     return outfile;
 }
 
+void print_bridge_to_file(isla *new_isla, FILE *outfile)
+{
+    bridge *got_bridge = NULL, *printer_bridge = NULL;
+    int n_bridges = 0, i = 0, dir = 0;
+
+    for(dir=0; dir<4; dir++)
+    {
+        printer_bridge = NULL;
+        n_bridges = 0;
+
+        for(i=0; i<2; i++)
+        {
+            got_bridge = get_isla_used_bridge(new_isla, dir, i);
+            if(got_bridge != NULL && get_bridge_written(got_bridge) == FALSE)
+            {
+                n_bridges++;
+                set_bridge_written(got_bridge, 1);
+                printer_bridge = got_bridge;
+            }
+            
+        }
+
+        if(printer_bridge != NULL)
+        {
+            fprintf(outfile, "%d %d %d\n", 
+                get_isla_name(get_points(printer_bridge, 0)),
+                get_isla_name(get_points(printer_bridge, 1)),
+                n_bridges);
+        }
+
+    }
+}
+
+
+void print_created_map(list* isla_list, FILE *outfile)
+{
+    node *new_node = NULL;
+    isla *new_isla = NULL;
+
+    new_node = get_head(isla_list);
+
+    while(new_node != NULL)
+    {
+        new_isla = get_node_item(new_node);
+
+        print_bridge_to_file(new_isla, outfile);
+
+        new_node = get_next_node(new_node);
+    }
+
+    return;
+}
+
 void print_output_per_map(map *got_map, FILE *outfile, int mode_result, list* isla_list)
 {
     int sol_info = 0;
     int mode = get_map_mode(got_map);
 
     /* for testing */
-    mode_result = GOT_SOL;
+    mode_result = ALL_CONCT;
 
-    if(mode == 0)
+    if(mode == 1)
     {
         switch(mode_result)
         {
@@ -74,7 +127,7 @@ void print_output_per_map(map *got_map, FILE *outfile, int mode_result, list* is
             case GOT_SOL: sol_info = 0;
         }
     }
-    else if(mode == 1)
+    else if(mode == 2)
     {
         switch(mode_result)
         {
@@ -98,27 +151,12 @@ void print_output_per_map(map *got_map, FILE *outfile, int mode_result, list* is
 
     if(mode_result != NO_SOL)
     {
-        print_created_map(isla_list);
+        print_created_map(isla_list, outfile);
     }
 
     fprintf(outfile, "-1\n");
     return;
 }
 
-void print_created_map(list* isla_list)
-{
 
-    return;
-}
 
-/*
-void print_output_bridge(bridge* got_bridge, FILE* outfile)
-{
-    fprintf(outfile, "%d %d %d \n",
-            get_isla_name(get_points(got_bridge, 0)), 
-            get_isla_name(get_points(got_bridge, 1)), 
-            get_bridges_n_bridges(got_bridge));
-
-    return;
-}
-*/
