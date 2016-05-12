@@ -111,7 +111,7 @@ void print_created_map(list* isla_list)
     return;
 }
 
-
+/*
 void print_output_bridge(bridge* got_bridge, FILE* outfile)
 {
     fprintf(outfile, "%d %d %d \n",
@@ -121,3 +121,4 @@ void print_output_bridge(bridge* got_bridge, FILE* outfile)
 
     return;
 }
+*/
