@@ -58,7 +58,7 @@ bool check_for_allconnected(list *isla_list)
 {
     isla *new_isla = NULL;
     node *new_node = NULL;
-    bool *inpath = (bool*)calloc(get_list_size(isla_list)+1, sizeof(bool));
+    bool *inpath = (bool*)calloc(get_list_size(isla_list)+1, sizeof(bool)); /*check if +1 need be*/
     int index = 0;
 
     new_node = get_head(isla_list);
