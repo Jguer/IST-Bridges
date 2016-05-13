@@ -55,5 +55,6 @@ void free_pos(item pos_to_free);
 void print_pos(item gotpos);
 
 int get_opposite_dir(int dir);
+
 #endif
 
