@@ -43,6 +43,17 @@ list *get_bridge_probi_list(bridge *got_bridge)
     return got_bridge->probi_list;
 }
 
+int get_isla_x_from_bridge(bridge *got_bridge, int i)
+{
+    return get_x(get_isla_pos(get_points(got_bridge, i))); 
+}
+
+int get_isla_y_from_bridge(bridge *got_bridge, int i)
+{
+    return get_y(get_isla_pos(get_points(got_bridge, i))); 
+}
+
+
 void print_bridge(item got_item)
 {
     bridge* got_bridge = (bridge *)got_item;
@@ -197,136 +208,104 @@ void print_adj(list* isla_list)
 
 }
 
-/* checks out for crossed bridges */
-bool crossed_fire(isla* isla_a, isla* isla_b, map* got_map)
+bool is_cross_vertical(int islas_x, int isla_a_y, int isla_b_y, bridge *new_bridge)
+{
+    int min_isla = 0, max_isla = 0;
+
+    if(get_isla_y_from_bridge(new_bridge, 0) != get_isla_y_from_bridge(new_bridge, 1))
+        return FALSE;
+
+    if(isla_a_y > isla_b_y)
+    {
+        min_isla  = isla_b_y;
+        max_isla = isla_a_y;
+    }
+    else
+    {
+        min_isla  = isla_a_y;
+        max_isla = isla_b_y;
+    }
+
+    if((get_isla_x_from_bridge(new_bridge, 0) < islas_x 
+            && get_isla_x_from_bridge(new_bridge, 1) > islas_x) || 
+       (get_isla_x_from_bridge(new_bridge, 1) < islas_x 
+            && get_isla_x_from_bridge(new_bridge, 0) > islas_x))
+    {
+        if(min_isla < get_isla_y_from_bridge(new_bridge, 0) 
+            && get_isla_y_from_bridge(new_bridge, 0) < max_isla)
+        {
+            return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
+bool is_cross_horizontal(int islas_y, int isla_a_x, int isla_b_x, bridge *new_bridge)
+{
+    int min_isla = 0, max_isla = 0;
+
+    if(get_isla_x_from_bridge(new_bridge, 0) != get_isla_x_from_bridge(new_bridge, 1))
+        return FALSE;
+
+    if(isla_a_x > isla_b_x)
+    {
+        min_isla  = isla_b_x;
+        max_isla = isla_a_x;
+    }
+    else
+    {
+        min_isla  = isla_a_x;
+        max_isla = isla_b_x;
+    }
+
+    if((get_isla_y_from_bridge(new_bridge, 0) < islas_y 
+            && get_isla_y_from_bridge(new_bridge, 1) > islas_y) || 
+       (get_isla_y_from_bridge(new_bridge, 1) < islas_y 
+            && get_isla_y_from_bridge(new_bridge, 0) > islas_y))
+    {
+        if(min_isla < get_isla_x_from_bridge(new_bridge, 0) 
+            && get_isla_x_from_bridge(new_bridge, 0) < max_isla)
+        {
+            return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
+bool crossed_fire(isla* isla_a, isla* isla_b, stack *got_stack)
 {
     int a_x, a_y, b_x, b_y;
-    int max_x, max_y, min_x, min_y;
+    bridge *new_bridge =  NULL;
+    node *new_node =  NULL;
 
-    a_x = get_x(get_isla_pos(isla_a));
-    a_y = get_y(get_isla_pos(isla_a));
-    b_x = get_x(get_isla_pos(isla_b));
-    b_y = get_y(get_isla_pos(isla_b));
+    new_node = get_stack_head(got_stack);
 
-    /* Two islas in a line */
-    if(a_y == b_y)
+    while(new_node != NULL)
     {
-        if(a_x > b_x)
-        {
-            max_x = a_x;
-            min_x = b_x;
-        }
-        else
-        {
-            max_x = b_x;
-            min_x = a_x;
-        }
-        min_x++;
+        new_bridge = get_node_item(new_node);
+        a_x = get_x(get_isla_pos(isla_a));
+        a_y = get_y(get_isla_pos(isla_a));
+        b_x = get_x(get_isla_pos(isla_b));
+        b_y = get_y(get_isla_pos(isla_b));
 
-        while(min_x < max_x)
+        /* Asking for a vertical bridge possibility */
+        if(a_x == b_x)
         {
-            if(search_for_bridge_inCol(got_map, a_y, min_x) != NULL)
+            if(is_cross_vertical(a_x, a_y, b_y, new_bridge))
                 return TRUE;
-            min_x++;
-        }
-        return FALSE;
-    }
-
-    /* Two islas in a column */
-    else
-    {
-        if(a_y > b_y)
-        {
-            max_y = a_y;
-            min_y = b_y;
         }
         else
         {
-            max_y = b_y;
-            min_y = a_y;
-        }
-        min_y++;
-
-        while(min_y < max_y)
-        {
-            if(search_for_bridge_inLine(got_map, a_x, min_y) != NULL)
+            if(is_cross_horizontal(a_y, a_x, b_x, new_bridge))
                 return TRUE;
-            min_y++;
         }
-        return FALSE;
+
+        new_node = get_next_node(new_node);
     }
+    return FALSE;
 }
-
-/* It searches for a bridge in a line of the map */
-bridge* search_for_bridge_inLine(map* got_map, int isla_x, int static_y)
-{
-    isla *isla_found, *adj_found;
-    bridge* bridge_found = NULL;
-    int x_adj;
-
-    isla_found = find_next_isla_x(got_map, 1, static_y, isla_x);
-
-    if(isla_found != NULL)
-    {
-        adj_found =  get_isla_adj(isla_found, 2);
-        if(adj_found != NULL)
-        {
-            x_adj = get_x(get_isla_pos(adj_found));
-            if(x_adj > isla_x)
-            {
-                bridge_found = is_bridge(isla_found, 2);
-                if(bridge_found != NULL)
-                {
-                    return bridge_found;
-                }
-                else
-                    return NULL;
-            }
-            else
-                return NULL;
-        }
-        else
-            return NULL;
-    }
-    else
-        return NULL;
-}
-
-/* It searches for a bridge in a column of the map */
-bridge* search_for_bridge_inCol(map* got_map, int isla_y, int static_x)
-{
-    isla *isla_found, *adj_found;
-    bridge* bridge_found = NULL;
-    int y_adj;
-
-    isla_found = find_next_isla_y(got_map, 1, static_x, isla_y);
-
-    if(isla_found != NULL)
-    {
-        adj_found =  get_isla_adj(isla_found, 1);
-        if(adj_found != NULL)
-        {
-            y_adj = get_y(get_isla_pos(adj_found));
-            if(y_adj > isla_y)
-            {
-                bridge_found = is_bridge(isla_found, 1);
-                if(bridge_found != NULL)
-                {
-                    return bridge_found;
-                }
-                else
-                    return NULL;
-            }
-            else
-                return NULL;
-        }
-        else
-            return NULL;
-    }
-    else
-        return NULL;
-}
-
 
 
 int get_numberof_bridges(list *isla_list)

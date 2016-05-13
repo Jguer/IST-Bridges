@@ -123,14 +123,14 @@ bool is_prohibited(isla *victim_isla, int dir, list* probi_list)
 }
 
 
-bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, map *got_map, list *probi_list)
+bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, stack *got_stack, list *probi_list)
 {
     if(get_isla_bridge_s_avb(isla_a) > 0 && get_isla_bridge_s_avb(isla_b) > 0)
     {
         if(get_isla_n_bridges(isla_a, adj_index) >= 2)
             return FALSE;
 
-        if(crossed_fire(isla_a, isla_b, got_map))
+        if(crossed_fire(isla_a, isla_b, got_stack))
             return FALSE;
 
         if(probi_list != NULL)
@@ -174,7 +174,7 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack, li
     {
         _adj = get_isla_adj(edgy, dir);
         /* Check if exists, check if visited and check if islas are good for connect*/
-        if(_adj != NULL && visited[get_isla_name(_adj)] == FALSE && is_connectable(edgy, _adj, dir, got_map, probi_list) == TRUE )
+        if(_adj != NULL && visited[get_isla_name(_adj)] == FALSE && is_connectable(edgy, _adj, dir, bridge_stack, probi_list) == TRUE )
         {
             printf("Looking %d , Isla1: %d Isla2: %d ; Available1: %d ; Available2: %d\n", dir , get_isla_name(edgy), get_isla_name(_adj), get_isla_bridge_s_avb(edgy), get_isla_bridge_s_avb(_adj));
             new_bridge = connect_islas(edgy, _adj, dir);
@@ -252,7 +252,7 @@ void DFS_ignition(stack *new_stack, isla *first_isla, map *got_map, list *isla_l
             printf("Going into isla %d \n", get_isla_name(aux_isla));
             DFS_engine(aux_isla, visited, got_map, new_stack, probi_list);
             set_isla_dfs_status(aux_isla, get_isla_dfs_status(aux_isla) + 1); /* Increment DFS status of isla */
-            memset(visited, FALSE, sizeof(bool) * (get_list_size(isla_list))); /* Reset visited array to FALSE*/
+            memset(visited, FALSE, sizeof(bool) * (get_list_size(isla_list)));  /*Reset visited array to FALSE*/
             aux_isla = get_isla_for_dfs(isla_list); /* Get new isla for analysis*/
         }
     }
