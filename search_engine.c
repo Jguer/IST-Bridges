@@ -337,7 +337,7 @@ stack *DFS_manager(list *isla_list, int mode, map* got_map)
 {
     int obv_gen = 0;
     stack *new_stack = create_stack();
-    gen_essential_bridges(isla_list, new_stack);
+    obv_gen = gen_essential_bridges(isla_list, new_stack);
 
     printf("Number of obvious generated: %d \n", obv_gen);
     DFS_ignition(new_stack, got_map, isla_list, NULL, mode);
