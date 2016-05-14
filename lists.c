@@ -94,6 +94,10 @@ void free_list(list *got_list, void (*free_item)(item))
     return;
 }
 
+void reorder_list(list *got_list, void (*comp_item)(item, item))
+{
+
+}
 
 /* STACK */
 
@@ -256,3 +260,5 @@ void already_free(item got_item)
 {
     return;
 }
+
+
