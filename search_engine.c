@@ -289,34 +289,20 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int mode, int obv
     }
 
     is_connected = FALSE; /* Check for connection here*/
-
     free_connected_nodes(get_head(get_bridge_probi_list(last_bridge)), free_bridge);
 
     return 1;
 }
 
 
-stack *DFS_manager(list *isla_list, int mode, map* got_map)
+int gen_essential_bridges(list *isla_list, stack *got_stack)
 {
-    stack *new_stack = create_stack();
-
-    DFS_ignition(new_stack, got_map, isla_list, NULL, mode);
-
-    backtrack(new_stack, isla_list, got_map, mode, 1);
-
-    return new_stack;
-}
-
-stack *gen_essential_bridges(list *isla_list)
-{
-    stack *initial_stack = NULL;
     int n_bridges, n_adj;
     int dir = 0;
     bridge *new_bridge = NULL;
     node *new_node = NULL;
     isla *new_isla = NULL, *_adj = NULL;
 
-    initial_stack = create_stack();
     new_node = get_head(isla_list);
 
     while(new_node != NULL)
@@ -335,7 +321,7 @@ stack *gen_essential_bridges(list *isla_list)
                     if(is_connected(new_isla, dir) == FALSE && is_connected(_adj, get_opposite_dir(dir)) == FALSE)
                     {
                         new_bridge = connect_islas(new_isla, _adj, dir);
-                        push_to_stack(initial_stack, (item)new_bridge);
+                        push_to_stack(got_stack, (item)new_bridge);
                     }
                 }
             }
@@ -344,5 +330,21 @@ stack *gen_essential_bridges(list *isla_list)
         new_node = get_next_node(new_node);
     }
 
-    return initial_stack;
+    return (int) get_stack_size(got_stack);
 }
+
+stack *DFS_manager(list *isla_list, int mode, map* got_map)
+{
+    int obv_gen = 0;
+    stack *new_stack = create_stack();
+    gen_essential_bridges(isla_list, new_stack);
+
+    printf("Number of obvious generated: %d \n", obv_gen);
+    DFS_ignition(new_stack, got_map, isla_list, NULL, mode);
+
+    backtrack(new_stack, isla_list, got_map, mode, obv_gen + 1);
+
+    return new_stack;
+}
+
+
