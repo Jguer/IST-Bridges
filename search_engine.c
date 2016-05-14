@@ -311,7 +311,7 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int mode, int obv
 
         is_solved = check_for_allzero(isla_list); /* That did not check out, so let us check for all zero on map*/
 
-        if(get_stack_size(got_stack) > (int) obvious && is_solved == FALSE)
+        if((int) get_stack_size(got_stack) > obvious && is_solved == FALSE)
         {
             last_bridge = get_node_item(get_next_node(get_stack_head(got_stack)));
         }
