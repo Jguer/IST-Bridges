@@ -281,11 +281,12 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int mode)
     bool   is_empty     = is_stack_empty(got_stack);
     bool   is_solved    = check_for_allzero(isla_list);
 
-    printf("Is empty? %d \n Is solved? %d \n", is_empty, is_solved);
+    printf("Is empty? %d Is solved? %d \n", is_empty, is_solved);
     last_bridge = get_node_item(get_next_node(get_stack_head(got_stack))); /* We know backtrack starts from next node, so get first bridge */
 
-    while( is_empty == FALSE || is_solved == FALSE)
+    while( is_empty == FALSE && is_solved == FALSE)
     {
+        printf("Is empty? %d Is solved? %d \n", is_empty, is_solved);
         printf("Last Point: %d-%d \n", get_isla_name(get_points(last_bridge, 0)), get_isla_name(get_points(last_bridge, 1)));
         printf("To remove : %d-%d \n", get_isla_name(get_points(get_node_item(get_head(got_stack)), 0)), get_isla_name(get_points(get_node_item(get_head(got_stack)), 1)));
         printf("Trying to backtack. Last stack \n");
