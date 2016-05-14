@@ -270,6 +270,62 @@ void DFS_ignition(stack *new_stack, isla *first_isla, map *got_map, list *isla_l
     return;
 }
 
+
+int backtrack(stack *got_stack, list *isla_list, map *got_map, int mode)
+{
+    node   *aux_node    = NULL;
+    bridge *aux_bridge  = NULL;
+    bridge *last_bridge = NULL;
+    list   *probi_list  = NULL;
+    bool   is_connected = FALSE;
+    bool   is_empty     = is_stack_empty(got_stack);
+    bool   is_solved    = check_for_allzero(isla_list);
+
+    printf("Is empty? %d \n Is solved? %d \n", is_empty, is_solved);
+    last_bridge = get_node_item(get_next_node(get_stack_head(got_stack))); /* We know backtrack starts from next node, so get first bridge */
+
+    while( is_empty == FALSE || is_solved == FALSE)
+    {
+        printf("Last Point: %d-%d \n", get_isla_name(get_points(last_bridge, 0)), get_isla_name(get_points(last_bridge, 1)));
+        printf("To remove : %d-%d \n", get_isla_name(get_points(get_node_item(get_head(got_stack)), 0)), get_isla_name(get_points(get_node_item(get_head(got_stack)), 1)));
+        printf("Trying to backtack. Last stack \n");
+        print_stack(got_stack, print_bridge);
+
+        /* Free prohibition list from head bridge */
+        free_connected_nodes(get_head(get_bridge_probi_list(get_node_item(get_stack_head(got_stack)))), free_bridge);
+        /* Push head to prohibited list of head->next */
+        push_item_to_list(get_bridge_probi_list(last_bridge), get_node_item(get_stack_head(got_stack)));
+
+        while( (bridge *)get_node_item(get_stack_head(got_stack)) != last_bridge) /* Free stack until analysis point */
+        {
+            aux_node = pop_from_stack(got_stack); /* Pop node from stack */
+            aux_bridge = (bridge *) get_node_item(aux_node);
+
+            remove_bridge(aux_bridge);
+            free_node(aux_node, already_free);
+        }
+
+        probi_list = get_bridge_probi_list(last_bridge);
+        DFS_ignition(got_stack, get_isla_for_dfs(isla_list), got_map, isla_list, probi_list, mode);
+
+        is_solved = check_for_allzero(isla_list); /* That did not check out, so let us check for all zero on map*/
+
+        if(get_stack_size(got_stack) > 1)
+        {
+            last_bridge = get_node_item(get_next_node(get_stack_head(got_stack)));
+        }
+        else
+        {
+            is_empty = TRUE;
+        }
+    }
+
+    is_connected = FALSE; /* Check for connection here*/
+
+
+    return 1;
+}
+
 int backtrack_engine(bool zeroed, bool stack_empty, map *got_map, stack *got_stack, bridge *last_point, list *isla_list, int mode)
 {
     node   *aux_node;
@@ -336,15 +392,12 @@ int backtrack_engine(bool zeroed, bool stack_empty, map *got_map, stack *got_sta
 stack *DFS_manager(list *isla_list, int mode, map* got_map)
 {
     isla *good_isla  = NULL;
-    bool zeroed      = FALSE;
-    bool stack_empty = FALSE;
     stack *new_stack = create_stack();
 
     good_isla = get_isla_for_dfs(isla_list);
     DFS_ignition(new_stack, good_isla, got_map, isla_list, NULL, mode);
 
-    zeroed = check_for_allzero(isla_list);
-    backtrack_engine(zeroed, stack_empty, got_map, new_stack, get_node_item(get_next_node(get_stack_head(new_stack))), isla_list, mode);
+    backtrack(new_stack, isla_list, got_map, mode);
 
     return new_stack;
 }
@@ -377,7 +430,7 @@ stack *gen_essential_bridges(list *isla_list)
                     if(is_connected(new_isla, dir) == FALSE && is_connected(_adj, get_opposite_dir(dir)) == FALSE)
                     {
                         new_bridge = connect_islas(new_isla, _adj, dir);
-                        push_to_stack(initial_stack, (item)new_bridge);                    
+                        push_to_stack(initial_stack, (item)new_bridge);
                     }
                 }
             }

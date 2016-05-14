@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 
         /*free stuff, start over*/
         if(fuck_up != TRUE)
-            free_stack(got_stack, already_free); 
+            free_stack(got_stack, already_free);
         free_list(isla_list, free_isla);
         free_map(active_map);
     }
@@ -76,5 +76,5 @@ int main(int argc, char **argv)
     fclose(map_file);
     fclose(output_file);
 
-    return 0;
+    exit(EXIT_SUCCESS);
 }
