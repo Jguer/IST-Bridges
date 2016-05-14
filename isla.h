@@ -1,7 +1,7 @@
 #ifndef ISLA_HEADER
 #define ISLA_HEADER
 
-#include "defs.h"
+#include "lists.h"
 typedef struct _isla isla;
 
 /* ----- ISLA ----- */
@@ -18,6 +18,7 @@ isla *get_isla_adj(isla *got_isla, int index);
 int  get_isla_dfs_status(isla *got_isla);
 int  get_isla_bridge_s_avb(isla *got_isla);
 int  get_adj_number(isla* new_isla);
+isla *get_isla_for_dfs(list *isla_list);
 
 /* - Set - */
 void set_isla_used_bridge(isla *got_isla, int dir, int index, item connected_bridge);
@@ -26,4 +27,6 @@ void inc_isla_bridge_s_avb(isla *got_isla);
 void set_isla_dfs_status(isla *got_isla, int value);
 void dec_isla_bridge_s_avb(isla *got_isla);
 void set_isla_adj(isla *got_isla, isla *adj_isla, int index);
+void reset_dfsed_values(list *isla_list);
+
 #endif

@@ -144,3 +144,37 @@ int get_adj_number(isla* new_isla)
     return n_adj;
 }
 
+void reset_dfsed_values(list *isla_list)
+{
+    isla *new_isla;
+    node *new_node;
+
+    new_node = get_head(isla_list);
+
+    while(new_node != NULL)
+    {
+        new_isla = get_node_item(new_node);
+
+        set_isla_dfs_status(new_isla, 0);
+
+        new_node = get_next_node(new_node);
+    }
+    return;
+}
+
+isla *get_isla_for_dfs(list *isla_list)
+{
+    isla *got_isla;
+    node *aux_node;
+
+    for(aux_node = get_head(isla_list); aux_node != NULL; aux_node = get_next_node(aux_node))
+    {
+        got_isla = (isla *)get_node_item(aux_node);
+        if((get_isla_dfs_status(got_isla) < 1) && (get_isla_bridge_s_avb(got_isla) != 0))
+        {
+            return got_isla;
+        }
+    }
+
+    return NULL;
+}

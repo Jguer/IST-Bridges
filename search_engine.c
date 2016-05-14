@@ -143,23 +143,6 @@ bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, stack *got_stack,
     return FALSE;
 }
 
-isla *get_isla_for_dfs(list *isla_list)
-{
-    isla *got_isla;
-    node *aux_node;
-
-    for(aux_node = get_head(isla_list); aux_node != NULL; aux_node = get_next_node(aux_node))
-    {
-        got_isla = (isla *)get_node_item(aux_node);
-        if((get_isla_dfs_status(got_isla) < 1) && (get_isla_bridge_s_avb(got_isla) != 0))
-        {
-            return got_isla;
-        }
-    }
-
-    return NULL;
-}
-
 void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack, list *probi_list)
 {
     isla *_adj = NULL;
@@ -219,36 +202,17 @@ void remove_bridge(bridge *got_bridge)
 
     return;
 }
-
-void reset_dfsed_values(list *isla_list)
-{
-    isla *new_isla;
-    node *new_node;
-
-    new_node = get_head(isla_list);
-
-    while(new_node != NULL)
-    {
-        new_isla = get_node_item(new_node);
-
-        set_isla_dfs_status(new_isla, 0);
-
-        new_node = get_next_node(new_node);
-    }
-    return;
-}
-
 void DFS_ignition(stack *new_stack, map *got_map, list *isla_list, list *probi_list, int mode)
 {
     isla *aux_isla = NULL;
     bool *visited  = (bool *) calloc(get_list_size(isla_list) + 1, sizeof(bool));
-    aux_isla = get_isla_for_dfs(isla_list);
 
     if( visited == NULL )
         memory_error("Unable to allocate visited vector");
 
     if(mode == 1 || mode == 2) /* Connect all of them, doesn't matter if grouped or path*/
     {
+        aux_isla = get_isla_for_dfs(isla_list);
         while(aux_isla != NULL ) {
             printf("Going into isla %d \n", get_isla_name(aux_isla));
             DFS_engine(aux_isla, visited, got_map, new_stack, probi_list);
@@ -259,6 +223,9 @@ void DFS_ignition(stack *new_stack, map *got_map, list *isla_list, list *probi_l
     }
     else if(mode == 3) /* Connect all of them, forcebly a path */
     {
+        aux_isla = get_node_item(get_head(isla_list));
+        /* Run 2 DFS engines to make sure path is generated*/
+        DFS_engine(aux_isla, visited, got_map, new_stack, probi_list);
         DFS_engine(aux_isla, visited, got_map, new_stack, probi_list);
     }
     else /* Invalid Mode */
