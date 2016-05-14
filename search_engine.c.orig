@@ -247,7 +247,6 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int mode, int obv
     bool   is_connected = FALSE;
     bool   is_empty     = is_stack_empty(got_stack);
     bool   is_solved    = check_for_allzero(isla_list);
-    int    dfs_counter  = 0;
 
     printf("Is empty? %d Is solved? %d \n", is_empty, is_solved);
     last_bridge = get_node_item(get_next_node(get_stack_head(got_stack))); /* We know backtrack starts from next node, so get first bridge */
@@ -278,7 +277,6 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int mode, int obv
         probi_list = get_bridge_probi_list(last_bridge); /* Get that sweet sweet prohibition list*/
         DFS_ignition(got_stack, got_map, isla_list, probi_list, mode); /* DFS remaining points */
         is_solved = check_for_allzero(isla_list); /* That did not check out, so let us check for all zero on map*/
-        dfs_counter ++;
 
         if((int) get_stack_size(got_stack) > obvious && is_solved == FALSE)
         {
@@ -292,7 +290,6 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int mode, int obv
 
     is_connected = FALSE; /* Check for connection here*/
     free_connected_nodes(get_head(get_bridge_probi_list(last_bridge)), free_bridge);
-    printf(KGRN"Final DFS COUNT: %d\n "KNRM, dfs_counter );
 
     return 1;
 }
@@ -341,6 +338,10 @@ stack *DFS_manager(list *isla_list, int mode, map* got_map)
     int obv_gen = 0;
     stack *new_stack = create_stack();
     obv_gen = gen_essential_bridges(isla_list, new_stack);
+<<<<<<< HEAD
+=======
+    print_stack(new_stack, print_bridge);
+>>>>>>> 71ec19c2a034bd4cfba9759109deb82969e04cb8
 
     printf("Number of obvious generated: %d \n", obv_gen);
     DFS_ignition(new_stack, got_map, isla_list, NULL, mode);
