@@ -57,7 +57,7 @@ int main(int argc, char **argv)
         if(fuck_up != TRUE)
         {
             /*Play the game*/
-            /*got_stack = gen_essential_bridges(list *isla_list); */
+            /*got_stack = gen_essential_bridges(isla_list); */
             got_stack = DFS_manager(isla_list, 1, active_map);
             print_stack(got_stack, print_bridge);
         }
