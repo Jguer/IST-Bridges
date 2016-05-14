@@ -271,7 +271,7 @@ void DFS_ignition(stack *new_stack, isla *first_isla, map *got_map, list *isla_l
 }
 
 
-int backtrack(stack *got_stack, list *isla_list, map *got_map, int mode)
+int backtrack(stack *got_stack, list *isla_list, map *got_map, int mode, int obvious)
 {
     node   *aux_node    = NULL;
     bridge *aux_bridge  = NULL;
@@ -311,7 +311,7 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int mode)
 
         is_solved = check_for_allzero(isla_list); /* That did not check out, so let us check for all zero on map*/
 
-        if(get_stack_size(got_stack) > 1)
+        if(get_stack_size(got_stack) > (int) obvious && is_solved == FALSE)
         {
             last_bridge = get_node_item(get_next_node(get_stack_head(got_stack)));
         }
@@ -323,6 +323,7 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int mode)
 
     is_connected = FALSE; /* Check for connection here*/
 
+    free_connected_nodes(get_head(get_bridge_probi_list(last_bridge)), free_bridge);
 
     return 1;
 }
@@ -398,7 +399,7 @@ stack *DFS_manager(list *isla_list, int mode, map* got_map)
     good_isla = get_isla_for_dfs(isla_list);
     DFS_ignition(new_stack, good_isla, got_map, isla_list, NULL, mode);
 
-    backtrack(new_stack, isla_list, got_map, mode);
+    backtrack(new_stack, isla_list, got_map, mode, 1);
 
     return new_stack;
 }
