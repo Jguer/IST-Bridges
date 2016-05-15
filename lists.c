@@ -94,11 +94,42 @@ void free_list(list *got_list, void (*free_item)(item))
     return;
 }
 
-void reorder_list(list *got_list, void (*comp_item)(item, item))
+list *sort_list (list *to_sort, int (*cmp_list)(item, item))
 {
+    int num_nodes = get_list_size(to_sort);
+    int counter;
+    node *current;
+    node *next;
+    node *previous;
 
+    for (counter = 0; counter < num_nodes; counter++) {
+        current = get_head(to_sort);
+        next = get_next_node(current);
+        previous = NULL;
+
+        while(next != NULL) {
+            int compare = cmp_list(get_node_item(current), get_node_item(next));
+            if (compare == 1) {
+                if (current == get_head(to_sort)){
+                    to_sort->head = next;
+                } else {
+                    previous->next = next;
+                }
+                current->next = next->next;
+                next->next = current;
+
+                previous = next;
+                next = current->next;
+            }
+            else {
+                previous = current;
+                current = current->next;
+                next = current->next;
+            }
+        }
+    }
+    return to_sort;
 }
-
 /* STACK */
 
 stack *create_stack()

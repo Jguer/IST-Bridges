@@ -47,8 +47,9 @@ void print_isla(item got_item)
 
     fprintf(DEBUG_LOC,
             KBLU "Isla name:" RESET " %d "
-            KBLU "Bridges Available:" RESET " %d ",
-            got_isla->name, got_isla->bridges_avb);
+            KBLU "Bridges Avb:" RESET " %d "
+            KBLU "Bridges still Avb:" RESET " %d ",
+            got_isla->name, got_isla->bridges_avb, got_isla->bridges_still_avb);
     return;
 }
 
@@ -160,6 +161,21 @@ void reset_dfsed_values(list *isla_list)
         new_node = get_next_node(new_node);
     }
     return;
+}
+
+int is_isla_greater_avb(item item_a, item item_b)
+{
+    isla *isla_a;
+    isla *isla_b;
+    isla_a = (isla *)item_a;
+    isla_b = (isla *)item_b;
+
+    if(isla_a->bridges_still_avb > isla_b->bridges_still_avb)
+    {
+        return 1;
+    }
+
+    return 0;
 }
 
 isla *get_isla_for_dfs(list *isla_list)

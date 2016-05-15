@@ -29,4 +29,7 @@ void dec_isla_bridge_s_avb(isla *got_isla);
 void set_isla_adj(isla *got_isla, isla *adj_isla, int index);
 void reset_dfsed_values(list *isla_list);
 
+/* - Logic -*/
+int is_isla_greater_avb(item item_a, item item_b);
+
 #endif
