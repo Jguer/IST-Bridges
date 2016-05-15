@@ -1,6 +1,6 @@
 TARGET = bridges
 CC = gcc
-CFLAGS = -Wall -ansi -g --pedantic
+CFLAGS = -Wall -Wextra  -ansi -g --pedantic
 
 .PHONY: default all clean
 
