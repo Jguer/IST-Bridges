@@ -34,7 +34,7 @@ bool is_connected(isla* new_isla, int adj_index)
     return FALSE;
 }
 
-/* feels the vector inpath[] if islas are in path */
+/* fills the vector inpath[] if islas are in path */
 void create_path_vector(isla *new_isla, bool *inpath)
 {
     isla *_adj = NULL;
@@ -44,9 +44,9 @@ void create_path_vector(isla *new_isla, bool *inpath)
     {
         _adj = get_isla_adj(new_isla, i);
         /* Check if exists and check if visited*/
-        if(_adj != NULL && inpath[get_isla_name(_adj)] == FALSE && is_connected(new_isla, i) == TRUE)
+        if(_adj != NULL && inpath[get_isla_name(new_isla)-1] == FALSE && is_connected(new_isla, i) == TRUE)
         {
-            inpath[get_isla_name(_adj)] = TRUE;
+            inpath[get_isla_name(new_isla)-1] = TRUE;
             create_path_vector(_adj, inpath); /* New recursion level */
         }
     }
@@ -58,7 +58,7 @@ bool check_for_allconnected(list *isla_list)
 {
     isla *new_isla = NULL;
     node *new_node = NULL;
-    bool *inpath = (bool*)calloc(get_list_size(isla_list)+1, sizeof(bool)); /*check if +1 need be*/
+    bool *inpath = (bool*)calloc(get_list_size(isla_list), sizeof(bool)); /*check if +1 need be*/
     int index = 0;
 
     new_node = get_head(isla_list);
@@ -251,6 +251,7 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
     list   *probi_list  = NULL;
     bool   is_empty     = is_stack_empty(got_stack);
     bool   is_solved    = FALSE;
+    bool   is_solved_ax = FALSE;
     int    mode         = get_map_mode(got_map);
     int    dfs_counter  = 0;
 
@@ -288,7 +289,7 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
         }
 
         probi_list = get_bridge_probi_list(last_bridge); /* Get that sweet sweet prohibition list*/
-        is_solved = DFS_ignition(got_stack, got_map, isla_list, probi_list); /* DFS remaining points */
+        is_solved_ax = DFS_ignition(got_stack, got_map, isla_list, probi_list); /* DFS remaining points */
 
         dfs_counter ++;
 
@@ -300,6 +301,8 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
         {
             is_empty = TRUE;
         }
+
+        is_solved = is_solved_ax;
     }
 
     free_connected_nodes(get_head(get_bridge_probi_list(last_bridge)), free_bridge);
