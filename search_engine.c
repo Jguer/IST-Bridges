@@ -173,11 +173,14 @@ bool is_prohibited(isla *victim_isla, int dir, node *head_prob_node)
 
 bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, map* got_map, stack *got_stack)
 {
-    node *head_prob_node;
+    node *head_prob_node = NULL;
 
     if(get_stack_head(got_stack) != NULL)
     {
-    head_prob_node = get_probi_head(got_map, get_isla_name(get_points(get_node_item(get_stack_head(got_stack)), 0)) ,
+        head_prob_node = get_probi_head(got_map, get_isla_name(get_points(get_node_item(get_stack_head(got_stack)), 0)) ,
+                                             get_isla_name(get_points(get_node_item(get_stack_head(got_stack)), 1)));
+
+        printf("Got this node head in connectables: %d - %d \n", get_isla_name(get_points(get_node_item(get_stack_head(got_stack)), 0)) ,
                                              get_isla_name(get_points(get_node_item(get_stack_head(got_stack)), 1)));
     }
 
@@ -325,11 +328,11 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
     while(is_empty == FALSE && is_solved == FALSE)
     {
         printf("Last Point: %d-%d \n", get_isla_name(get_points(last_bridge, 0)), get_isla_name(get_points(last_bridge, 1)));
-#ifdef HEAVY_DEBUG
+        #ifdef HEAVY_DEBUG
         printf("To remove : %d-%d \n", get_isla_name(get_points(get_node_item(get_head(got_stack)), 0)), get_isla_name(get_points(get_node_item(get_head(got_stack)), 1)));
         printf("Trying to backtack. Last stack \n");
         print_stack(got_stack, print_bridge);
-#endif
+        #endif
         /* Push head to prohibited list of head->next */
         push_prohibited( last_bridge, get_node_item(get_stack_head(got_stack)), got_map);
 
