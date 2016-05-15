@@ -34,7 +34,7 @@ bool is_connected(isla* new_isla, int adj_index)
     return FALSE;
 }
 
-/* feels the vector inpath[] if islas are in path */
+/* fills the vector inpath[] if islas are in path */
 void create_path_vector(isla *new_isla, bool *inpath)
 {
     isla *_adj = NULL;
@@ -44,9 +44,9 @@ void create_path_vector(isla *new_isla, bool *inpath)
     {
         _adj = get_isla_adj(new_isla, i);
         /* Check if exists and check if visited*/
-        if(_adj != NULL && inpath[get_isla_name(_adj)] == FALSE && is_connected(new_isla, i) == TRUE)
+        if(_adj != NULL && inpath[get_isla_name(new_isla)-1] == FALSE && is_connected(new_isla, i) == TRUE)
         {
-            inpath[get_isla_name(_adj)] = TRUE;
+            inpath[get_isla_name(new_isla)-1] = TRUE;
             create_path_vector(_adj, inpath); /* New recursion level */
         }
     }
@@ -58,7 +58,7 @@ bool check_for_allconnected(list *isla_list)
 {
     isla *new_isla = NULL;
     node *new_node = NULL;
-    bool *inpath = (bool*)calloc(get_list_size(isla_list)+1, sizeof(bool)); /*check if +1 need be*/
+    bool *inpath = (bool*)calloc(get_list_size(isla_list), sizeof(bool)); /*check if +1 need be*/
     int index = 0;
 
     new_node = get_head(isla_list);
@@ -204,10 +204,11 @@ void remove_bridge(bridge *got_bridge)
 
     return;
 }
-void DFS_ignition(stack *new_stack, map *got_map, list *isla_list, list *probi_list, int mode)
+bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list, list *probi_list)
 {
     isla *aux_isla = NULL;
     bool *visited  = (bool *) calloc(get_list_size(isla_list) + 1, sizeof(bool));
+    int  mode      = get_map_mode(got_map);
 
     if( visited == NULL )
         memory_error("Unable to allocate visited vector");
@@ -215,7 +216,8 @@ void DFS_ignition(stack *new_stack, map *got_map, list *isla_list, list *probi_l
     if(mode == 1 || mode == 2) /* Connect all of them, doesn't matter if grouped or path*/
     {
         aux_isla = get_isla_for_dfs(isla_list);
-        while(aux_isla != NULL ) {
+        while(aux_isla != NULL)
+        {
 #ifdef DEBUG
             printf("Going into isla %d \n", get_isla_name(aux_isla));
 #endif
@@ -224,6 +226,9 @@ void DFS_ignition(stack *new_stack, map *got_map, list *isla_list, list *probi_l
             memset(visited, FALSE, sizeof(bool) * (get_list_size(isla_list)));  /*Reset visited array to FALSE*/
             aux_isla = get_isla_for_dfs(isla_list); /* Get new isla for analysis*/
         }
+        reset_dfsed_values(isla_list);
+        free(visited);
+        return check_for_allzero(isla_list);
     }
     else if(mode == 3) /* Connect all of them, forcebly a path */
     {
@@ -231,31 +236,39 @@ void DFS_ignition(stack *new_stack, map *got_map, list *isla_list, list *probi_l
         /* Run 2 DFS engines to make sure path is generated*/
         DFS_engine(aux_isla, visited, got_map, new_stack, probi_list);
         DFS_engine(aux_isla, visited, got_map, new_stack, probi_list);
+        reset_dfsed_values(isla_list);
+        free(visited);
+        return check_for_allconnected(isla_list);
     }
     else /* Invalid Mode */
     {
         fprintf(stderr, KYEL "Good Job, you officially failed at map making. " KRED " Invalid mode\n"KNRM);
+        exit(0);
     }
-
-    reset_dfsed_values(isla_list);
-    free(visited);
-    return;
 }
 
-int backtrack(stack *got_stack, list *isla_list, map *got_map, int mode, int obvious)
+int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
 {
     node   *aux_node    = NULL;
     bridge *aux_bridge  = NULL;
     bridge *last_bridge = NULL;
     list   *probi_list  = NULL;
-    bool   is_connected = FALSE;
     bool   is_empty     = is_stack_empty(got_stack);
-    bool   is_solved    = check_for_allzero(isla_list);
+    bool   is_solved    = FALSE;
+    bool   is_solved_ax = FALSE;
+    int    mode         = get_map_mode(got_map);
     int    dfs_counter  = 0;
 
     last_bridge = get_node_item(get_next_node(get_stack_head(got_stack))); /* We know backtrack starts from next node, so get first bridge */
 
-    while( is_empty == FALSE && is_solved == FALSE)
+    if(mode == 1 || mode == 2)
+        is_solved = check_for_allzero(isla_list);
+    else if(mode == 3)
+        is_solved = check_for_allconnected(isla_list);
+    else
+        fprintf(stderr, KYEL "Good Job, you officially failed at map making. " KRED " Invalid mode\n"KNRM);
+
+    while(is_empty == FALSE && is_solved == FALSE)
     {
 #ifdef DEBUG
         printf("Last Point: %d-%d \n", get_isla_name(get_points(last_bridge, 0)), get_isla_name(get_points(last_bridge, 1)));
@@ -269,7 +282,7 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int mode, int obv
         push_item_to_list(get_bridge_probi_list(last_bridge), get_node_item(get_stack_head(got_stack)));
 
         /* Pop stack until last bridge */
-        while( (bridge *)get_node_item(get_stack_head(got_stack)) != last_bridge) /* Free stack until analysis point */
+        while((bridge *)get_node_item(get_stack_head(got_stack)) != last_bridge) /* Free stack until analysis point */
         {
             aux_node = pop_from_stack(got_stack); /* Pop node from stack */
             aux_bridge = (bridge *) get_node_item(aux_node);
@@ -279,8 +292,8 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int mode, int obv
         }
 
         probi_list = get_bridge_probi_list(last_bridge); /* Get that sweet sweet prohibition list*/
-        DFS_ignition(got_stack, got_map, isla_list, probi_list, mode); /* DFS remaining points */
-        is_solved = check_for_allzero(isla_list); /* That did not check out, so let us check for all zero on map*/
+        is_solved_ax = DFS_ignition(got_stack, got_map, isla_list, probi_list); /* DFS remaining points */
+
         dfs_counter ++;
 
         if((int) get_stack_size(got_stack) > obvious && is_solved == FALSE)
@@ -291,9 +304,10 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int mode, int obv
         {
             is_empty = TRUE;
         }
+
+        is_solved = is_solved_ax;
     }
 
-    is_connected = FALSE; /* Check for connection here*/
     free_connected_nodes(get_head(get_bridge_probi_list(last_bridge)), free_bridge);
     printf(KGRN"Final DFS COUNT: %d\n "KNRM, dfs_counter );
 
@@ -339,18 +353,19 @@ int gen_essential_bridges(list *isla_list, stack *got_stack)
     return (int) get_stack_size(got_stack);
 }
 
-stack *DFS_manager(list *isla_list, int mode, map* got_map)
+stack *DFS_manager(list *isla_list, map* got_map)
 {
-    int obv_gen = 0;
-    stack *new_stack = create_stack();
+    int   obv_gen      = 0;
+    stack *new_stack   = create_stack();
+
     obv_gen = gen_essential_bridges(isla_list, new_stack);
     sort_list(isla_list, is_isla_greater_avb);
     print_list(isla_list, print_isla);
 
     printf("Number of obvious generated: %d \n", obv_gen);
-    DFS_ignition(new_stack, got_map, isla_list, NULL, mode);
+    DFS_ignition(new_stack, got_map, isla_list, NULL);
 
-    backtrack(new_stack, isla_list, got_map, mode, obv_gen + 1);
+    backtrack(new_stack, isla_list, got_map, obv_gen + 1);
 
     return new_stack;
 }
