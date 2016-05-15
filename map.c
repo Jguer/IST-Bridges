@@ -7,6 +7,7 @@ struct _map {
     int y_max;
     int n_islas;
     char map_mode;
+    int  mode_result;
 };
 
 map *create_map(int x_max, int y_max, int n_islas, int map_mode)
@@ -23,6 +24,7 @@ map *create_map(int x_max, int y_max, int n_islas, int map_mode)
     new_map->y_max= y_max;
     new_map->n_islas = n_islas;
     new_map->map_mode = map_mode;
+    new_map->mode_result = NO_SOL;
 
     /* Allocate x axis so we can have a nice tile[x] */
     new_map->tile = (isla ***) calloc(x_max, sizeof(isla**));
@@ -75,6 +77,17 @@ int get_y_max(map* got_map)
 char get_map_mode(map* got_map)
 {
     return got_map->map_mode;
+}
+
+int get_map_mode_result(map* got_map)
+{
+    return got_map->mode_result;
+}
+
+void set_map_mode_result(map *got_map, int _mode_result)
+{
+    got_map->mode_result = _mode_result;
+    return;
 }
 
 void print_map(map* got_map)

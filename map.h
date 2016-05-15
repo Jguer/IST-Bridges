@@ -10,6 +10,8 @@ int get_n_islas(map* got_map);
 int get_x_max(map* got_map);
 int get_y_max(map* got_map);
 char get_map_mode(map* got_map);
+int get_map_mode_result(map* got_map);
+void set_map_mode_result(map *got_map, int mode_result);
 void print_map(map* got_map);
 void print_map_graphic(map* got_map);
 void free_map(item got_item);
