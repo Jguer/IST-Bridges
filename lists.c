@@ -289,6 +289,8 @@ void free_connected_nodes(node *got_node, void (*free_item)(item))
 
 void already_free(item got_item)
 {
+    if( got_item == NULL)
+        return;
     return;
 }
 

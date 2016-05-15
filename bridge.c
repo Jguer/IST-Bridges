@@ -3,7 +3,6 @@
 struct _bridge {
     isla *point[2];
     int written;
-    list *probi_list;
 };
 
 bridge *create_bridge(isla *point_one, isla *point_two)
@@ -16,7 +15,6 @@ bridge *create_bridge(isla *point_one, isla *point_two)
 
     new_bridge->point[0]   = point_one;
     new_bridge->point[1]   = point_two;
-    new_bridge->probi_list = create_list();
     new_bridge->written    = 0;
 
     return new_bridge;
@@ -36,11 +34,6 @@ bool get_bridge_written(bridge *got_bridge)
 isla *get_points(bridge *got_bridge, int index)
 {
     return got_bridge->point[index];
-}
-
-list *get_bridge_probi_list(bridge *got_bridge)
-{
-    return got_bridge->probi_list;
 }
 
 int get_isla_x_from_bridge(bridge *got_bridge, int i)
@@ -82,7 +75,6 @@ void free_bridge(item got_item)
 {
     bridge *got_bridge = (bridge *)got_item;
 
-    free(got_bridge->probi_list);
     free(got_bridge);
 
     return;
