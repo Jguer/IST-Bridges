@@ -452,19 +452,21 @@ void push_prohibited(bridge *to_receive, bridge *to_push, map *got_map)
     point_b = get_isla_name(to_receive->point[1]);
 
 
-    printf( "Pushing probi to %d -  %d\n", point_a, point_b );
     head_node = get_probi_head(got_map, point_a, point_b);
+    printf( "Pushing probi to %d -  %d %p \n", point_a, point_b, head_node );
 
     if(head_node == NULL)
     {
         head_node = create_node((item) to_push, NULL);
+        set_probi_head(got_map, point_a , point_b, head_node);
     }
     else
     {
         aux_node = head_node;
         head_node = create_node((item) to_push, aux_node);
+        set_probi_head(got_map, point_a , point_b, head_node);
     }
-    printf( "Head probi %d -  %d\n", get_isla_name(get_points( get_node_item(head_node), 0)), get_isla_name(get_points( get_node_item(head_node), 1)));
+    printf( "Head probi %d -  %d %p \n", get_isla_name(get_points( get_node_item(head_node), 0)), get_isla_name(get_points( get_node_item(head_node), 1)), head_node);
 
     return;
 }

@@ -62,6 +62,23 @@ node *get_probi_head(map *got_map, int isla_a, int isla_b)
     return got_map->probi_vector[index];
 }
 
+void set_probi_head(map *got_map, int isla_a, int isla_b, node *new_head)
+{
+    int index;
+    int list_size = got_map->n_islas;
+
+    isla_a = isla_a - 1;
+    isla_b = isla_b - 1;
+
+    if (isla_a <= isla_b)
+        index = isla_a * list_size - (isla_a - 1) * isla_a / 2 + isla_b - isla_a;
+    else
+        index = isla_b * list_size - (isla_b - 1) * isla_b / 2 + isla_a - isla_b;
+
+    got_map->probi_vector[index] = new_head;
+    return;
+}
+
 isla *get_tile(map *got_map, int x, int y)
 {
     /* Base for work is 1-max but base for backend is 0-max-1
