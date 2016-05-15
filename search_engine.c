@@ -1,5 +1,42 @@
 #include "search_engine.h"
 
+int define_mode_result(int mode, bool is_solved, list *isla_list)
+{
+    int mode_result = 0;
+
+    if(mode == 1)
+    {
+        if(is_solved)
+            mode_result = GOT_SOL;
+        else
+            mode_result = NO_SOL;
+    }
+
+    else if(mode == 2)
+    {
+        if(is_solved)
+        {
+            if(check_for_allconnected(isla_list))
+                mode_result = ALL_CONCT;
+            else
+                mode_result = NOT_ALL_CONCT;
+
+        }
+        else
+            mode_result = NO_SOL;
+    }
+
+    else
+    {
+        if(is_solved)
+            mode_result = ALL_CONCT;
+        else
+            mode_result = NO_SOL;
+    }
+
+    return mode_result;
+}
+
 bool check_for_allzero(list *isla_list)
 {
     isla *new_isla;
@@ -318,9 +355,9 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
     }
 
     free_connected_nodes(get_head(get_bridge_probi_list(last_bridge)), free_bridge);
-    printf(KGRN"Final DFS COUNT: %d\n "KNRM, dfs_counter );
+    printf(KGRN"Final DFS COUNT: %d\n "KNRM, dfs_counter);
 
-    return 1;
+    return define_mode_result(mode, is_solved, isla_list);
 }
 
 
@@ -374,7 +411,7 @@ stack *DFS_manager(list *isla_list, map* got_map)
     printf("Number of obvious generated: %d \n", obv_gen);
     DFS_ignition(new_stack, got_map, isla_list, NULL);
 
-    backtrack(new_stack, isla_list, got_map, obv_gen + 1);
+    set_map_mode_result(got_map, backtrack(new_stack, isla_list, got_map, obv_gen + 1));
 
     return new_stack;
 }
