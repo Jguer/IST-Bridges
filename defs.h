@@ -2,7 +2,7 @@
 *     File Name           :     Projects/bridges-aed/defs.h
 *     Created By          :     jguer
 *     Creation Date       :     [2016-03-31 15:12]
-*     Last Modified       :     [2016-05-10 20:19]
+*     Last Modified       :     [2016-05-15 21:21]
 *     Description         :
 **********************************************************************************/
 #ifndef defsHeader
@@ -56,6 +56,7 @@ void free_pos(item pos_to_free);
 void print_pos(item gotpos);
 
 int get_opposite_dir(int dir);
+int matrix_to_vector(int isla_a, int isla_b, int list_size);
 
 #endif
 

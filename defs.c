@@ -2,7 +2,7 @@
 *     File Name           :     Projects/bridges-aed/defs.c
 *     Created By          :     jguer
 *     Creation Date       :     [2016-03-31 15:21]
-*     Last Modified       :     [2016-05-10 20:19]
+*     Last Modified       :     [2016-05-15 21:21]
 *     Description         :      Useful definitions for project
 **********************************************************************************/
 
@@ -119,5 +119,4 @@ int get_opposite_dir(int dir)
     }
     return anti_dir;
 }
-
 

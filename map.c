@@ -1,13 +1,13 @@
 #include "map.h"
-#include "isla.h"
 
 struct _map {
     isla ***tile;
-    int x_max;
-    int y_max;
-    int n_islas;
+    int  x_max;
+    int  y_max;
+    int  n_islas;
     char map_mode;
     int  mode_result;
+    node **probi_vector;
 };
 
 map *create_map(int x_max, int y_max, int n_islas, int map_mode)
@@ -25,6 +25,7 @@ map *create_map(int x_max, int y_max, int n_islas, int map_mode)
     new_map->n_islas = n_islas;
     new_map->map_mode = map_mode;
     new_map->mode_result = NO_SOL;
+    new_map->probi_vector = (node **) calloc(((n_islas) * (n_islas + 1))/2 , sizeof(node *));
 
     /* Allocate x axis so we can have a nice tile[x] */
     new_map->tile = (isla ***) calloc(x_max, sizeof(isla**));
@@ -43,6 +44,18 @@ map *create_map(int x_max, int y_max, int n_islas, int map_mode)
     }
 
     return new_map;
+}
+
+node *get_probi_head(map *got_map, int isla_a, int isla_b)
+{
+    int index;
+    int list_size = got_map->n_islas;
+    if (isla_a <= isla_b)
+        index = isla_a * list_size - (isla_a - 1) * isla_a / 2 + isla_b - isla_a;
+    else
+        index = isla_b * list_size - (isla_b - 1) * isla_b / 2 + isla_a - isla_b;
+
+    return got_map->probi_vector[index];
 }
 
 isla *get_tile(map *got_map, int x, int y)

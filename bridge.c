@@ -45,12 +45,12 @@ list *get_bridge_probi_list(bridge *got_bridge)
 
 int get_isla_x_from_bridge(bridge *got_bridge, int i)
 {
-    return get_x(get_isla_pos(get_points(got_bridge, i))); 
+    return get_x(get_isla_pos(get_points(got_bridge, i)));
 }
 
 int get_isla_y_from_bridge(bridge *got_bridge, int i)
 {
-    return get_y(get_isla_pos(get_points(got_bridge, i))); 
+    return get_y(get_isla_pos(get_points(got_bridge, i)));
 }
 
 
@@ -226,12 +226,12 @@ bool is_cross_vertical(int islas_x, int isla_a_y, int isla_b_y, bridge *new_brid
         max_isla = isla_b_y;
     }
 
-    if((get_isla_x_from_bridge(new_bridge, 0) < islas_x 
-            && get_isla_x_from_bridge(new_bridge, 1) > islas_x) || 
-       (get_isla_x_from_bridge(new_bridge, 1) < islas_x 
+    if((get_isla_x_from_bridge(new_bridge, 0) < islas_x
+            && get_isla_x_from_bridge(new_bridge, 1) > islas_x) ||
+       (get_isla_x_from_bridge(new_bridge, 1) < islas_x
             && get_isla_x_from_bridge(new_bridge, 0) > islas_x))
     {
-        if(min_isla < get_isla_y_from_bridge(new_bridge, 0) 
+        if(min_isla < get_isla_y_from_bridge(new_bridge, 0)
             && get_isla_y_from_bridge(new_bridge, 0) < max_isla)
         {
             return TRUE;
@@ -259,12 +259,12 @@ bool is_cross_horizontal(int islas_y, int isla_a_x, int isla_b_x, bridge *new_br
         max_isla = isla_b_x;
     }
 
-    if((get_isla_y_from_bridge(new_bridge, 0) < islas_y 
-            && get_isla_y_from_bridge(new_bridge, 1) > islas_y) || 
-       (get_isla_y_from_bridge(new_bridge, 1) < islas_y 
+    if((get_isla_y_from_bridge(new_bridge, 0) < islas_y
+            && get_isla_y_from_bridge(new_bridge, 1) > islas_y) ||
+       (get_isla_y_from_bridge(new_bridge, 1) < islas_y
             && get_isla_y_from_bridge(new_bridge, 0) > islas_y))
     {
-        if(min_isla < get_isla_x_from_bridge(new_bridge, 0) 
+        if(min_isla < get_isla_x_from_bridge(new_bridge, 0)
             && get_isla_x_from_bridge(new_bridge, 0) < max_isla)
         {
             return TRUE;
