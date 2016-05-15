@@ -36,5 +36,6 @@ bridge* search_for_bridge_inLine(map* got_map, int isla_x, int static_y);
 bridge* search_for_bridge_inCol(map* got_map, int isla_y, int static_x);
 bridge* connect_islas(isla *isla_a, isla *isla_b, int index);
 bool    initial_fuck_up(list *isla_list);
+void push_prohibited(bridge *to_receive, bridge *to_push, map *got_map);
 
 #endif

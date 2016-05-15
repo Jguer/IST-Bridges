@@ -440,3 +440,29 @@ bool initial_fuck_up(list *isla_list)
     }
     return FALSE;
 }
+
+void push_prohibited(bridge *to_receive, bridge *to_push, map *got_map)
+{
+    int point_a = 0;
+    int point_b = 0;
+    node *head_node = NULL;
+    node *aux_node  = NULL;
+
+    point_a = get_isla_name(to_receive->point[0]);
+    point_b = get_isla_name(to_receive->point[1]);
+
+
+    head_node = get_probi_head(got_map, point_a, point_b);
+
+    if(head_node == NULL)
+    {
+        head_node = create_node((item) to_push, NULL);
+    }
+    else
+    {
+        aux_node = head_node;
+        head_node = create_node((item) to_push, aux_node);
+    }
+
+    return;
+}
