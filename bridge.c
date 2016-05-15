@@ -453,7 +453,9 @@ void push_prohibited(bridge *to_receive, bridge *to_push, map *got_map)
 
 
     head_node = get_probi_head(got_map, point_a, point_b);
+    #ifdef PROBI_DEBUG
     printf( "Pushing probi to %d -  %d %p \n", point_a, point_b, head_node );
+    #endif
 
     if(head_node == NULL)
     {
@@ -466,7 +468,9 @@ void push_prohibited(bridge *to_receive, bridge *to_push, map *got_map)
         head_node = create_node((item) to_push, aux_node);
         set_probi_head(got_map, point_a , point_b, head_node);
     }
+    #ifdef PROBI_DEBUG
     printf( "Head probi %d -  %d %p \n", get_isla_name(get_points( get_node_item(head_node), 0)), get_isla_name(get_points( get_node_item(head_node), 1)), head_node);
+    #endif
 
     return;
 }

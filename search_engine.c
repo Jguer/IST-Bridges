@@ -180,8 +180,10 @@ bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, map* got_map, sta
         head_prob_node = get_probi_head(got_map, get_isla_name(get_points(get_node_item(get_stack_head(got_stack)), 0)) ,
                                              get_isla_name(get_points(get_node_item(get_stack_head(got_stack)), 1)));
 
+        #ifdef PROBI_DEBUG
         printf("Got this node head in connectables: %d - %d %p \n", get_isla_name(get_points(get_node_item(get_stack_head(got_stack)), 0)) ,
                                              get_isla_name(get_points(get_node_item(get_stack_head(got_stack)), 1)), head_prob_node);
+        #endif
     }
 
     if(get_isla_bridge_s_avb(isla_a) > 0 && get_isla_bridge_s_avb(isla_b) > 0)
@@ -194,7 +196,9 @@ bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, map* got_map, sta
 
         if(head_prob_node != NULL)
         {
+            #ifdef PROBI_DEBUG
             printf( "Head probi in connectables %d -  %d\n", get_isla_name(get_points( get_node_item(head_prob_node), 0)), get_isla_name(get_points( get_node_item(head_prob_node), 1)));
+            #endif
             if(is_prohibited(isla_a, adj_index, head_prob_node))
                 return FALSE;
         }
@@ -334,6 +338,8 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
         printf("Trying to backtack. Last stack \n");
         print_stack(got_stack, print_bridge);
         #endif
+
+        set_probi_head(got_map, get_isla_name(get_points(get_node_item(get_head(got_stack)), 0)), get_isla_name(get_points(get_node_item(get_head(got_stack)), 1)), NULL);
         /* Push head to prohibited list of head->next */
         push_prohibited( last_bridge, get_node_item(get_stack_head(got_stack)), got_map);
 
