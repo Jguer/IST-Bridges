@@ -91,7 +91,6 @@ void print_bridge_to_file(isla *new_isla, FILE *outfile)
     }
 }
 
-
 void print_created_map(list* isla_list, FILE *outfile)
 {
     node *new_node = NULL;
@@ -111,38 +110,34 @@ void print_created_map(list* isla_list, FILE *outfile)
     return;
 }
 
-void print_output_per_map(map *got_map, FILE *outfile, int mode_result, list* isla_list)
+void print_output_per_map(map *got_map, FILE *outfile, list* isla_list)
 {
     int sol_info = 0;
     int mode = get_map_mode(got_map);
-
-    /* for testing */
-    mode_result = ALL_CONCT;
+    int mode_result = get_map_mode_result(got_map);
 
     if(mode == 1)
     {
-        switch(mode_result)
-        {
-            case NO_SOL: sol_info = 0;
-            case GOT_SOL: sol_info = 0;
-        }
+        sol_info = 0;
     }
     else if(mode == 2)
     {
-        switch(mode_result)
-        {
-            case ALL_CONCT: sol_info = 2;
-            case NOT_ALL_CONCT: sol_info = 1;
-            case NO_SOL: sol_info = 1;
-        }
+        if(mode_result == ALL_CONCT)
+            sol_info = 2;
+
+        else if(mode_result == NOT_ALL_CONCT)
+            sol_info = 1;
+
+        else
+            sol_info = 1;
     }
     else
     {
-        switch(mode_result)
-        {
-            case ALL_CONCT: sol_info = 2;
-            case NO_SOL: sol_info = 1;
-        }
+        if(mode_result == ALL_CONCT)
+            sol_info = 2;
+        
+        else
+            sol_info = 1;
     }
 
     /* print first line */
