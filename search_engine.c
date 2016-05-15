@@ -386,7 +386,8 @@ int gen_essential_bridges(list *isla_list, stack *got_stack)
                 _adj = get_isla_adj(new_isla, dir);
                 if(_adj != NULL)
                 {
-                    if(is_connected(new_isla, dir) == FALSE && is_connected(_adj, get_opposite_dir(dir)) == FALSE)
+                    if(is_connected(new_isla, dir) == FALSE && is_connected(_adj, get_opposite_dir(dir)) == FALSE
+                        && is_connectable(new_isla, _adj, dir, got_stack, NULL) == TRUE)
                     {
                         new_bridge = connect_islas(new_isla, _adj, dir);
                         push_to_stack(got_stack, (item)new_bridge);
