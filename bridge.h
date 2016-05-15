@@ -14,7 +14,6 @@ void   free_bridge(item);
 bool get_bridge_written(bridge *got_bridge);
 isla *get_points(bridge *got_bridge, int index);
 int  get_numberof_bridges(list *isla_list);
-list *get_bridge_probi_list(bridge *got_bridge);
 int get_isla_n_bridges(isla *new_isla, int dir);
 
 /* - Set - */
