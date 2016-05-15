@@ -274,9 +274,9 @@ bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list)
         aux_isla = get_isla_for_dfs(isla_list);
         while(aux_isla != NULL)
         {
-#ifdef DEBUG
+            #ifdef DEBUG
             printf("Going into isla %d \n", get_isla_name(aux_isla));
-#endif
+            #endif
             DFS_engine(aux_isla, visited, got_map, new_stack);
             set_isla_dfs_status(aux_isla, get_isla_dfs_status(aux_isla) + 1); /* Increment DFS status of isla */
             memset(visited, FALSE, sizeof(bool) * (get_list_size(isla_list)));  /*Reset visited array to FALSE*/

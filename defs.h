@@ -25,6 +25,7 @@
 
 #define DEBUG_LOC stdout
 #define DEBUG
+#define HEAVY_DEBUG
 
 #define NO_SOL 10
 #define GOT_SOL 11

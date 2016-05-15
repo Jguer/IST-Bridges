@@ -169,20 +169,12 @@ void print_map_graphic(map* got_map)
 void free_map(item got_item)
 {
     map *got_map = (map *)got_item;
-    int xi, yi;
+    int xi;
 
     /* Go lenghtwise*/
     for (xi = 0; xi < get_x_max(got_map); xi ++)
     {
-
-        /* Go heightwise*/
-        for (yi = 0; yi < get_y_max(got_map); yi ++)
-        {
-            /* If Cuba is present spread democracy through object destruction */
-            if(got_map->tile[xi][yi] != NULL) {
-            }
-        }
-
+        /* If Cuba is present spread democracy through object destruction */
         free(got_map->tile[xi]);
     }
 
