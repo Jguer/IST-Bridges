@@ -366,7 +366,7 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
 }
 
 
-int gen_essential_bridges(list *isla_list, stack *got_stack)
+int gen_essential_bridges(list *isla_list, stack *got_stack, map *got_map)
 {
     int n_bridges, n_adj;
     int dir = 0;
@@ -389,7 +389,8 @@ int gen_essential_bridges(list *isla_list, stack *got_stack)
                 _adj = get_isla_adj(new_isla, dir);
                 if(_adj != NULL)
                 {
-                    if(is_connected(new_isla, dir) == FALSE && is_connected(_adj, get_opposite_dir(dir)) == FALSE)
+                    if(is_connected(new_isla, dir) == FALSE && is_connected(_adj, get_opposite_dir(dir)) == FALSE
+                        && is_connectable(new_isla, _adj, dir, got_map, got_stack) == TRUE)
                     {
                         new_bridge = connect_islas(new_isla, _adj, dir);
                         push_to_stack(got_stack, (item)new_bridge);
@@ -409,7 +410,7 @@ stack *DFS_manager(list *isla_list, map* got_map)
     int   obv_gen      = 0;
     stack *new_stack   = create_stack();
 
-    obv_gen = gen_essential_bridges(isla_list, new_stack);
+    obv_gen = gen_essential_bridges(isla_list, new_stack, got_map);
     /* sort_list(isla_list, is_isla_greater_avb); */
     #ifdef DEBUG
     print_list(isla_list, print_isla);
