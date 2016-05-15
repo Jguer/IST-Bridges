@@ -16,7 +16,6 @@ int main(int argc, char **argv)
     list *isla_list;
     map *active_map;
     stack *got_stack;
-    int mode_result = 0;
     bool fuck_up = FALSE;
 
     if(argc != 2 || strcmp(get_filename_ext(argv[1]), "map"))
@@ -60,11 +59,9 @@ int main(int argc, char **argv)
             got_stack = DFS_manager(isla_list, active_map);
             print_stack(got_stack, print_bridge);
         }
-        else
-            mode_result = NO_SOL;
 
         /*Write in output file*/
-        print_output_per_map(active_map, output_file, mode_result, isla_list);
+        print_output_per_map(active_map, output_file, isla_list);
 
         /*free stuff, start over*/
         if(fuck_up != TRUE)
