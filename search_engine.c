@@ -63,8 +63,8 @@ bool check_for_allconnected(list *isla_list)
 {
     isla *new_isla = NULL;
     node *new_node = NULL;
-    bool *inpath = (bool*)calloc(get_list_size(isla_list), sizeof(bool)); /*check if +1 need be*/
-    bool *visited = (bool*)calloc(get_list_size(isla_list), sizeof(bool));
+    bool *inpath = (bool*)calloc(get_list_size(isla_list)+1, sizeof(bool)); /*check if +1 need be*/
+    bool *visited = (bool*)calloc(get_list_size(isla_list)+1, sizeof(bool));
     int index = 1;
 
     new_node = get_head(isla_list);
@@ -75,10 +75,15 @@ bool check_for_allconnected(list *isla_list)
     while(index < (int) get_list_size(isla_list)+1)
     {
         if(inpath[index] == FALSE)
+        {
+            free(visited);
+            free(inpath);
             return FALSE;
+        }
         index++;
     }
-
+    free(visited);
+    free(inpath);
     return TRUE;
 }
 
