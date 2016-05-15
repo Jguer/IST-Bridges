@@ -355,7 +355,9 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
     }
 
     free_connected_nodes(get_head(get_bridge_probi_list(last_bridge)), free_bridge);
+#ifdef DEBUG
     printf(KGRN"Final DFS COUNT: %d\n "KNRM, dfs_counter);
+#endif
 
     return define_mode_result(mode, is_solved, isla_list);
 }
@@ -406,9 +408,10 @@ stack *DFS_manager(list *isla_list, map* got_map)
 
     obv_gen = gen_essential_bridges(isla_list, new_stack);
     sort_list(isla_list, is_isla_greater_avb);
+#ifdef DEBUG
     print_list(isla_list, print_isla);
-
     printf("Number of obvious generated: %d \n", obv_gen);
+#endif
     DFS_ignition(new_stack, got_map, isla_list, NULL);
 
     set_map_mode_result(got_map, backtrack(new_stack, isla_list, got_map, obv_gen + 1));

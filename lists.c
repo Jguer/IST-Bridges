@@ -109,7 +109,7 @@ list *sort_list (list *to_sort, int (*cmp_list)(item, item))
 
         while(next != NULL) {
             int compare = cmp_list(get_node_item(current), get_node_item(next));
-            if (compare == 1) {
+            if (compare == 0) {
                 if (current == get_head(to_sort)){
                     to_sort->head = next;
                 } else {
