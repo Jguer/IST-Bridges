@@ -85,7 +85,7 @@ void create_path_vector(isla *new_isla, bool *inpath, bool *visited)
         /* Check if exists and check if visited*/
         if(is_connected(new_isla, i) == TRUE)
         {
-            inpath[get_isla_name(new_isla)] = TRUE;            
+            inpath[get_isla_name(new_isla)] = TRUE;
         }
         if(_adj != NULL && visited[get_isla_name(_adj)] == FALSE)
         {
@@ -309,7 +309,7 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack, li
         /* Check if exists, check if visited and check if islas are good for connect*/
         if(_adj != NULL && visited[get_isla_name(_adj)] == FALSE && is_connectable(edgy, _adj, dir, bridge_stack, probi_list) == TRUE )
         {
-#ifdef DEBUG
+#ifdef HEAVY_DEBUG
             printf("Looking %d , Isla1: %d Isla2: %d ; Available1: %d ; Available2: %d\n", dir , get_isla_name(edgy), get_isla_name(_adj), get_isla_bridge_s_avb(edgy), get_isla_bridge_s_avb(_adj));
 #endif
             new_bridge = connect_islas(edgy, _adj, dir);
@@ -419,8 +419,8 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
 
     while(is_empty == FALSE && is_solved == FALSE)
     {
-#ifdef DEBUG
         printf("Last Point: %d-%d \n", get_isla_name(get_points(last_bridge, 0)), get_isla_name(get_points(last_bridge, 1)));
+#ifdef HEAVY_DEBUG
         printf("To remove : %d-%d \n", get_isla_name(get_points(get_node_item(get_head(got_stack)), 0)), get_isla_name(get_points(get_node_item(get_head(got_stack)), 1)));
         printf("Trying to backtack. Last stack \n");
         print_stack(got_stack, print_bridge);
