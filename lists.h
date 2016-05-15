@@ -31,6 +31,7 @@ item get_node_item(node *got_node);
 void free_node(node *got_node, void (*free_item)(item));
 void free_connected_nodes(node *got_node, void (*free_item)(item));
 
+list *sort_list (list *to_sort, int (*cmp_list)(item, item));
 
 void already_free(item got_item);
 #endif
