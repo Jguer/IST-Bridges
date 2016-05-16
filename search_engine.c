@@ -306,7 +306,7 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
     unsigned int dir = 0;
     bridge *new_bridge;
 
-    visited[get_isla_name(edgy)] = TRUE;
+    visited[get_isla_name(edgy) - 1] = TRUE;
 
     /* Travel all nodes, list implementation may be underkill*/
     /* i gives NSEW*/
@@ -327,7 +327,7 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
     for(dir = 0; dir < 4; dir++)
     {
         _adj = get_isla_adj(edgy, dir);
-        if(_adj != NULL && visited[get_isla_name(_adj)] == FALSE)
+        if(_adj != NULL && visited[get_isla_name(_adj) - 1] == FALSE)
         {
             DFS_engine(_adj, visited, got_map, bridge_stack); /* New recursion level */
         }
@@ -431,9 +431,11 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
         printf("Trying to backtack. Last stack \n");
         print_stack(got_stack, print_bridge);
         #endif
-        
+
         /* Free prohibition list from head bridge */
-        free_connected_nodes(get_head(get_bridge_probi_list(get_node_item(get_stack_head(got_stack)))), free_bridge);
+        /* free_connected_nodes(get_head(get_bridge_probi_list(get_node_item(get_stack_head(got_stack)))), free_bridge); */
+        merge_lists(get_bridge_probi_list(last_bridge), get_bridge_probi_list(get_node_item(get_stack_head(got_stack))));
+
         /* Push head to prohibited list of head->next */
         push_item_to_list(get_bridge_probi_list(last_bridge), get_node_item(get_stack_head(got_stack)));
 
@@ -481,7 +483,7 @@ stack *DFS_manager(list *isla_list, map* got_map)
     #ifdef DEBUG
     print_stack(new_stack, print_bridge);
     #endif
-    
+
     sort_list(isla_list, is_isla_greater_avb);
     #ifdef DEBUG
     print_list(isla_list, print_isla);

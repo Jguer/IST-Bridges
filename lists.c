@@ -34,6 +34,12 @@ node *get_head(list *got_list)
     return got_list->head;
 }
 
+void set_head(list *got_list, node *got_head)
+{
+    got_list->head = got_head;
+    return;
+}
+
 void push_item_to_list(list *got_list, item new_item)
 {
     /* Node Creation */
@@ -284,6 +290,47 @@ void free_connected_nodes(node *got_node, void (*free_item)(item))
         free_node(got_node, free_item);
         got_node = aux_node;
     }
+    return;
+}
+
+void merge_lists(list *list_a, list *list_b)
+{
+    node *aux_node;
+    node *final_head;
+    size_t final_size;
+
+    final_size = list_a->size + list_b->size;
+
+    if(list_a->head == NULL)
+    {
+        list_a->head = list_b->head;
+        return;
+    }
+    else if(list_b->head == NULL)
+    {
+        return;
+    }
+
+    if(list_a->size < list_b->size)
+    {
+        aux_node = list_a->head;
+        final_head = list_b->head;
+        list_a->size = final_size;
+    }
+    else
+    {
+        aux_node = list_b->head;
+        final_head = list_a->head;
+        list_b->size = final_size;
+        list_a->head = list_b->head;
+    }
+
+    while(aux_node->next != NULL)
+    {
+        aux_node = get_next_node(aux_node);
+    }
+
+    aux_node->next = final_head;
     return;
 }
 
