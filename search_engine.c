@@ -494,9 +494,11 @@ stack *DFS_manager(list *isla_list, map* got_map)
     else if(mode == 3)
         is_solved = check_for_allconnected(isla_list);
 
-    print_stack(new_stack, print_bridge);
     #ifdef DEBUG
+    print_stack(new_stack, print_bridge);
     #endif
+
+    is_solved = gen_dynamic_obivous_bridges(isla_list, new_stack, got_map);
 
     if(!is_solved)
     {
