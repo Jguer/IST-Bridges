@@ -198,7 +198,7 @@ bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, stack *got_stack)
     return FALSE;
 }
 
-int gen_essential_bridges(list *isla_list, stack *got_stack, list* probi_list)
+int gen_essential_bridges(list *isla_list, stack *got_stack)
 {
     int n_bridges, n_adj;
     int dir = 0;
@@ -241,7 +241,7 @@ int gen_essential_bridges(list *isla_list, stack *got_stack, list* probi_list)
     return (int) get_stack_size(got_stack);
 }
 
-int gen_dynamic_obivous_bridges(list *isla_list, stack *got_stack, list* probi_list, map *got_map)
+int gen_dynamic_obivous_bridges(list *isla_list, stack *got_stack, map *got_map)
 {
     int n_bridges, n_adj;
     int dir = 0;
@@ -300,7 +300,7 @@ int gen_dynamic_obivous_bridges(list *isla_list, stack *got_stack, list* probi_l
     }
 }
 
-void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack, list *probi_list)
+void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
 {
     isla *_adj = NULL;
     unsigned int dir = 0;
@@ -329,7 +329,7 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack, li
         _adj = get_isla_adj(edgy, dir);
         if(_adj != NULL && visited[get_isla_name(_adj)] == FALSE)
         {
-            DFS_engine(_adj, visited, got_map, bridge_stack, probi_list); /* New recursion level */
+            DFS_engine(_adj, visited, got_map, bridge_stack); /* New recursion level */
         }
     }
 
@@ -361,7 +361,7 @@ void remove_bridge(bridge *got_bridge)
 
     return;
 }
-bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list, list *probi_list)
+bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list)
 {
     isla *aux_isla = NULL;
     bool *visited  = (bool *) calloc(get_list_size(isla_list) + 1, sizeof(bool));
@@ -378,7 +378,7 @@ bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list, list *probi_l
             #ifdef HEAVY_DEBUG
             printf("Going into isla %d \n", get_isla_name(aux_isla));
             #endif
-            DFS_engine(aux_isla, visited, got_map, new_stack, probi_list);
+            DFS_engine(aux_isla, visited, got_map, new_stack);
             set_isla_dfs_status(aux_isla, get_isla_dfs_status(aux_isla) + 1); /* Increment DFS status of isla */
             memset(visited, FALSE, sizeof(bool) * (get_list_size(isla_list)));  /*Reset visited array to FALSE*/
             aux_isla = get_isla_for_dfs(isla_list); /* Get new isla for analysis*/
@@ -391,8 +391,8 @@ bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list, list *probi_l
     {
         aux_isla = get_node_item(get_head(isla_list));
         /* Run 2 DFS engines to make sure path is generated*/
-        DFS_engine(aux_isla, visited, got_map, new_stack, probi_list);
-        DFS_engine(aux_isla, visited, got_map, new_stack, probi_list);
+        DFS_engine(aux_isla, visited, got_map, new_stack);
+        DFS_engine(aux_isla, visited, got_map, new_stack);
         reset_dfsed_values(isla_list);
         free(visited);
         return check_for_allconnected(isla_list);
@@ -409,7 +409,6 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
     node   *aux_node    = NULL;
     bridge *aux_bridge  = NULL;
     bridge *last_bridge = NULL;
-    list   *probi_list  = NULL;
     bool   is_empty     = is_stack_empty(got_stack);
     bool   is_solved    = FALSE;
     int    mode         = get_map_mode(got_map);
@@ -426,12 +425,13 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
 
     while(is_empty == FALSE && is_solved == FALSE)
     {
-#ifdef HEAVY_DEBUG
+        #ifdef HEAVY_DEBUG
         printf("Last Point: %d-%d \n", get_isla_name(get_points(last_bridge, 0)), get_isla_name(get_points(last_bridge, 1)));
         printf("To remove : %d-%d \n", get_isla_name(get_points(get_node_item(get_head(got_stack)), 0)), get_isla_name(get_points(get_node_item(get_head(got_stack)), 1)));
         printf("Trying to backtack. Last stack \n");
         print_stack(got_stack, print_bridge);
-#endif
+        #endif
+        
         /* Free prohibition list from head bridge */
         free_connected_nodes(get_head(get_bridge_probi_list(get_node_item(get_stack_head(got_stack)))), free_bridge);
         /* Push head to prohibited list of head->next */
@@ -447,8 +447,7 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
             free_node(aux_node, already_free);
         }
 
-        probi_list = get_bridge_probi_list(last_bridge); /* Get that sweet sweet prohibition list*/
-        is_solved = DFS_ignition(got_stack, got_map, isla_list, probi_list); /* DFS remaining points */
+        is_solved = DFS_ignition(got_stack, got_map, isla_list); /* DFS remaining points */
 
         dfs_counter ++;
 
@@ -478,16 +477,17 @@ stack *DFS_manager(list *isla_list, map* got_map)
     int   obv_gen      = 0;
     stack *new_stack   = create_stack();
 
-    obv_gen = gen_essential_bridges(isla_list, new_stack, NULL);
-#ifdef DEBUG
+    obv_gen = gen_essential_bridges(isla_list, new_stack);
+    #ifdef DEBUG
     print_stack(new_stack, print_bridge);
-#endif
+    #endif
+    
     sort_list(isla_list, is_isla_greater_avb);
-#ifdef DEBUG
+    #ifdef DEBUG
     print_list(isla_list, print_isla);
     printf("Number of obvious generated: %d \n", obv_gen);
-#endif
-    DFS_ignition(new_stack, got_map, isla_list, NULL);
+    #endif
+    DFS_ignition(new_stack, got_map, isla_list);
 
     set_map_mode_result(got_map, backtrack(new_stack, isla_list, got_map, obv_gen + 1));
 
