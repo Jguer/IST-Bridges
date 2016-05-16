@@ -470,9 +470,9 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
 
     }
 
+    #ifdef DEBUG
     printf(KGRN"Final DFS COUNT: %d\n "KNRM, dfs_counter);
-#ifdef DEBUG
-#endif
+    #endif
 
     return define_mode_result(mode, is_solved, isla_list);
 }
@@ -491,8 +491,8 @@ stack *DFS_manager(list *isla_list, map* got_map)
     else if(mode == 3)
         is_solved = check_for_allconnected(isla_list);
 
-    print_stack(new_stack, print_bridge);
     #ifdef DEBUG
+    print_stack(new_stack, print_bridge);
     #endif
 
     if(!is_solved)
