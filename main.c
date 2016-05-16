@@ -61,7 +61,7 @@ int main(int argc, char **argv)
         {
             /*Play the game*/
             got_stack = DFS_manager(isla_list, active_map);
-#ifdef DEBUG
+#ifdef _DEBUG
             print_stack(got_stack, print_bridge);
 #endif
         }
