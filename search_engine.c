@@ -171,8 +171,15 @@ bool is_prohibited(isla *victim_isla, int dir, list* probi_list)
 }
 
 
-bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, stack *got_stack, list *probi_list)
+bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, stack *got_stack)
 {
+    list *probi_list = NULL;
+
+    if(get_stack_head(got_stack) != NULL)
+    {
+        probi_list = get_bridge_probi_list(get_node_item(get_stack_head(got_stack)));
+    }
+
     if(get_isla_bridge_s_avb(isla_a) > 0 && get_isla_bridge_s_avb(isla_b) > 0)
     {
         if(get_isla_n_bridges(isla_a, adj_index) >= 2)
@@ -215,10 +222,10 @@ int gen_essential_bridges(list *isla_list, stack *got_stack, list* probi_list)
                 _adj = get_isla_adj(new_isla, dir);
                 if(_adj != NULL)
                 {
-#ifdef DEBUG
+                    #ifdef DEBUG
                     printf("Isla1: %d Isla2: %d\n", get_isla_name(new_isla), get_isla_name(_adj));
-#endif
-                    if(is_connectable(new_isla, _adj, dir, got_stack, probi_list) == TRUE  &&
+                    #endif
+                    if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE  &&
                         is_connected(new_isla, dir) == FALSE && is_connected(_adj, get_opposite_dir(dir)) == FALSE)
                     {
                         new_bridge = connect_islas(new_isla, _adj, dir);
@@ -260,17 +267,17 @@ int gen_dynamic_obivous_bridges(list *isla_list, stack *got_stack, list* probi_l
                 _adj = get_isla_adj(new_isla, dir);
                 if(_adj != NULL)
                 {
-#ifdef DEBUG
+                    #ifdef DEBUG
                     printf("Isla1: %d Isla2: %d\n", get_isla_name(new_isla), get_isla_name(_adj));
-#endif
-                    if(is_connectable(new_isla, _adj, dir, got_stack, probi_list) == TRUE  &&
+                    #endif
+                    if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE  &&
                         is_connected(new_isla, dir) == FALSE && is_connected(_adj, get_opposite_dir(dir)) == FALSE)
                     {
                         new_bridge = connect_islas(new_isla, _adj, dir);
                         push_to_stack(got_stack, (item)new_bridge);
-#ifdef DEBUG
+                        #ifdef DEBUG
                         printf("Connect %d - %d\n", get_isla_name(new_isla), get_isla_name(_adj));
-#endif
+                        #endif
                     }
                 }
             }
@@ -307,11 +314,11 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack, li
     {
         _adj = get_isla_adj(edgy, dir);
         /* Check if exists, check if visited and check if islas are good for connect*/
-        if(_adj != NULL && visited[get_isla_name(_adj)] == FALSE && is_connectable(edgy, _adj, dir, bridge_stack, probi_list) == TRUE )
+        if(_adj != NULL && visited[get_isla_name(_adj)] == FALSE && is_connectable(edgy, _adj, dir, bridge_stack) == TRUE )
         {
-#ifdef HEAVY_DEBUG
+            #ifdef HEAVY_DEBUG
             printf("Looking %d , Isla1: %d Isla2: %d ; Available1: %d ; Available2: %d\n", dir , get_isla_name(edgy), get_isla_name(_adj), get_isla_bridge_s_avb(edgy), get_isla_bridge_s_avb(_adj));
-#endif
+            #endif
             new_bridge = connect_islas(edgy, _adj, dir);
             push_to_stack(bridge_stack, (item)new_bridge);
         }
@@ -368,9 +375,9 @@ bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list, list *probi_l
         aux_isla = get_isla_for_dfs(isla_list);
         while(aux_isla != NULL)
         {
-#ifdef DEBUG
+            #ifdef HEAVY_DEBUG
             printf("Going into isla %d \n", get_isla_name(aux_isla));
-#endif
+            #endif
             DFS_engine(aux_isla, visited, got_map, new_stack, probi_list);
             set_isla_dfs_status(aux_isla, get_isla_dfs_status(aux_isla) + 1); /* Increment DFS status of isla */
             memset(visited, FALSE, sizeof(bool) * (get_list_size(isla_list)));  /*Reset visited array to FALSE*/
@@ -419,8 +426,8 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
 
     while(is_empty == FALSE && is_solved == FALSE)
     {
-        printf("Last Point: %d-%d \n", get_isla_name(get_points(last_bridge, 0)), get_isla_name(get_points(last_bridge, 1)));
 #ifdef HEAVY_DEBUG
+        printf("Last Point: %d-%d \n", get_isla_name(get_points(last_bridge, 0)), get_isla_name(get_points(last_bridge, 1)));
         printf("To remove : %d-%d \n", get_isla_name(get_points(get_node_item(get_head(got_stack)), 0)), get_isla_name(get_points(get_node_item(get_head(got_stack)), 1)));
         printf("Trying to backtack. Last stack \n");
         print_stack(got_stack, print_bridge);
