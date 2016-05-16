@@ -319,7 +319,7 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
     {
         _adj = get_isla_adj(edgy, dir);
         /* Check if exists, check if visited and check if islas are good for connect*/
-        if(_adj != NULL && visited[get_isla_name(_adj) - 1] == FALSE && is_connectable(edgy, _adj, dir, bridge_stack) == TRUE )
+        if(_adj != NULL && is_connectable(edgy, _adj, dir, bridge_stack) == TRUE )
         {
             #ifdef HEAVY_DEBUG
             printf("Looking %d , Isla1: %d Isla2: %d ; Available1: %d ; Available2: %d\n", dir , get_isla_name(edgy), get_isla_name(_adj), get_isla_bridge_s_avb(edgy), get_isla_bridge_s_avb(_adj));
@@ -457,7 +457,6 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
 
         is_solved = gen_dynamic_obivous_bridges(isla_list, got_stack, got_map);
         is_solved = DFS_ignition(got_stack, got_map, isla_list); /* DFS remaining points */
-
         dfs_counter ++;
 
         if((int) get_stack_size(got_stack) >= obvious && is_solved == FALSE && get_next_node(get_stack_head(got_stack))!= NULL)
@@ -471,14 +470,12 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
 
     }
 
+    #ifdef DEBUG
     printf(KGRN"Final DFS COUNT: %d\n "KNRM, dfs_counter);
-#ifdef DEBUG
-#endif
+    #endif
 
     return define_mode_result(mode, is_solved, isla_list);
 }
-
-
 
 stack *DFS_manager(list *isla_list, map* got_map)
 {

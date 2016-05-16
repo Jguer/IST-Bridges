@@ -2,7 +2,7 @@
 *     File Name           :     Projects/bridges-aed/defs.h
 *     Created By          :     jguer
 *     Creation Date       :     [2016-03-31 15:12]
-*     Last Modified       :     [2016-05-16 12:22]
+*     Last Modified       :     [2016-05-16 19:55]
 *     Description         :
 **********************************************************************************/
 #ifndef defsHeader
@@ -24,7 +24,6 @@
 #define RESET "\033[0m"
 
 #define DEBUG_LOC stdout
-#define DEBUG
 
 #define NO_SOL 10
 #define GOT_SOL 11

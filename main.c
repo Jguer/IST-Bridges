@@ -40,7 +40,7 @@ int main(int argc, char **argv)
             setup_isla(new_isla, active_map, lineData, isla_list);
         }
 
-#ifdef DEBUG
+        #ifdef DEBUG
         /*tester: print map, print list*/
         print_list(isla_list, print_isla);
         printf("\n");
@@ -48,12 +48,12 @@ int main(int argc, char **argv)
         print_map_graphic(active_map);
         printf("\n");
         /* end of test */
-#endif
+        #endif
 
         find_adj(active_map);
-#ifdef DEBUG
+        #ifdef DEBUG
         print_adj(isla_list);
-#endif
+        #endif
         fuck_up = initial_fuck_up(isla_list);
 
         /* verify if initial fuck up, if yes: rage quit */
@@ -61,9 +61,9 @@ int main(int argc, char **argv)
         {
             /*Play the game*/
             got_stack = DFS_manager(isla_list, active_map);
-#ifdef DEBUG
+            #ifdef _DEBUG
             print_stack(got_stack, print_bridge);
-#endif
+            #endif
         }
 
         /*Write in output file*/
