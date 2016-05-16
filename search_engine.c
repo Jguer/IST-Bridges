@@ -314,7 +314,7 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
     {
         _adj = get_isla_adj(edgy, dir);
         /* Check if exists, check if visited and check if islas are good for connect*/
-        if(_adj != NULL && visited[get_isla_name(_adj)] == FALSE && is_connectable(edgy, _adj, dir, bridge_stack) == TRUE )
+        if(_adj != NULL && visited[get_isla_name(_adj) - 1] == FALSE && is_connectable(edgy, _adj, dir, bridge_stack) == TRUE )
         {
             #ifdef HEAVY_DEBUG
             printf("Looking %d , Isla1: %d Isla2: %d ; Available1: %d ; Available2: %d\n", dir , get_isla_name(edgy), get_isla_name(_adj), get_isla_bridge_s_avb(edgy), get_isla_bridge_s_avb(_adj));
@@ -364,7 +364,7 @@ void remove_bridge(bridge *got_bridge)
 bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list)
 {
     isla *aux_isla = NULL;
-    bool *visited  = (bool *) calloc(get_list_size(isla_list) + 1, sizeof(bool));
+    bool *visited  = (bool *) calloc(get_n_islas(got_map), sizeof(bool));
     int  mode      = get_map_mode(got_map);
 
     if( visited == NULL )
@@ -380,7 +380,7 @@ bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list)
             #endif
             DFS_engine(aux_isla, visited, got_map, new_stack);
             set_isla_dfs_status(aux_isla, get_isla_dfs_status(aux_isla) + 1); /* Increment DFS status of isla */
-            memset(visited, FALSE, sizeof(bool) * (get_list_size(isla_list)));  /*Reset visited array to FALSE*/
+            memset(visited, FALSE, sizeof(bool) * (get_n_islas(got_map)));  /*Reset visited array to FALSE*/
             aux_isla = get_isla_for_dfs(isla_list); /* Get new isla for analysis*/
         }
         reset_dfsed_values(isla_list);
