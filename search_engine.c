@@ -432,7 +432,6 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
         print_stack(got_stack, print_bridge);
         #endif
 
-        /* Free prohibition list from head bridge */
         /* free_connected_nodes(get_head(get_bridge_probi_list(get_node_item(get_stack_head(got_stack)))), free_bridge); */
         merge_lists(get_bridge_probi_list(last_bridge), get_bridge_probi_list(get_node_item(get_stack_head(got_stack))));
 
@@ -464,7 +463,6 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
 
     }
 
-    free_connected_nodes(get_head(get_bridge_probi_list(last_bridge)), free_bridge);
 #ifdef DEBUG
     printf(KGRN"Final DFS COUNT: %d\n "KNRM, dfs_counter);
 #endif

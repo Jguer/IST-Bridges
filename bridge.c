@@ -62,6 +62,8 @@ void print_bridge(item got_item)
             KMAG "Isla 2 name:" RESET " %d \n",
             get_isla_name(get_points(got_bridge, 0)), get_isla_name(get_points(got_bridge, 1)));
 
+    if(got_bridge->probi_list != NULL)
+        print_list(got_bridge->probi_list, print_bridge);
     return;
 }
 
@@ -81,6 +83,11 @@ bridge *is_bridge(isla *new_isla, int dir)
 void free_bridge(item got_item)
 {
     bridge *got_bridge = (bridge *)got_item;
+
+    if(get_head(got_bridge->probi_list) != NULL)
+    {
+        free_connected_nodes(get_head(got_bridge->probi_list), free_bridge);
+    }
 
     free(got_bridge->probi_list);
     free(got_bridge);

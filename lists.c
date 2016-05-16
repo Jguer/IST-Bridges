@@ -304,6 +304,7 @@ void merge_lists(list *list_a, list *list_b)
     if(list_a->head == NULL)
     {
         list_a->head = list_b->head;
+        list_b->head = NULL;
         return;
     }
     else if(list_b->head == NULL)
@@ -330,6 +331,7 @@ void merge_lists(list *list_a, list *list_b)
         aux_node = get_next_node(aux_node);
     }
 
+    list_b->head = NULL;
     aux_node->next = final_head;
     return;
 }
