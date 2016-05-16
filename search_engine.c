@@ -321,11 +321,15 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
         /* Check if exists, check if visited and check if islas are good for connect*/
         if(_adj != NULL && is_connectable(edgy, _adj, dir, bridge_stack) == TRUE )
         {
-            #ifdef HEAVY_DEBUG
-            printf("Looking %d , Isla1: %d Isla2: %d ; Available1: %d ; Available2: %d\n", dir , get_isla_name(edgy), get_isla_name(_adj), get_isla_bridge_s_avb(edgy), get_isla_bridge_s_avb(_adj));
-            #endif
-            new_bridge = connect_islas(edgy, _adj, dir);
-            push_to_stack(bridge_stack, (item)new_bridge);
+            if(get_map_mode(got_map) && visited[get_isla_name(_adj) - 1] == TRUE )
+            {
+                continue;
+            }
+                #ifdef HEAVY_DEBUG
+                printf("Looking %d , Isla1: %d Isla2: %d ; Available1: %d ; Available2: %d\n", dir , get_isla_name(edgy), get_isla_name(_adj), get_isla_bridge_s_avb(edgy), get_isla_bridge_s_avb(_adj));
+                #endif
+                new_bridge = connect_islas(edgy, _adj, dir);
+                push_to_stack(bridge_stack, (item)new_bridge);
         }
     }
 
@@ -399,6 +403,7 @@ bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list)
         aux_isla = get_node_item(get_head(isla_list));
         /* Run 2 DFS engines to make sure path is generated*/
         DFS_engine(aux_isla, visited, got_map, new_stack);
+        memset(visited, FALSE, sizeof(bool) * (get_n_islas(got_map))); /*Reset visited array to FALSE*/
         DFS_engine(aux_isla, visited, got_map, new_stack);
         reset_dfsed_values(isla_list);
         free(visited);
