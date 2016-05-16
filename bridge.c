@@ -454,3 +454,36 @@ bool initial_fuck_up(list *isla_list)
     }
     return FALSE;
 }
+
+bool is_impar(int n)
+{
+    if(n == 3 || n == 5 || n == 7)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+void basic_numeric_connections(isla *new_isla, stack *got_stack)
+{
+
+ 
+
+}
+
+void connect_obvious(map *got_map, stack *got_stack, list *isla_list)
+{
+    node *new_node = NULL;
+    isla *new_isla = NULL;
+    bridge *new_bridge = NULL;
+
+    new_node = get_head(isla_list);
+
+    while(new_node != NULL)
+    {
+        new_isla = get_node_item(new_node);
+
+        basic_numeric_connections(new_isla, got_stack);
+
+        new_node = get_next_node(new_node);
+    }
+}
