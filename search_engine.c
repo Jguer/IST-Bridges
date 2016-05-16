@@ -230,6 +230,12 @@ int gen_essential_bridges(list *isla_list, stack *got_stack)
                     {
                         new_bridge = connect_islas(new_isla, _adj, dir);
                         push_to_stack(got_stack, (item)new_bridge);
+
+                        if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE && n_bridges > 2*n_adj)
+                        {
+                            new_bridge = connect_islas(new_isla, _adj, dir);
+                            push_to_stack(got_stack, (item)new_bridge);
+                        }
                     }
                 }
             }
@@ -270,8 +276,7 @@ int gen_dynamic_obivous_bridges(list *isla_list, stack *got_stack, map *got_map)
                     #ifdef DEBUG
                     printf("Isla1: %d Isla2: %d\n", get_isla_name(new_isla), get_isla_name(_adj));
                     #endif
-                    if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE  &&
-                        is_connected(new_isla, dir) == FALSE && is_connected(_adj, get_opposite_dir(dir)) == FALSE)
+                    if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE)
                     {
                         new_bridge = connect_islas(new_isla, _adj, dir);
                         push_to_stack(got_stack, (item)new_bridge);
@@ -361,6 +366,7 @@ void remove_bridge(bridge *got_bridge)
 
     return;
 }
+
 bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list)
 {
     isla *aux_isla = NULL;
@@ -381,6 +387,7 @@ bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list)
             DFS_engine(aux_isla, visited, got_map, new_stack);
             set_isla_dfs_status(aux_isla, get_isla_dfs_status(aux_isla) + 1); /* Increment DFS status of isla */
             memset(visited, FALSE, sizeof(bool) * (get_n_islas(got_map)));  /*Reset visited array to FALSE*/
+            sort_list(isla_list, is_isla_greater_avb);
             aux_isla = get_isla_for_dfs(isla_list); /* Get new isla for analysis*/
         }
         reset_dfsed_values(isla_list);
@@ -448,6 +455,7 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
             free_node(aux_node, already_free);
         }
 
+        is_solved = gen_dynamic_obivous_bridges(isla_list, got_stack, got_map);
         is_solved = DFS_ignition(got_stack, got_map, isla_list); /* DFS remaining points */
         dfs_counter ++;
 
@@ -462,8 +470,8 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
 
     }
 
-#ifdef DEBUG
     printf(KGRN"Final DFS COUNT: %d\n "KNRM, dfs_counter);
+#ifdef DEBUG
 #endif
 
     return define_mode_result(mode, is_solved, isla_list);
@@ -473,20 +481,33 @@ stack *DFS_manager(list *isla_list, map* got_map)
 {
     int   obv_gen      = 0;
     stack *new_stack   = create_stack();
+    int mode = get_map_mode(got_map);
+    bool is_solved = FALSE;
 
     obv_gen = gen_essential_bridges(isla_list, new_stack);
-    #ifdef DEBUG
+
+    if(mode == 1 || mode == 2)
+        is_solved = check_for_allzero(isla_list);
+    else if(mode == 3)
+        is_solved = check_for_allconnected(isla_list);
+
     print_stack(new_stack, print_bridge);
-    #endif
-
-    sort_list(isla_list, is_isla_greater_avb);
     #ifdef DEBUG
-    print_list(isla_list, print_isla);
-    printf("Number of obvious generated: %d \n", obv_gen);
     #endif
-    DFS_ignition(new_stack, got_map, isla_list);
 
-    set_map_mode_result(got_map, backtrack(new_stack, isla_list, got_map, obv_gen + 1));
+    if(!is_solved)
+    {
+        sort_list(isla_list, is_isla_greater_avb);
+
+        #ifdef DEBUG
+        print_list(isla_list, print_isla);
+        printf("Number of obvious generated: %d \n", obv_gen);
+        #endif
+
+        DFS_ignition(new_stack, got_map, isla_list);
+
+        set_map_mode_result(got_map, backtrack(new_stack, isla_list, got_map, obv_gen + 1));
+    }
 
     return new_stack;
 }
