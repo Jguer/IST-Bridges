@@ -35,3 +35,4 @@
 bridges
 __pycache__/*
 vgcore*
+res/*.sol
