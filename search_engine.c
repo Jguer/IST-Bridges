@@ -1,5 +1,35 @@
 #include "search_engine.h"
 
+isla *is_map_connectable(list *isla_list)
+{
+    node *new_node = NULL;
+    isla *new_isla = NULL, *_adj = NULL;
+    int dir = 0;
+
+    new_node = get_head(isla_list);
+
+    while(new_node != NULL)
+    {
+        new_isla = get_node_item(new_node);
+
+        for(dir=0; dir<4; dir++)
+        {
+            _adj = get_isla_adj(new_isla, dir);
+            if(_adj != NULL)
+            {
+                if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE)
+                {
+                    return new_isla;
+                }
+            }
+        }
+
+        new_node = get_next_node(new_node);
+    }
+    return NULL;
+}
+
+
 int define_mode_result(int mode, bool is_solved, list *isla_list)
 {
     int mode_result = 0;
