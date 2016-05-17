@@ -463,6 +463,239 @@ bool is_impar(int n)
         return FALSE;
 }
 
+bool n_four(isla *magica, stack *got_stack)
+{
+    int dir = 0;
+    isla *aux;
+    int connectable;
+    int a = 5;
+    int b = 5;
+
+    if(get_adj_number(magica) == 2 && get_isla_bridge_s_avb(magica) == 4)
+    {
+        for( dir = 0; dir < 4; dir ++)
+        {
+            aux = get_isla_adj( magica, i);
+            if (aux != NULL)
+            {
+                connectable += is_connectable(magica, aux, i, got_stack);
+                if(a == 5)
+                {
+                    a = dir;
+                    if(get_isla_bridge_s_avb(get_isla_adj(magica, a)) < 2)
+                    {
+                        return FALSE;
+                    }
+                }
+                else
+                {
+                    b = dir;
+                    if(get_isla_bridge_s_avb(get_isla_adj(magica, b)) < 2)
+                    {
+                        return FALSE;
+                    }
+                }
+            }
+
+            if(connectable == 2)
+            {
+                push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, a), a));
+                push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, a), a));
+                push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, b), b));
+                push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, b), b));
+                break;
+            }
+            else
+            {
+                return FALSE;
+            }
+        }
+    }
+
+    return TRUE;
+}
+
+bool n_four(isla *magica, stack *got_stack)
+{
+    int dir = 0;
+    isla *aux;
+    int connectable;
+    int a = 5;
+    int b = 5;
+
+    if(get_adj_number(magica) == 2 && get_isla_bridge_s_avb(magica) == 4)
+    {
+        for( dir = 0; dir < 4; dir ++)
+        {
+            aux = get_isla_adj( magica, i);
+            if (aux != NULL)
+            {
+                connectable += is_connectable(magica, aux, i, got_stack);
+                if(a == 5)
+                {
+                    a = dir;
+                    if(get_isla_bridge_s_avb(get_isla_adj(magica, a)) < 2)
+                    {
+                        return FALSE;
+                    }
+                }
+                else
+                {
+                    b = dir;
+                    if(get_isla_bridge_s_avb(get_isla_adj(magica, b)) < 2)
+                    {
+                        return FALSE;
+                    }
+                }
+            }
+
+            if(connectable == 2)
+            {
+                push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, a), a));
+                push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, a), a));
+                push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, b), b));
+                push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, b), b));
+                break;
+            }
+            else
+            {
+                return FALSE;
+            }
+        }
+    }
+
+    return TRUE;
+}
+
+bool n_six(isla *magica, stack *got_stack)
+{
+    int dir = 0;
+    isla *aux;
+    int connectable;
+    int a = 5;
+    int b = 5;
+    int c = 5;
+
+    if(get_adj_number(magica) == 2 && get_isla_bridge_s_avb(magica) == 6)
+    {
+        for( dir = 0; dir < 4; dir ++)
+        {
+            aux = get_isla_adj( magica, i);
+            if (aux != NULL)
+            {
+                connectable += is_connectable(magica, aux, i, got_stack);
+                if(a == 5)
+                {
+                    a = dir;
+                    if(get_isla_bridge_s_avb(get_isla_adj(magica, a)) < 2)
+                    {
+                        return FALSE;
+                    }
+                }
+                else if(b == 5)
+                {
+                    b = dir;
+                    if(get_isla_bridge_s_avb(get_isla_adj(magica, b)) < 2)
+                    {
+                        return FALSE;
+                    }
+                }
+                else
+                {
+                    c = dir;
+                    if(get_isla_bridge_s_avb(get_isla_adj(magica, c)) < 2)
+                    {
+                        return FALSE;
+                    }
+                }
+            }
+
+            if(connectable == 3)
+            {
+                push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, a), a));
+                push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, a), a));
+                push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, b), b));
+                push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, b), b));
+                push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, c), c));
+                push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, c), c));
+                break;
+            }
+            else
+            {
+                return FALSE;
+            }
+        }
+    }
+
+    return TRUE;
+}
+
+bool n_eight(isla *magica, stack *got_stack)
+{
+    int dir = 0;
+    isla *aux;
+    int connectable;
+    int a = 5;
+    int b = 5;
+    int c = 5;
+    int d = 5;
+
+    if(get_adj_number(magica) == 2 && get_isla_bridge_s_avb(magica) == 8)
+    {
+        for( dir = 0; dir < 4; dir ++)
+        {
+            aux = get_isla_adj( magica, i);
+            if (aux != NULL)
+            {
+                connectable += is_connectable(magica, aux, i, got_stack);
+                if(a == 5)
+                {
+                    a = dir;
+                    if(get_isla_bridge_s_avb(get_isla_adj(magica, a)) < 2)
+                        return FALSE;
+                }
+                else if(b == 5)
+                {
+                    b = dir;
+                    if(get_isla_bridge_s_avb(get_isla_adj(magica, b)) < 2)
+                        return FALSE;
+                }
+                else if(c == 5)
+                {
+                    c = dir;
+                    if(get_isla_bridge_s_avb(get_isla_adj(magica, c)) < 2)
+                        return FALSE;
+                }
+                else
+                {
+                    d = dir;
+                    if(get_isla_bridge_s_avb(get_isla_adj(magica, d)) < 2)
+                        return FALSE;
+                }
+            }
+
+            if(connectable == 4)
+            {
+                push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, a), a));
+                push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, a), a));
+                push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, b), b));
+                push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, b), b));
+                push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, c), c));
+                push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, c), c));
+                push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, d), d));
+                push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, d), d));
+                break;
+            }
+            else
+            {
+                return FALSE;
+            }
+        }
+    }
+
+    return TRUE;
+}
+
 void basic_numeric_connections(isla *new_isla, stack *got_stack)
 {
 

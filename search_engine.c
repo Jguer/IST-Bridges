@@ -325,11 +325,12 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
             {
                 continue;
             }
-                #ifdef HEAVY_DEBUG
-                printf("Looking %d , Isla1: %d Isla2: %d ; Available1: %d ; Available2: %d\n", dir , get_isla_name(edgy), get_isla_name(_adj), get_isla_bridge_s_avb(edgy), get_isla_bridge_s_avb(_adj));
-                #endif
-                new_bridge = connect_islas(edgy, _adj, dir);
-                push_to_stack(bridge_stack, (item)new_bridge);
+
+            #ifdef HEAVY_DEBUG
+            printf("Looking %d , Isla1: %d Isla2: %d ; Available1: %d ; Available2: %d\n", dir , get_isla_name(edgy), get_isla_name(_adj), get_isla_bridge_s_avb(edgy), get_isla_bridge_s_avb(_adj));
+            #endif
+            new_bridge = connect_islas(edgy, _adj, dir);
+            push_to_stack(bridge_stack, (item)new_bridge);
         }
     }
 
