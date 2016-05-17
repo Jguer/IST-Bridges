@@ -2,6 +2,7 @@
 #define BRIDGE_HEADER
 #include "map.h"
 #include "lists.h"
+#include "basictechniques.h"
 
 typedef struct _bridge bridge;
 /* ----- BRIDGE ----- */

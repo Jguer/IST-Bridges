@@ -2,11 +2,10 @@
 *     File Name           :     Projects/bridges-aed/defs.h
 *     Created By          :     jguer
 *     Creation Date       :     [2016-03-31 15:12]
-*     Last Modified       :     [2016-05-16 19:55]
+*     Last Modified       :     [2016-05-17 01:44]
 *     Description         :
 **********************************************************************************/
 #ifndef defsHeader
-
 #define defsHeader
 #include <stdio.h>
 #include <stdlib.h>
