@@ -1,6 +1,6 @@
 #include "search_engine.h"
 
-isla *is_map_connectable(list *isla_list)
+isla *is_map_connectable(list *isla_list, stack *got_stack)
 {
     node *new_node = NULL;
     isla *new_isla = NULL, *_adj = NULL;
@@ -17,7 +17,7 @@ isla *is_map_connectable(list *isla_list)
             _adj = get_isla_adj(new_isla, dir);
             if(_adj != NULL)
             {
-                if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE)
+                if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE && get_isla_dfs_status(new_isla) == 0)
                 {
                     return new_isla;
                 }
@@ -136,16 +136,14 @@ void remove_bridge(bridge *got_bridge)
     return;
 }
 
-bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list)
+bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list, isla *aux_isla)
 {
-    isla *aux_isla = NULL;
     bool *visited  = (bool *) calloc(get_n_islas(got_map), sizeof(bool));
     int  mode      = get_map_mode(got_map);
 
     if( visited == NULL )
         memory_error("Unable to allocate visited vector");
 
-    aux_isla = get_isla_for_dfs(isla_list);
     if( aux_isla != NULL )
     {
         #ifdef HEAVY_DEBUG
@@ -166,7 +164,6 @@ bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list)
     }
     else
     {
-        reset_dfsed_values(isla_list);
         return FALSE;
     }
 }
@@ -176,10 +173,11 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
     node   *aux_node    = NULL;
     bridge *aux_bridge  = NULL;
     bridge *last_bridge = NULL;
-    bool   is_empty     = is_stack_empty(got_stack);
+    bool   is_empty     = FALSE;
     bool   is_solved    = FALSE;
     int    mode         = get_map_mode(got_map);
     int    dfs_counter  = 0;
+    isla *aux_isla = NULL;
 
     is_solved = check_for_allzero(isla_list);
     if(mode == 2 && is_solved == TRUE)
@@ -220,13 +218,17 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
                 if(mode == 3 && is_solved == TRUE)
                     is_solved = check_for_allconnected(isla_list);
             }
-            printf("obvious\n");
-            print_stack(got_stack, print_bridge);
         }
 
-        is_solved = DFS_ignition(got_stack, got_map, isla_list); /* DFS remaining points */
-        print_stack(got_stack, print_bridge);
-        dfs_counter ++;
+
+        aux_isla = is_map_connectable(isla_list, got_stack);
+        while (aux_isla != NULL)
+        {
+            is_solved = DFS_ignition(got_stack, got_map, isla_list, aux_isla); /* DFS remaining points */
+            dfs_counter ++;
+            aux_isla = is_map_connectable(isla_list, got_stack);
+        }
+        reset_dfsed_values(isla_list);
 
         if((int) get_stack_size(got_stack) > obvious && is_solved == FALSE && get_next_node(get_stack_head(got_stack))!= NULL)
         {
@@ -278,9 +280,6 @@ stack *DFS_manager(list *isla_list, map* got_map)
         print_list(isla_list, print_isla);
         printf("Number of obvious generated: %d \n", obv_number);
         #endif
-
-        DFS_ignition(new_stack, got_map, isla_list);
-        print_stack(new_stack, print_bridge);
 
         set_map_mode_result(got_map, backtrack(new_stack, isla_list, got_map, obv_number + 1));
     }
