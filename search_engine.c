@@ -1,6 +1,6 @@
 #include "search_engine.h"
 
-isla *is_map_connectable(list *isla_list)
+isla *is_map_connectable(list *isla_list, stack *got_stack)
 {
     node *new_node = NULL;
     isla *new_isla = NULL, *_adj = NULL;
@@ -17,13 +17,12 @@ isla *is_map_connectable(list *isla_list)
             _adj = get_isla_adj(new_isla, dir);
             if(_adj != NULL)
             {
-                if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE)
+                if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE && get_isla_dfs_status(new_isla) == 0)
                 {
                     return new_isla;
                 }
             }
         }
-
         new_node = get_next_node(new_node);
     }
     return NULL;
@@ -146,7 +145,7 @@ bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list)
     if( visited == NULL )
         memory_error("Unable to allocate visited vector");
 
-    aux_isla = get_isla_for_dfs(isla_list);
+    aux_isla = is_map_connectable(isla_list, new_stack);
     while(aux_isla != NULL && is_solved == FALSE)
     {
         #ifdef HEAVY_DEBUG
@@ -155,18 +154,20 @@ bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list)
         DFS_engine(aux_isla, visited, got_map, new_stack);
         set_isla_dfs_status(aux_isla, 1); /* Increment DFS status of isla */
         memset(visited, FALSE, sizeof(bool) * (get_n_islas(got_map)));  /*Reset visited array to FALSE*/
-        free(visited);
 
         is_solved = check_for_allzero(isla_list);
         if( mode == 3 && is_solved == TRUE)
         {
             is_solved = check_for_allconnected(isla_list);
         }
+
+        aux_isla = is_map_connectable(isla_list, new_stack);
     }
 
     reset_dfsed_values(isla_list);
     /* sort_list(isla_list, is_isla_greater_avb); */
 
+    free(visited);
     return is_solved;
 }
 
@@ -175,7 +176,7 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
     node   *aux_node    = NULL;
     bridge *aux_bridge  = NULL;
     bridge *last_bridge = NULL;
-    bool   is_empty     = is_stack_empty(got_stack);
+    bool   is_empty     = FALSE;
     bool   is_solved    = FALSE;
     int    mode         = get_map_mode(got_map);
     int    dfs_counter  = 0;
