@@ -244,7 +244,7 @@ stack *DFS_manager(list *isla_list, map* got_map)
 
         #ifdef DEBUG
         print_list(isla_list, print_isla);
-        printf("Number of obvious generated: %d \n", obv_gen);
+        printf("Number of obvious generated: %d \n", obv_number);
         #endif
 
         DFS_ignition(new_stack, got_map, isla_list);

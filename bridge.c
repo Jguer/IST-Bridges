@@ -62,8 +62,10 @@ void print_bridge(item got_item)
             KMAG "Isla 2 name:" RESET " %d \n",
             get_isla_name(get_points(got_bridge, 0)), get_isla_name(get_points(got_bridge, 1)));
 
+    #ifdef PROBI_DEBUG
     if(got_bridge->probi_list != NULL)
         print_list(got_bridge->probi_list, print_bridge);
+    #endif
     return;
 }
 

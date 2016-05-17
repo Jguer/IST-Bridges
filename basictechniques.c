@@ -139,6 +139,7 @@ bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, stack *got_stack)
 
     if(get_stack_head(got_stack) != NULL)
     {
+        if(get_node_item(get_stack_head(got_stack)) != NULL)
         probi_list = get_bridge_probi_list(get_node_item(get_stack_head(got_stack)));
     }
 
@@ -165,7 +166,7 @@ bool four_in_side(isla *magica, stack *got_stack)
     int dir = 0;
     isla *aux;
     int connectable = 0;
-    int adj[3] = {5};
+    int adj[3] = {5, 5, 5};
 
     for( dir = 0; dir < 4; dir ++)
     {
@@ -208,10 +209,13 @@ bool four_in_side(isla *magica, stack *got_stack)
 
     if(connectable == 3)
     {
-        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, adj[0]), adj[0]));
-        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, adj[1]), adj[1]));
-        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, adj[2]), adj[2]));
-        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, adj[2]), adj[2]));
+        #ifdef BT_DEBUG
+        printf("Adding Bridge at in_side_4\n");
+        #endif
+        push_to_stack(got_stack,(item) connect_islas(magica, get_isla_adj(magica, adj[0]), adj[0]));
+        push_to_stack(got_stack,(item) connect_islas(magica, get_isla_adj(magica, adj[1]), adj[1]));
+        push_to_stack(got_stack,(item) connect_islas(magica, get_isla_adj(magica, adj[2]), adj[2]));
+        push_to_stack(got_stack,(item) connect_islas(magica, get_isla_adj(magica, adj[2]), adj[2]));
     }
     else
     {
@@ -233,6 +237,9 @@ bool loner_neighbour(isla *new_isla, stack *got_stack)
         {
             if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE)
             {
+                #ifdef BT_DEBUG
+                printf("Adding Bridge at Loner Neighbour\n");
+                #endif
                 new_bridge = connect_islas(new_isla, _adj, dir);
                 push_to_stack(got_stack, (item)new_bridge);
 
@@ -241,7 +248,6 @@ bool loner_neighbour(isla *new_isla, stack *got_stack)
                     new_bridge = connect_islas(new_isla, _adj, dir);
                     push_to_stack(got_stack, (item)new_bridge);
                 }
-
             }
             else
                 return FALSE;
@@ -266,6 +272,9 @@ bool special_impar_treatment(isla *new_isla, stack *got_stack)
             if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE)
             {
                 new_bridge = connect_islas(new_isla, _adj, dir);
+                #ifdef BT_DEBUG
+                printf("Adding Bridge at special_impar_treatment\n");
+                #endif
                 push_to_stack(got_stack, (item)new_bridge);
             }
             else
@@ -287,6 +296,9 @@ bool special_impar_treatment(isla *new_isla, stack *got_stack)
             {
                 if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE)
                 {
+                    #ifdef BT_DEBUG
+                    printf("Adding Bridge at special_impar_treatment\n");
+                    #endif
                     new_bridge = connect_islas(new_isla, _adj, dir);
                     push_to_stack(got_stack, (item)new_bridge);
                 }
@@ -312,7 +324,9 @@ bool n_four(isla *magica, stack *got_stack)
         aux = get_isla_adj( magica, dir);
         if (aux != NULL)
         {
+            printf("Test nfocked %d\n", connectable);
             connectable += is_connectable(magica, aux, dir, got_stack);
+            printf("Test nfour %d\n", connectable);
             if(a == 5)
             {
                 a = dir;
@@ -330,21 +344,22 @@ bool n_four(isla *magica, stack *got_stack)
                 }
             }
         }
-
-        if(connectable == 2)
-        {
-            push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, a), a));
-            push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, a), a));
-            push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, b), b));
-            push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, b), b));
-            break;
-        }
-        else
-        {
-            return FALSE;
-        }
     }
 
+    if(connectable == 2)
+    {
+        #ifdef BT_DEBUG
+        printf("Adding Bridge at n_four\n");
+        #endif
+        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, a), a));
+        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, a), a));
+        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, b), b));
+        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, b), b));
+    }
+    else
+    {
+        return FALSE;
+    }
     return TRUE;
 }
 
@@ -388,23 +403,23 @@ bool n_six(isla *magica, stack *got_stack)
                 }
             }
         }
-
-        if(connectable == 3)
-        {
-            push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, a), a));
-            push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, a), a));
-            push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, b), b));
-            push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, b), b));
-            push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, c), c));
-            push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, c), c));
-            break;
-        }
-        else
-        {
-            return FALSE;
-        }
     }
-
+    if(connectable == 3)
+    {
+        #ifdef BT_DEBUG
+        printf("Adding Bridge at n_six\n");
+        #endif
+        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, a), a));
+        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, a), a));
+        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, b), b));
+        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, b), b));
+        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, c), c));
+        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, c), c));
+    }
+    else
+    {
+        return FALSE;
+    }
     return TRUE;
 }
 
@@ -449,25 +464,26 @@ bool n_eight(isla *magica, stack *got_stack)
                     return FALSE;
             }
         }
-
-        if(connectable == 4)
-        {
-            push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, a), a));
-            push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, a), a));
-            push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, b), b));
-            push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, b), b));
-            push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, c), c));
-            push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, c), c));
-            push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, d), d));
-            push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, d), d));
-            break;
-        }
-        else
-        {
-            return FALSE;
-        }
     }
 
+    if(connectable == 4)
+    {
+        #ifdef BT_DEBUG
+        printf("Adding Bridge at n_eight\n");
+        #endif
+        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, a), a));
+        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, a), a));
+        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, b), b));
+        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, b), b));
+        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, c), c));
+        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, c), c));
+        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, d), d));
+        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, d), d));
+    }
+    else
+    {
+        return FALSE;
+    }
     return TRUE;
 }
 
@@ -496,9 +512,12 @@ bool in_side_3(isla *new_isla, stack *got_stack)
         {
             _adj = get_isla_adj(new_isla, dir);
             if(_adj != NULL)
-            {   
+            {
                 if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE)
                 {
+                    #ifdef BT_DEBUG
+                    printf("Adding Bridge at in_side_3\n");
+                    #endif
                     new_bridge = connect_islas(new_isla, _adj, dir);
                     push_to_stack(got_stack, (item)new_bridge);
                 }
@@ -536,9 +555,12 @@ bool special_6(isla *new_isla, stack *got_stack)
         {
             _adj = get_isla_adj(new_isla, dir);
             if(_adj != NULL)
-            {   
+            {
                 if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE && get_isla_bridge_s_avb(_adj) != 1)
                 {
+                    #ifdef BT_DEBUG
+                    printf("Adding Bridge at special 6\n");
+                    #endif
                     new_bridge = connect_islas(new_isla, _adj, dir);
                     push_to_stack(got_stack, (item)new_bridge);
                 }
@@ -595,6 +617,7 @@ bool basic_connections_ok(isla *new_isla, stack *got_stack)
     {
         connections_ok = four_in_side(new_isla, got_stack);
     }
+    print_stack(got_stack, print_bridge);
     return connections_ok;
 }
 
