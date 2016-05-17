@@ -494,13 +494,57 @@ bool in_side_3(isla *new_isla, stack *got_stack)
     {
         for(dir=0; dir<4; dir++)
         {
-            if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE)
-            {
-                new_bridge = connect_islas(new_isla, _adj, dir);
-                push_to_stack(got_stack, (item)new_bridge);
+            _adj = get_isla_adj(new_isla, dir);
+            if(_adj != NULL)
+            {   
+                if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE)
+                {
+                    new_bridge = connect_islas(new_isla, _adj, dir);
+                    push_to_stack(got_stack, (item)new_bridge);
+                }
+                else
+                    return FALSE;
             }
-            else
-                return FALSE;
+        }
+    }
+
+    return TRUE;
+}
+
+bool special_6(isla *new_isla, stack *got_stack)
+{
+    int flag_one = 0;
+    int dir = 0;
+    isla *_adj = NULL;
+    bridge *new_bridge = NULL;
+
+    for(dir=0; dir<4; dir++)
+    {
+        _adj = get_isla_adj(new_isla, dir);
+        if(_adj != NULL)
+        {
+            if(get_isla_bridge_s_avb(_adj) == 1)
+            {
+                flag_one = 1;
+            }
+        }
+    }
+
+    if(flag_one)
+    {
+        for(dir=0; dir<4; dir++)
+        {
+            _adj = get_isla_adj(new_isla, dir);
+            if(_adj != NULL)
+            {   
+                if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE && get_isla_bridge_s_avb(_adj) != 1)
+                {
+                    new_bridge = connect_islas(new_isla, _adj, dir);
+                    push_to_stack(got_stack, (item)new_bridge);
+                }
+                else
+                    return FALSE;
+            }
         }
     }
 
@@ -535,6 +579,11 @@ bool basic_connections_ok(isla *new_isla, stack *got_stack)
     if((n_still_bridges == 6 && n_adj == 3) && n_still_bridges == n_bridges)
     {
         connections_ok = n_six(new_isla, got_stack);
+    }
+
+    if((n_still_bridges == 6 && n_adj == 4) && n_still_bridges == n_bridges)
+    {
+        connections_ok = special_6(new_isla, got_stack);
     }
 
     if((n_still_bridges == 8 && n_adj == 4) && n_still_bridges == n_bridges)
