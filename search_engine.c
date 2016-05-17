@@ -62,7 +62,7 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
             printf("Looking %d , Isla1: %d Isla2: %d ; Available1: %d ; Available2: %d\n", dir , get_isla_name(edgy), get_isla_name(_adj), get_isla_bridge_s_avb(edgy), get_isla_bridge_s_avb(_adj));
             #endif
             /* Create new bridge and push it to stack */
-            push_to_stack(bridge_stack, connect_islas(edgy, _adj, dir);
+            push_to_stack(bridge_stack, connect_islas(edgy, _adj, dir));
         }
     }
 
@@ -221,7 +221,7 @@ stack *DFS_manager(list *isla_list, map* got_map)
     int mode = get_map_mode(got_map);
     bool is_solved = FALSE;
 
-    
+
     if(!connect_obvious(new_stack, isla_list))
     {
         define_mode_result(mode, FALSE, isla_list);

@@ -160,6 +160,66 @@ bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, stack *got_stack)
     return FALSE;
 }
 
+bool four_in_side(isla *magica, stack *got_stack)
+{
+    int dir = 0;
+    isla *aux;
+    int connectable = 0;
+    int adj[3] = {5};
+
+    for( dir = 0; dir < 4; dir ++)
+    {
+        aux = get_isla_adj( magica, dir);
+        if (aux != NULL)
+        {
+            connectable += is_connectable(magica, aux, dir, got_stack);
+            if(get_isla_bridge_s_avb(aux) == 1)
+            {
+                if(adj[0] == 5)
+                {
+                    adj[0] = dir;
+                }
+                else if(adj[1] == 5)
+                {
+                    adj[1] = dir;
+                }
+            }
+            else if(get_isla_bridge_s_avb(aux) > 1)
+            {
+                if(adj[2] == 5)
+                {
+                    adj[2] = dir;
+                }
+            }
+            else
+            {
+                return FALSE;
+            }
+        }
+    }
+
+    for( dir = 0; dir < 3; dir ++ )
+    {
+        if(adj[dir] == 5)
+        {
+            return FALSE;
+        }
+    }
+
+    if(connectable == 3)
+    {
+        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, adj[0]), adj[0]));
+        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, adj[1]), adj[1]));
+        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, adj[2]), adj[2]));
+        push_to_stack(got_stack, connect_islas(magica, get_isla_adj(magica, adj[2]), adj[2]));
+    }
+    else
+    {
+        return FALSE;
+    }
+    return TRUE;
+}
+
 bool loner_neighbour(isla *new_isla, stack *got_stack)
 {
     int dir = 0;
@@ -482,6 +542,10 @@ bool basic_connections_ok(isla *new_isla, stack *got_stack)
         connections_ok = n_eight(new_isla, got_stack);
     }
 
+    if((n_still_bridges == 4 && n_adj == 3) && n_still_bridges == n_bridges)
+    {
+        connections_ok = four_in_side(new_isla, got_stack);
+    }
     return connections_ok;
 }
 
