@@ -1,0 +1,976 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls   s/call   s/call  name    
+ 16.80      0.66     0.66 561938599     0.00     0.00  get_isla_pos
+ 10.95      1.09     0.43 263695483     0.00     0.00  get_x
+  7.89      1.40     0.31  2862343     0.00     0.00  crossed_fire
+  7.89      1.71     0.31 298243116     0.00     0.00  get_y
+  7.76      2.02     0.31 291278776     0.00     0.00  get_points
+  5.73      2.24     0.23 49669975     0.00     0.00  is_cross_vertical
+  5.60      2.46     0.22 147169292     0.00     0.00  get_isla_y_from_bridge
+  5.09      2.66     0.20 112621659     0.00     0.00  get_isla_x_from_bridge
+  4.71      2.85     0.19 150101574     0.00     0.00  get_node_item
+  3.31      2.98     0.13   556999     0.00     0.00  set_isla_used_bridge
+  2.93      3.09     0.12 106023080     0.00     0.00  get_next_node
+  2.42      3.19     0.10 25866857     0.00     0.00  is_cross_horizontal
+  2.04      3.27     0.08 66435725     0.00     0.00  get_stack_head
+  2.04      3.35     0.08 56905662     0.00     0.00  get_isla_adj
+  1.91      3.42     0.08 34686559     0.00     0.00  get_isla_bridge_s_avb
+  1.78      3.49     0.07  5568560     0.00     0.00  get_adj_number
+  1.40      3.55     0.06   164448     0.00     0.00  is_map_connectable
+  1.27      3.60     0.05   139263     0.00     0.00  pop_from_stack
+  1.27      3.65     0.05       98     0.00     0.00  get_bridge_written
+  1.02      3.69     0.04 20912708     0.00     0.00  is_connectable
+  1.02      3.73     0.04  1415003     0.00     0.00  is_prohibited
+  1.02      3.77     0.04   139213     0.00     0.00  merge_lists
+  0.89      3.80     0.04 21330337     0.00     0.00  get_bridge_probi_list
+  0.76      3.83     0.03  2904360     0.00     0.00  get_isla_n_bridges
+  0.51      3.85     0.02   278515     0.00     0.00  create_node
+  0.51      3.87     0.02    25234     0.00     0.00  DFS_engine
+  0.25      3.88     0.01  5847178     0.00     0.00  get_isla_bridges_avb
+  0.25      3.89     0.01  5568560     0.00     0.00  basic_connections_ok
+  0.25      3.90     0.01   139214     0.00     0.00  connect_obvious
+  0.25      3.91     0.01       40     0.00     0.00  create_pos
+  0.25      3.92     0.01        1     0.01     0.01  print_adj
+  0.13      3.93     0.01  5593794     0.00     0.00  set_isla_dfs_status
+  0.13      3.93     0.01   139311     0.00     0.00  get_opposite_dir
+  0.00      3.93     0.00  8220627     0.00     0.00  get_isla_used_bridge
+  0.00      3.93     0.00  4037926     0.00     0.00  get_isla_name
+  0.00      3.93     0.00  2023868     0.00     0.00  get_head
+  0.00      3.93     0.00   278524     0.00     0.00  dec_isla_bridge_s_avb
+  0.00      3.93     0.00   278515     0.00     0.00  free_node
+  0.00      3.93     0.00   278426     0.00     0.00  inc_isla_bridge_s_avb
+  0.00      3.93     0.00   237729     0.00     0.00  in_side_3
+  0.00      3.93     0.00   187830     0.00     0.00  special_2
+  0.00      3.93     0.00   164117     0.00     0.00  get_map_mode
+  0.00      3.93     0.00   139263     0.00     0.00  create_list
+  0.00      3.93     0.00   139262     0.00     0.00  already_free
+  0.00      3.93     0.00   139262     0.00     0.00  connect_islas
+  0.00      3.93     0.00   139262     0.00     0.00  create_bridge
+  0.00      3.93     0.00   139262     0.00     0.00  free_bridge
+  0.00      3.93     0.00   139262     0.00     0.00  push_to_stack
+  0.00      3.93     0.00   139253     0.00     0.00  push_item_to_list
+  0.00      3.93     0.00   139253     0.00     0.00  push_node_to_list
+  0.00      3.93     0.00   139217     0.00     0.00  get_stack_size
+  0.00      3.93     0.00   139214     0.00     0.00  reset_dfsed_values
+  0.00      3.93     0.00   139213     0.00     0.00  remove_bridge
+  0.00      3.93     0.00    25479     0.00     0.00  get_isla_dfs_status
+  0.00      3.93     0.00    25236     0.00     0.00  check_for_allzero
+  0.00      3.93     0.00    25236     0.00     0.00  get_n_islas
+  0.00      3.93     0.00    25234     0.00     0.00  DFS_ignition
+  0.00      3.93     0.00     1560     0.00     0.00  is_isla_greater_avb
+  0.00      3.93     0.00      203     0.00     0.00  get_tile
+  0.00      3.93     0.00      186     0.00     0.00  get_y_max
+  0.00      3.93     0.00      158     0.00     0.00  get_x_max
+  0.00      3.93     0.00      120     0.00     0.00  set_isla_adj
+  0.00      3.93     0.00       80     0.00     0.00  print_isla
+  0.00      3.93     0.00       53     0.00     0.00  print_bridge
+  0.00      3.93     0.00       51     0.00     0.00  find_next_isla_x
+  0.00      3.93     0.00       49     0.00     0.00  set_bridge_written
+  0.00      3.93     0.00       43     0.00     0.00  read_line
+  0.00      3.93     0.00       40     0.00     0.00  create_isla
+  0.00      3.93     0.00       40     0.00     0.00  find_adj_y
+  0.00      3.93     0.00       40     0.00     0.00  find_next_isla_y
+  0.00      3.93     0.00       40     0.00     0.00  free_isla
+  0.00      3.93     0.00       40     0.00     0.00  free_pos
+  0.00      3.93     0.00       40     0.00     0.00  print_bridge_to_file
+  0.00      3.93     0.00       40     0.00     0.00  print_pos
+  0.00      3.93     0.00       40     0.00     0.00  set_tile
+  0.00      3.93     0.00       40     0.00     0.00  setup_isla
+  0.00      3.93     0.00        3     0.00     0.00  free_connected_nodes
+  0.00      3.93     0.00        3     0.00     0.00  get_list_size
+  0.00      3.93     0.00        2     0.00     0.00  print_list
+  0.00      3.93     0.00        2     0.00     0.00  print_stack
+  0.00      3.93     0.00        1     0.00     3.86  DFS_manager
+  0.00      3.93     0.00        1     0.00     3.86  backtrack
+  0.00      3.93     0.00        1     0.00     0.00  change_file_ext
+  0.00      3.93     0.00        1     0.00     0.00  create_map
+  0.00      3.93     0.00        1     0.00     0.00  create_stack
+  0.00      3.93     0.00        1     0.00     0.00  define_mode_result
+  0.00      3.93     0.00        1     0.00     0.00  find_adj
+  0.00      3.93     0.00        1     0.00     0.00  four_in_side
+  0.00      3.93     0.00        1     0.00     0.00  free_list
+  0.00      3.93     0.00        1     0.00     0.00  free_map
+  0.00      3.93     0.00        1     0.00     0.00  free_stack
+  0.00      3.93     0.00        1     0.00     0.00  get_filename_ext
+  0.00      3.93     0.00        1     0.00     0.00  get_map_mode_result
+  0.00      3.93     0.00        1     0.00     0.00  initial_fuck_up
+  0.00      3.93     0.00        1     0.00     0.05  print_created_map
+  0.00      3.93     0.00        1     0.00     0.00  print_map
+  0.00      3.93     0.00        1     0.00     0.00  print_map_graphic
+  0.00      3.93     0.00        1     0.00     0.05  print_output_per_map
+  0.00      3.93     0.00        1     0.00     0.00  set_map_mode_result
+  0.00      3.93     0.00        1     0.00     0.00  sort_list
+  0.00      3.93     0.00        1     0.00     0.00  special_6
+  0.00      3.93     0.00        1     0.00     0.00  special_impar_treatment
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2015 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) for 0.25% of 3.93 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]    100.0    0.00    3.93                 main [1]
+                0.00    3.86       1/1           DFS_manager [2]
+                0.00    0.05       1/1           print_output_per_map [30]
+                0.00    0.01      40/40          setup_isla [40]
+                0.01    0.00       1/1           print_adj [41]
+                0.00    0.00       1/1           free_stack [55]
+                0.00    0.00       1/1           initial_fuck_up [59]
+                0.00    0.00       1/1           find_adj [61]
+                0.00    0.00       1/1           print_map [67]
+                0.00    0.00       1/2           print_stack [62]
+                0.00    0.00       1/2           print_list [65]
+                0.00    0.00       1/1           free_list [70]
+                0.00    0.00      43/43          read_line [92]
+                0.00    0.00       1/1           get_filename_ext [101]
+                0.00    0.00       1/1           change_file_ext [96]
+                0.00    0.00       1/1           create_map [97]
+                0.00    0.00       1/139263      create_list [76]
+                0.00    0.00       1/1           print_map_graphic [103]
+                0.00    0.00       1/1           free_map [100]
+-----------------------------------------------
+                0.00    3.86       1/1           main [1]
+[2]     98.2    0.00    3.86       1         DFS_manager [2]
+                0.00    3.86       1/1           backtrack [3]
+                0.00    0.00       1/1           sort_list [57]
+                0.00    0.00       1/139214      connect_obvious [17]
+                0.00    0.00       1/2           print_stack [62]
+                0.00    0.00       1/2           print_list [65]
+                0.00    0.00       1/25236       check_for_allzero [52]
+                0.00    0.00       1/1           create_stack [98]
+                0.00    0.00       1/164117      get_map_mode [75]
+                0.00    0.00       1/139217      get_stack_size [81]
+                0.00    0.00       1/1           set_map_mode_result [104]
+-----------------------------------------------
+                0.00    3.86       1/1           DFS_manager [2]
+[3]     98.2    0.00    3.86       1         backtrack [3]
+                0.06    2.84  164448/164448      is_map_connectable [6]
+                0.00    0.59   25234/25234       DFS_ignition [12]
+                0.01    0.18  139213/139214      connect_obvious [17]
+                0.00    0.07  139213/139213      remove_bridge [28]
+                0.05    0.00  139213/139263      pop_from_stack [32]
+                0.04    0.00  139213/139213      merge_lists [34]
+                0.00    0.02  139214/139214      reset_dfsed_values [39]
+                0.00    0.01  139213/139253      push_item_to_list [46]
+                0.00    0.00  835278/150101574     get_node_item [18]
+                0.00    0.00  835278/66435725     get_stack_head [25]
+                0.00    0.00  417639/21330337     get_bridge_probi_list [35]
+                0.00    0.00  278426/106023080     get_next_node [21]
+                0.00    0.00  139213/139263      free_node <cycle 1> [74]
+                0.00    0.00       1/25236       check_for_allzero [52]
+                0.00    0.00  139214/139217      get_stack_size [81]
+                0.00    0.00       1/164117      get_map_mode [75]
+                0.00    0.00       1/25236       get_n_islas [83]
+                0.00    0.00       1/1           define_mode_result [99]
+-----------------------------------------------
+                0.00    0.00       1/20912708     special_6 [66]
+                0.00    0.00       3/20912708     four_in_side [60]
+                0.00    0.00       4/20912708     special_impar_treatment [58]
+                0.00    0.00   15318/20912708     special_2 [49]
+                0.00    0.02  156770/20912708     in_side_3 [37]
+                0.01    0.47 3028080/20912708     DFS_engine [13]
+                0.03    2.76 17712532/20912708     is_map_connectable [6]
+[4]     83.9    0.04    3.26 20912708         is_connectable [4]
+                0.31    2.59 2862343/2862343     crossed_fire [5]
+                0.04    0.07 1415003/1415003     is_prohibited [22]
+                0.08    0.00 62738104/66435725     get_stack_head [25]
+                0.06    0.00 27367193/34686559     get_isla_bridge_s_avb [26]
+                0.05    0.00 41825396/150101574     get_node_item [18]
+                0.03    0.00 20912698/21330337     get_bridge_probi_list [35]
+                0.03    0.00 2904360/2904360     get_isla_n_bridges [36]
+-----------------------------------------------
+                0.31    2.59 2862343/2862343     is_connectable [4]
+[5]     73.8    0.31    2.59 2862343         crossed_fire [5]
+                0.23    0.82 49669975/49669975     is_cross_vertical [7]
+                0.10    0.52 25866857/25866857     is_cross_horizontal [11]
+                0.36    0.00 302147328/561938599     get_isla_pos [9]
+                0.25    0.00 151073664/263695483     get_x [14]
+                0.16    0.00 151073664/298243116     get_y [15]
+                0.09    0.00 75536832/150101574     get_node_item [18]
+                0.08    0.00 74089502/106023080     get_next_node [21]
+                0.00    0.00 2862343/66435725     get_stack_head [25]
+-----------------------------------------------
+                0.06    2.84  164448/164448      backtrack [3]
+[6]     73.6    0.06    2.84  164448         is_map_connectable [6]
+                0.03    2.76 17712532/20912708     is_connectable [4]
+                0.03    0.00 23423150/56905662     get_isla_adj [24]
+                0.01    0.00 5863133/150101574     get_node_item [18]
+                0.01    0.00 5837899/106023080     get_next_node [21]
+                0.00    0.00  164448/2023868     get_head [73]
+                0.00    0.00   25479/25479       get_isla_dfs_status [82]
+-----------------------------------------------
+                0.23    0.82 49669975/49669975     crossed_fire [5]
+[7]     26.5    0.23    0.82 49669975         is_cross_vertical [7]
+                0.15    0.34 102880425/147169292     get_isla_y_from_bridge [8]
+                0.10    0.22 58103112/112621659     get_isla_x_from_bridge [10]
+-----------------------------------------------
+                0.07    0.14 44288867/147169292     is_cross_horizontal [11]
+                0.15    0.34 102880425/147169292     is_cross_vertical [7]
+[8]     17.8    0.22    0.48 147169292         get_isla_y_from_bridge [8]
+                0.17    0.00 147169292/561938599     get_isla_pos [9]
+                0.15    0.00 147169292/291278776     get_points [16]
+                0.15    0.00 147169292/298243116     get_y [15]
+-----------------------------------------------
+                0.00    0.00      40/561938599     free_isla <cycle 1> [56]
+                0.00    0.00      40/561938599     print_map [67]
+                0.00    0.00      80/561938599     find_adj_y [63]
+                0.00    0.00      80/561938599     find_adj [61]
+                0.00    0.00      80/561938599     set_tile [64]
+                0.13    0.00 112621659/561938599     get_isla_x_from_bridge [10]
+                0.17    0.00 147169292/561938599     get_isla_y_from_bridge [8]
+                0.36    0.00 302147328/561938599     crossed_fire [5]
+[9]     16.8    0.66    0.00 561938599         get_isla_pos [9]
+-----------------------------------------------
+                0.10    0.21 54518547/112621659     is_cross_horizontal [11]
+                0.10    0.22 58103112/112621659     is_cross_vertical [7]
+[10]    16.1    0.20    0.43 112621659         get_isla_x_from_bridge [10]
+                0.18    0.00 112621659/263695483     get_x [14]
+                0.13    0.00 112621659/561938599     get_isla_pos [9]
+                0.12    0.00 112621659/291278776     get_points [16]
+-----------------------------------------------
+                0.10    0.52 25866857/25866857     crossed_fire [5]
+[11]    15.6    0.10    0.52 25866857         is_cross_horizontal [11]
+                0.10    0.21 54518547/112621659     get_isla_x_from_bridge [10]
+                0.07    0.14 44288867/147169292     get_isla_y_from_bridge [8]
+-----------------------------------------------
+                0.00    0.59   25234/25234       backtrack [3]
+[12]    15.0    0.00    0.59   25234         DFS_ignition [12]
+                0.02    0.57   25234/25234       DFS_engine [13]
+                0.00    0.00   25234/25236       check_for_allzero [52]
+                0.00    0.00   25234/5593794     set_isla_dfs_status [47]
+                0.00    0.00   25234/164117      get_map_mode [75]
+                0.00    0.00   25234/25236       get_n_islas [83]
+-----------------------------------------------
+                              984126             DFS_engine [13]
+                0.02    0.57   25234/25234       DFS_ignition [12]
+[13]    15.0    0.02    0.57   25234+984126  DFS_engine [13]
+                0.01    0.47 3028080/20912708     is_connectable [4]
+                0.00    0.07  138880/139262      connect_islas [27]
+                0.01    0.00 8074880/56905662     get_isla_adj [24]
+                0.00    0.01  138880/139262      push_to_stack [42]
+                0.00    0.00 4037440/4037926     get_isla_name [72]
+                0.00    0.00  138880/164117      get_map_mode [75]
+                              984126             DFS_engine [13]
+-----------------------------------------------
+                0.00    0.00      40/263695483     find_adj_y [63]
+                0.00    0.00      40/263695483     find_adj [61]
+                0.00    0.00      40/263695483     print_pos [69]
+                0.00    0.00      40/263695483     set_tile [64]
+                0.18    0.00 112621659/263695483     get_isla_x_from_bridge [10]
+                0.25    0.00 151073664/263695483     crossed_fire [5]
+[14]    10.9    0.43    0.00 263695483         get_x [14]
+-----------------------------------------------
+                0.00    0.00      40/298243116     find_adj_y [63]
+                0.00    0.00      40/298243116     find_adj [61]
+                0.00    0.00      40/298243116     print_pos [69]
+                0.00    0.00      40/298243116     set_tile [64]
+                0.15    0.00 147169292/298243116     get_isla_y_from_bridge [8]
+                0.16    0.00 151073664/298243116     crossed_fire [5]
+[15]     7.9    0.31    0.00 298243116         get_y [15]
+-----------------------------------------------
+                0.00    0.00      77/291278776     free_isla <cycle 1> [56]
+                0.00    0.00      82/291278776     print_bridge_to_file [31]
+                0.00    0.00     106/291278776     print_bridge [68]
+                0.00    0.00  278426/291278776     remove_bridge [28]
+                0.03    0.00 31209134/291278776     is_prohibited [22]
+                0.12    0.00 112621659/291278776     get_isla_x_from_bridge [10]
+                0.15    0.00 147169292/291278776     get_isla_y_from_bridge [8]
+[16]     7.8    0.31    0.00 291278776         get_points [16]
+-----------------------------------------------
+                0.00    0.00       1/139214      DFS_manager [2]
+                0.01    0.18  139213/139214      backtrack [3]
+[17]     4.8    0.01    0.18  139214         connect_obvious [17]
+                0.01    0.16 5568560/5568560     basic_connections_ok [19]
+                0.01    0.00 5568560/150101574     get_node_item [18]
+                0.01    0.00 5568560/106023080     get_next_node [21]
+                0.00    0.00  139214/2023868     get_head [73]
+-----------------------------------------------
+                0.00    0.00      40/150101574     print_created_map [29]
+                0.00    0.00      40/150101574     print_adj [41]
+                0.00    0.00      40/150101574     initial_fuck_up [59]
+                0.00    0.00      53/150101574     print_stack [62]
+                0.00    0.00      80/150101574     print_list [65]
+                0.00    0.00    3120/150101574     sort_list [57]
+                0.00    0.00  104995/150101574     check_for_allzero [52]
+                0.00    0.00  835278/150101574     backtrack [3]
+                0.01    0.00 5568560/150101574     connect_obvious [17]
+                0.01    0.00 5568560/150101574     reset_dfsed_values [39]
+                0.01    0.00 5863133/150101574     is_map_connectable [6]
+                0.02    0.00 14795447/150101574     is_prohibited [22]
+                0.05    0.00 41825396/150101574     is_connectable [4]
+                0.09    0.00 75536832/150101574     crossed_fire [5]
+[18]     4.7    0.19    0.00 150101574         get_node_item [18]
+-----------------------------------------------
+                0.01    0.16 5568560/5568560     connect_obvious [17]
+[19]     4.2    0.01    0.16 5568560         basic_connections_ok [19]
+                0.07    0.03 5568560/5568560     get_adj_number [23]
+                0.00    0.03  237729/237729      in_side_3 [37]
+                0.01    0.00 5568560/34686559     get_isla_bridge_s_avb [26]
+                0.01    0.00 5568560/5847178     get_isla_bridges_avb [43]
+                0.00    0.00  187830/187830      special_2 [49]
+                0.00    0.00       1/1           special_impar_treatment [58]
+                0.00    0.00       1/1           four_in_side [60]
+                0.00    0.00       1/1           special_6 [66]
+-----------------------------------------------
+                0.00    0.00      49/556999      free_isla <cycle 1> [56]
+                0.07    0.00  278426/556999      remove_bridge [28]
+                0.07    0.00  278524/556999      connect_islas [27]
+[20]     3.3    0.13    0.00  556999         set_isla_used_bridge [20]
+-----------------------------------------------
+                0.00    0.00      40/106023080     sort_list [57]
+                0.00    0.00      40/106023080     print_created_map [29]
+                0.00    0.00      40/106023080     print_adj [41]
+                0.00    0.00      40/106023080     initial_fuck_up [59]
+                0.00    0.00      53/106023080     print_stack [62]
+                0.00    0.00      80/106023080     print_list [65]
+                0.00    0.00   79760/106023080     check_for_allzero [52]
+                0.00    0.00  139253/106023080     free_connected_nodes <cycle 1> [54]
+                0.00    0.00  278426/106023080     backtrack [3]
+                0.00    0.00  910571/106023080     merge_lists [34]
+                0.01    0.00 5568560/106023080     connect_obvious [17]
+                0.01    0.00 5568560/106023080     reset_dfsed_values [39]
+                0.01    0.00 5837899/106023080     is_map_connectable [6]
+                0.01    0.00 13550256/106023080     is_prohibited [22]
+                0.08    0.00 74089502/106023080     crossed_fire [5]
+[21]     2.9    0.12    0.00 106023080         get_next_node [21]
+-----------------------------------------------
+                0.04    0.07 1415003/1415003     is_connectable [4]
+[22]     2.7    0.04    0.07 1415003         is_prohibited [22]
+                0.03    0.00 31209134/291278776     get_points [16]
+                0.02    0.00 14795447/150101574     get_node_item [18]
+                0.01    0.00 13550256/106023080     get_next_node [21]
+                0.00    0.00 1415003/56905662     get_isla_adj [24]
+                0.00    0.00 1415003/2023868     get_head [73]
+-----------------------------------------------
+                0.07    0.03 5568560/5568560     basic_connections_ok [19]
+[23]     2.6    0.07    0.03 5568560         get_adj_number [23]
+                0.03    0.00 22274240/56905662     get_isla_adj [24]
+-----------------------------------------------
+                0.00    0.00       4/56905662     four_in_side [60]
+                0.00    0.00       5/56905662     special_6 [66]
+                0.00    0.00       8/56905662     special_impar_treatment [58]
+                0.00    0.00     160/56905662     initial_fuck_up [59]
+                0.00    0.00     280/56905662     print_adj [41]
+                0.00    0.00  767016/56905662     special_2 [49]
+                0.00    0.00  950916/56905662     in_side_3 [37]
+                0.00    0.00 1415003/56905662     is_prohibited [22]
+                0.01    0.00 8074880/56905662     DFS_engine [13]
+                0.03    0.00 22274240/56905662     get_adj_number [23]
+                0.03    0.00 23423150/56905662     is_map_connectable [6]
+[24]     2.0    0.08    0.00 56905662         get_isla_adj [24]
+-----------------------------------------------
+                0.00    0.00  835278/66435725     backtrack [3]
+                0.00    0.00 2862343/66435725     crossed_fire [5]
+                0.08    0.00 62738104/66435725     is_connectable [4]
+[25]     2.0    0.08    0.00 66435725         get_stack_head [25]
+-----------------------------------------------
+                0.00    0.00       4/34686559     special_impar_treatment [58]
+                0.00    0.00       5/34686559     four_in_side [60]
+                0.00    0.00       5/34686559     special_6 [66]
+                0.00    0.00  104995/34686559     check_for_allzero [52]
+                0.00    0.00  278426/34686559     inc_isla_bridge_s_avb [50]
+                0.00    0.00  278524/34686559     dec_isla_bridge_s_avb [51]
+                0.00    0.00  375660/34686559     special_2 [49]
+                0.00    0.00  713187/34686559     in_side_3 [37]
+                0.01    0.00 5568560/34686559     basic_connections_ok [19]
+                0.06    0.00 27367193/34686559     is_connectable [4]
+[26]     1.9    0.08    0.00 34686559         get_isla_bridge_s_avb [26]
+-----------------------------------------------
+                0.00    0.00       4/139262      special_impar_treatment [58]
+                0.00    0.00     378/139262      special_2 [49]
+                0.00    0.07  138880/139262      DFS_engine [13]
+[27]     1.8    0.00    0.07  139262         connect_islas [27]
+                0.07    0.00  278524/556999      set_isla_used_bridge [20]
+                0.01    0.00  139262/139311      get_opposite_dir [48]
+                0.00    0.00  278524/278524      dec_isla_bridge_s_avb [51]
+                0.00    0.00  183859/8220627     get_isla_used_bridge [71]
+                0.00    0.00  139262/139262      create_bridge [78]
+-----------------------------------------------
+                0.00    0.07  139213/139213      backtrack [3]
+[28]     1.7    0.00    0.07  139213         remove_bridge [28]
+                0.07    0.00  278426/556999      set_isla_used_bridge [20]
+                0.00    0.00  278426/278426      inc_isla_bridge_s_avb [50]
+                0.00    0.00  278426/291278776     get_points [16]
+                0.00    0.00 2227408/8220627     get_isla_used_bridge [71]
+-----------------------------------------------
+                0.00    0.05       1/1           print_output_per_map [30]
+[29]     1.3    0.00    0.05       1         print_created_map [29]
+                0.00    0.05      40/40          print_bridge_to_file [31]
+                0.00    0.00      40/150101574     get_node_item [18]
+                0.00    0.00      40/106023080     get_next_node [21]
+                0.00    0.00       1/2023868     get_head [73]
+-----------------------------------------------
+                0.00    0.05       1/1           main [1]
+[30]     1.3    0.00    0.05       1         print_output_per_map [30]
+                0.00    0.05       1/1           print_created_map [29]
+                0.00    0.00       1/164117      get_map_mode [75]
+                0.00    0.00       1/1           get_map_mode_result [102]
+                0.00    0.00       1/25236       get_n_islas [83]
+                0.00    0.00       1/158         get_x_max [87]
+                0.00    0.00       1/186         get_y_max [86]
+-----------------------------------------------
+                0.00    0.05      40/40          print_created_map [29]
+[31]     1.3    0.00    0.05      40         print_bridge_to_file [31]
+                0.05    0.00      98/98          get_bridge_written [33]
+                0.00    0.00      82/291278776     get_points [16]
+                0.00    0.00     320/8220627     get_isla_used_bridge [71]
+                0.00    0.00      82/4037926     get_isla_name [72]
+                0.00    0.00      49/49          set_bridge_written [91]
+-----------------------------------------------
+                0.00    0.00      50/139263      free_stack [55]
+                0.05    0.00  139213/139263      backtrack [3]
+[32]     1.3    0.05    0.00  139263         pop_from_stack [32]
+-----------------------------------------------
+                0.05    0.00      98/98          print_bridge_to_file [31]
+[33]     1.3    0.05    0.00      98         get_bridge_written [33]
+-----------------------------------------------
+                0.04    0.00  139213/139213      backtrack [3]
+[34]     1.0    0.04    0.00  139213         merge_lists [34]
+                0.00    0.00  910571/106023080     get_next_node [21]
+-----------------------------------------------
+                0.00    0.00  417639/21330337     backtrack [3]
+                0.03    0.00 20912698/21330337     is_connectable [4]
+[35]     0.9    0.04    0.00 21330337         get_bridge_probi_list [35]
+-----------------------------------------------
+                0.03    0.00 2904360/2904360     is_connectable [4]
+[36]     0.8    0.03    0.00 2904360         get_isla_n_bridges [36]
+                0.00    0.00 5808720/8220627     get_isla_used_bridge [71]
+-----------------------------------------------
+                0.00    0.03  237729/237729      basic_connections_ok [19]
+[37]     0.7    0.00    0.03  237729         in_side_3 [37]
+                0.00    0.02  156770/20912708     is_connectable [4]
+                0.00    0.00  713187/34686559     get_isla_bridge_s_avb [26]
+                0.00    0.00  950916/56905662     get_isla_adj [24]
+-----------------------------------------------
+                0.01    0.00  139253/278515      push_item_to_list [46]
+                0.01    0.00  139262/278515      push_to_stack [42]
+[38]     0.5    0.02    0.00  278515         create_node [38]
+-----------------------------------------------
+                0.00    0.02  139214/139214      backtrack [3]
+[39]     0.5    0.00    0.02  139214         reset_dfsed_values [39]
+                0.01    0.00 5568560/150101574     get_node_item [18]
+                0.01    0.00 5568560/106023080     get_next_node [21]
+                0.00    0.00 5568560/5593794     set_isla_dfs_status [47]
+                0.00    0.00  139214/2023868     get_head [73]
+-----------------------------------------------
+                0.00    0.01      40/40          main [1]
+[40]     0.3    0.00    0.01      40         setup_isla [40]
+                0.00    0.01      40/40          create_isla [44]
+                0.00    0.00      40/139253      push_item_to_list [46]
+                0.00    0.00      40/40          set_tile [64]
+-----------------------------------------------
+                0.01    0.00       1/1           main [1]
+[41]     0.3    0.01    0.00       1         print_adj [41]
+                0.00    0.00     280/56905662     get_isla_adj [24]
+                0.00    0.00      40/150101574     get_node_item [18]
+                0.00    0.00      40/106023080     get_next_node [21]
+                0.00    0.00     160/4037926     get_isla_name [72]
+                0.00    0.00       1/2023868     get_head [73]
+-----------------------------------------------
+                0.00    0.00       4/139262      special_impar_treatment [58]
+                0.00    0.00     378/139262      special_2 [49]
+                0.00    0.01  138880/139262      DFS_engine [13]
+[42]     0.3    0.00    0.01  139262         push_to_stack [42]
+                0.01    0.00  139262/278515      create_node [38]
+-----------------------------------------------
+                0.00    0.00     192/5847178     initial_fuck_up [59]
+                0.00    0.00  278426/5847178     inc_isla_bridge_s_avb [50]
+                0.01    0.00 5568560/5847178     basic_connections_ok [19]
+[43]     0.3    0.01    0.00 5847178         get_isla_bridges_avb [43]
+-----------------------------------------------
+                0.00    0.01      40/40          setup_isla [40]
+[44]     0.3    0.00    0.01      40         create_isla [44]
+                0.01    0.00      40/40          create_pos [45]
+-----------------------------------------------
+                0.01    0.00      40/40          create_isla [44]
+[45]     0.3    0.01    0.00      40         create_pos [45]
+-----------------------------------------------
+                0.00    0.00      40/139253      setup_isla [40]
+                0.00    0.01  139213/139253      backtrack [3]
+[46]     0.3    0.00    0.01  139253         push_item_to_list [46]
+                0.01    0.00  139253/278515      create_node [38]
+                0.00    0.00  139253/139253      push_node_to_list [80]
+-----------------------------------------------
+                0.00    0.00   25234/5593794     DFS_ignition [12]
+                0.00    0.00 5568560/5593794     reset_dfsed_values [39]
+[47]     0.1    0.01    0.00 5593794         set_isla_dfs_status [47]
+-----------------------------------------------
+                0.00    0.00      49/139311      free_isla <cycle 1> [56]
+                0.01    0.00  139262/139311      connect_islas [27]
+[48]     0.1    0.01    0.00  139311         get_opposite_dir [48]
+-----------------------------------------------
+                0.00    0.00  187830/187830      basic_connections_ok [19]
+[49]     0.1    0.00    0.00  187830         special_2 [49]
+                0.00    0.00   15318/20912708     is_connectable [4]
+                0.00    0.00  767016/56905662     get_isla_adj [24]
+                0.00    0.00  375660/34686559     get_isla_bridge_s_avb [26]
+                0.00    0.00     378/139262      connect_islas [27]
+                0.00    0.00     378/139262      push_to_stack [42]
+-----------------------------------------------
+                0.00    0.00  278426/278426      remove_bridge [28]
+[50]     0.0    0.00    0.00  278426         inc_isla_bridge_s_avb [50]
+                0.00    0.00  278426/34686559     get_isla_bridge_s_avb [26]
+                0.00    0.00  278426/5847178     get_isla_bridges_avb [43]
+-----------------------------------------------
+                0.00    0.00  278524/278524      connect_islas [27]
+[51]     0.0    0.00    0.00  278524         dec_isla_bridge_s_avb [51]
+                0.00    0.00  278524/34686559     get_isla_bridge_s_avb [26]
+-----------------------------------------------
+                0.00    0.00       1/25236       backtrack [3]
+                0.00    0.00       1/25236       DFS_manager [2]
+                0.00    0.00   25234/25236       DFS_ignition [12]
+[52]     0.0    0.00    0.00   25236         check_for_allzero [52]
+                0.00    0.00  104995/34686559     get_isla_bridge_s_avb [26]
+                0.00    0.00  104995/150101574     get_node_item [18]
+                0.00    0.00   79760/106023080     get_next_node [21]
+                0.00    0.00   25236/2023868     get_head [73]
+-----------------------------------------------
+[53]     0.0    0.00    0.00  139263+278557  <cycle 1 as a whole> [53]
+                0.00    0.00       3             free_connected_nodes <cycle 1> [54]
+                0.00    0.00      40             free_isla <cycle 1> [56]
+                0.00    0.00  278515             free_node <cycle 1> [74]
+                0.00    0.00  139262             free_bridge <cycle 1> [79]
+-----------------------------------------------
+                                   2             free_bridge <cycle 1> [79]
+                0.00    0.00       1/139263      free_list [70]
+[54]     0.0    0.00    0.00       3         free_connected_nodes <cycle 1> [54]
+                0.00    0.00  139253/106023080     get_next_node [21]
+                              139253             free_node <cycle 1> [74]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[55]     0.0    0.00    0.00       1         free_stack [55]
+                0.00    0.00      50/139263      pop_from_stack [32]
+                0.00    0.00      49/139263      free_node <cycle 1> [74]
+-----------------------------------------------
+                                  40             free_node <cycle 1> [74]
+[56]     0.0    0.00    0.00      40         free_isla <cycle 1> [56]
+                0.00    0.00      49/556999      set_isla_used_bridge [20]
+                0.00    0.00      49/139311      get_opposite_dir [48]
+                0.00    0.00      77/291278776     get_points [16]
+                0.00    0.00      40/561938599     get_isla_pos [9]
+                0.00    0.00     320/8220627     get_isla_used_bridge [71]
+                0.00    0.00      98/4037926     get_isla_name [72]
+                0.00    0.00      40/40          free_pos [94]
+                                  49             free_bridge <cycle 1> [79]
+-----------------------------------------------
+                0.00    0.00       1/1           DFS_manager [2]
+[57]     0.0    0.00    0.00       1         sort_list [57]
+                0.00    0.00    3120/150101574     get_node_item [18]
+                0.00    0.00      40/106023080     get_next_node [21]
+                0.00    0.00    1560/1560        is_isla_greater_avb [84]
+                0.00    0.00    1483/2023868     get_head [73]
+                0.00    0.00       1/3           get_list_size [95]
+-----------------------------------------------
+                0.00    0.00       1/1           basic_connections_ok [19]
+[58]     0.0    0.00    0.00       1         special_impar_treatment [58]
+                0.00    0.00       4/139262      connect_islas [27]
+                0.00    0.00       4/20912708     is_connectable [4]
+                0.00    0.00       4/139262      push_to_stack [42]
+                0.00    0.00       8/56905662     get_isla_adj [24]
+                0.00    0.00       4/34686559     get_isla_bridge_s_avb [26]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[59]     0.0    0.00    0.00       1         initial_fuck_up [59]
+                0.00    0.00     192/5847178     get_isla_bridges_avb [43]
+                0.00    0.00     160/56905662     get_isla_adj [24]
+                0.00    0.00      40/150101574     get_node_item [18]
+                0.00    0.00      40/106023080     get_next_node [21]
+                0.00    0.00       1/2023868     get_head [73]
+-----------------------------------------------
+                0.00    0.00       1/1           basic_connections_ok [19]
+[60]     0.0    0.00    0.00       1         four_in_side [60]
+                0.00    0.00       3/20912708     is_connectable [4]
+                0.00    0.00       5/34686559     get_isla_bridge_s_avb [26]
+                0.00    0.00       4/56905662     get_isla_adj [24]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[61]     0.0    0.00    0.00       1         find_adj [61]
+                0.00    0.00      40/40          find_adj_y [63]
+                0.00    0.00      80/561938599     get_isla_pos [9]
+                0.00    0.00      40/263695483     get_x [14]
+                0.00    0.00      40/298243116     get_y [15]
+                0.00    0.00      60/120         set_isla_adj [88]
+                0.00    0.00      51/51          find_next_isla_x [90]
+                0.00    0.00       1/186         get_y_max [86]
+                0.00    0.00       1/158         get_x_max [87]
+-----------------------------------------------
+                0.00    0.00       1/2           DFS_manager [2]
+                0.00    0.00       1/2           main [1]
+[62]     0.0    0.00    0.00       2         print_stack [62]
+                0.00    0.00      53/53          print_bridge [68]
+                0.00    0.00      53/150101574     get_node_item [18]
+                0.00    0.00      53/106023080     get_next_node [21]
+                0.00    0.00       2/139217      get_stack_size [81]
+-----------------------------------------------
+                0.00    0.00      40/40          find_adj [61]
+[63]     0.0    0.00    0.00      40         find_adj_y [63]
+                0.00    0.00      80/561938599     get_isla_pos [9]
+                0.00    0.00      40/263695483     get_x [14]
+                0.00    0.00      40/298243116     get_y [15]
+                0.00    0.00      60/120         set_isla_adj [88]
+                0.00    0.00      40/186         get_y_max [86]
+                0.00    0.00      40/40          find_next_isla_y [93]
+-----------------------------------------------
+                0.00    0.00      40/40          setup_isla [40]
+[64]     0.0    0.00    0.00      40         set_tile [64]
+                0.00    0.00      80/561938599     get_isla_pos [9]
+                0.00    0.00      40/263695483     get_x [14]
+                0.00    0.00      40/298243116     get_y [15]
+-----------------------------------------------
+                0.00    0.00       1/2           DFS_manager [2]
+                0.00    0.00       1/2           main [1]
+[65]     0.0    0.00    0.00       2         print_list [65]
+                0.00    0.00      80/150101574     get_node_item [18]
+                0.00    0.00      80/106023080     get_next_node [21]
+                0.00    0.00      80/80          print_isla [89]
+                0.00    0.00       2/3           get_list_size [95]
+                0.00    0.00       2/2023868     get_head [73]
+-----------------------------------------------
+                0.00    0.00       1/1           basic_connections_ok [19]
+[66]     0.0    0.00    0.00       1         special_6 [66]
+                0.00    0.00       1/20912708     is_connectable [4]
+                0.00    0.00       5/34686559     get_isla_bridge_s_avb [26]
+                0.00    0.00       5/56905662     get_isla_adj [24]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[67]     0.0    0.00    0.00       1         print_map [67]
+                0.00    0.00      40/40          print_pos [69]
+                0.00    0.00      40/561938599     get_isla_pos [9]
+                0.00    0.00     132/186         get_y_max [86]
+                0.00    0.00      12/158         get_x_max [87]
+-----------------------------------------------
+                0.00    0.00      53/53          print_stack [62]
+[68]     0.0    0.00    0.00      53         print_bridge [68]
+                0.00    0.00     106/291278776     get_points [16]
+                0.00    0.00     106/4037926     get_isla_name [72]
+-----------------------------------------------
+                0.00    0.00      40/40          print_map [67]
+[69]     0.0    0.00    0.00      40         print_pos [69]
+                0.00    0.00      40/263695483     get_x [14]
+                0.00    0.00      40/298243116     get_y [15]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[70]     0.0    0.00    0.00       1         free_list [70]
+                0.00    0.00       1/139263      free_connected_nodes <cycle 1> [54]
+                0.00    0.00       1/2023868     get_head [73]
+-----------------------------------------------
+                0.00    0.00     320/8220627     print_bridge_to_file [31]
+                0.00    0.00     320/8220627     free_isla <cycle 1> [56]
+                0.00    0.00  183859/8220627     connect_islas [27]
+                0.00    0.00 2227408/8220627     remove_bridge [28]
+                0.00    0.00 5808720/8220627     get_isla_n_bridges [36]
+[71]     0.0    0.00    0.00 8220627         get_isla_used_bridge [71]
+-----------------------------------------------
+                0.00    0.00      40/4037926     print_map_graphic [103]
+                0.00    0.00      82/4037926     print_bridge_to_file [31]
+                0.00    0.00      98/4037926     free_isla <cycle 1> [56]
+                0.00    0.00     106/4037926     print_bridge [68]
+                0.00    0.00     160/4037926     print_adj [41]
+                0.00    0.00 4037440/4037926     DFS_engine [13]
+[72]     0.0    0.00    0.00 4037926         get_isla_name [72]
+-----------------------------------------------
+                0.00    0.00       1/2023868     free_list [70]
+                0.00    0.00       1/2023868     print_created_map [29]
+                0.00    0.00       1/2023868     print_adj [41]
+                0.00    0.00       1/2023868     initial_fuck_up [59]
+                0.00    0.00       2/2023868     print_list [65]
+                0.00    0.00    1483/2023868     sort_list [57]
+                0.00    0.00   25236/2023868     check_for_allzero [52]
+                0.00    0.00  139214/2023868     connect_obvious [17]
+                0.00    0.00  139214/2023868     reset_dfsed_values [39]
+                0.00    0.00  139264/2023868     free_bridge <cycle 1> [79]
+                0.00    0.00  164448/2023868     is_map_connectable [6]
+                0.00    0.00 1415003/2023868     is_prohibited [22]
+[73]     0.0    0.00    0.00 2023868         get_head [73]
+-----------------------------------------------
+                              139253             free_connected_nodes <cycle 1> [54]
+                0.00    0.00      49/139263      free_stack [55]
+                0.00    0.00  139213/139263      backtrack [3]
+[74]     0.0    0.00    0.00  278515         free_node <cycle 1> [74]
+                0.00    0.00  139262/139262      already_free [77]
+                              139213             free_bridge <cycle 1> [79]
+                                  40             free_isla <cycle 1> [56]
+-----------------------------------------------
+                0.00    0.00       1/164117      print_output_per_map [30]
+                0.00    0.00       1/164117      backtrack [3]
+                0.00    0.00       1/164117      DFS_manager [2]
+                0.00    0.00   25234/164117      DFS_ignition [12]
+                0.00    0.00  138880/164117      DFS_engine [13]
+[75]     0.0    0.00    0.00  164117         get_map_mode [75]
+-----------------------------------------------
+                0.00    0.00       1/139263      main [1]
+                0.00    0.00  139262/139263      create_bridge [78]
+[76]     0.0    0.00    0.00  139263         create_list [76]
+-----------------------------------------------
+                0.00    0.00  139262/139262      free_node <cycle 1> [74]
+[77]     0.0    0.00    0.00  139262         already_free [77]
+-----------------------------------------------
+                0.00    0.00  139262/139262      connect_islas [27]
+[78]     0.0    0.00    0.00  139262         create_bridge [78]
+                0.00    0.00  139262/139263      create_list [76]
+-----------------------------------------------
+                                  49             free_isla <cycle 1> [56]
+                              139213             free_node <cycle 1> [74]
+[79]     0.0    0.00    0.00  139262         free_bridge <cycle 1> [79]
+                0.00    0.00  139264/2023868     get_head [73]
+                                   2             free_connected_nodes <cycle 1> [54]
+-----------------------------------------------
+                0.00    0.00  139253/139253      push_item_to_list [46]
+[80]     0.0    0.00    0.00  139253         push_node_to_list [80]
+-----------------------------------------------
+                0.00    0.00       1/139217      DFS_manager [2]
+                0.00    0.00       2/139217      print_stack [62]
+                0.00    0.00  139214/139217      backtrack [3]
+[81]     0.0    0.00    0.00  139217         get_stack_size [81]
+-----------------------------------------------
+                0.00    0.00   25479/25479       is_map_connectable [6]
+[82]     0.0    0.00    0.00   25479         get_isla_dfs_status [82]
+-----------------------------------------------
+                0.00    0.00       1/25236       print_output_per_map [30]
+                0.00    0.00       1/25236       backtrack [3]
+                0.00    0.00   25234/25236       DFS_ignition [12]
+[83]     0.0    0.00    0.00   25236         get_n_islas [83]
+-----------------------------------------------
+                0.00    0.00    1560/1560        sort_list [57]
+[84]     0.0    0.00    0.00    1560         is_isla_greater_avb [84]
+-----------------------------------------------
+                0.00    0.00      82/203         find_next_isla_y [93]
+                0.00    0.00     121/203         find_next_isla_x [90]
+[85]     0.0    0.00    0.00     203         get_tile [85]
+-----------------------------------------------
+                0.00    0.00       1/186         print_output_per_map [30]
+                0.00    0.00       1/186         find_adj [61]
+                0.00    0.00      12/186         print_map_graphic [103]
+                0.00    0.00      40/186         find_adj_y [63]
+                0.00    0.00     132/186         print_map [67]
+[86]     0.0    0.00    0.00     186         get_y_max [86]
+-----------------------------------------------
+                0.00    0.00       1/158         print_output_per_map [30]
+                0.00    0.00       1/158         find_adj [61]
+                0.00    0.00      12/158         print_map [67]
+                0.00    0.00      12/158         free_map [100]
+                0.00    0.00     132/158         print_map_graphic [103]
+[87]     0.0    0.00    0.00     158         get_x_max [87]
+-----------------------------------------------
+                0.00    0.00      60/120         find_adj_y [63]
+                0.00    0.00      60/120         find_adj [61]
+[88]     0.0    0.00    0.00     120         set_isla_adj [88]
+-----------------------------------------------
+                0.00    0.00      80/80          print_list [65]
+[89]     0.0    0.00    0.00      80         print_isla [89]
+-----------------------------------------------
+                0.00    0.00      51/51          find_adj [61]
+[90]     0.0    0.00    0.00      51         find_next_isla_x [90]
+                0.00    0.00     121/203         get_tile [85]
+-----------------------------------------------
+                0.00    0.00      49/49          print_bridge_to_file [31]
+[91]     0.0    0.00    0.00      49         set_bridge_written [91]
+-----------------------------------------------
+                0.00    0.00      43/43          main [1]
+[92]     0.0    0.00    0.00      43         read_line [92]
+-----------------------------------------------
+                0.00    0.00      40/40          find_adj_y [63]
+[93]     0.0    0.00    0.00      40         find_next_isla_y [93]
+                0.00    0.00      82/203         get_tile [85]
+-----------------------------------------------
+                0.00    0.00      40/40          free_isla <cycle 1> [56]
+[94]     0.0    0.00    0.00      40         free_pos [94]
+-----------------------------------------------
+                0.00    0.00       1/3           sort_list [57]
+                0.00    0.00       2/3           print_list [65]
+[95]     0.0    0.00    0.00       3         get_list_size [95]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[96]     0.0    0.00    0.00       1         change_file_ext [96]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[97]     0.0    0.00    0.00       1         create_map [97]
+-----------------------------------------------
+                0.00    0.00       1/1           DFS_manager [2]
+[98]     0.0    0.00    0.00       1         create_stack [98]
+-----------------------------------------------
+                0.00    0.00       1/1           backtrack [3]
+[99]     0.0    0.00    0.00       1         define_mode_result [99]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[100]    0.0    0.00    0.00       1         free_map [100]
+                0.00    0.00      12/158         get_x_max [87]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[101]    0.0    0.00    0.00       1         get_filename_ext [101]
+-----------------------------------------------
+                0.00    0.00       1/1           print_output_per_map [30]
+[102]    0.0    0.00    0.00       1         get_map_mode_result [102]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[103]    0.0    0.00    0.00       1         print_map_graphic [103]
+                0.00    0.00     132/158         get_x_max [87]
+                0.00    0.00      40/4037926     get_isla_name [72]
+                0.00    0.00      12/186         get_y_max [86]
+-----------------------------------------------
+                0.00    0.00       1/1           DFS_manager [2]
+[104]    0.0    0.00    0.00       1         set_map_mode_result [104]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2015 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+  [13] DFS_engine             [33] get_bridge_written      [6] is_map_connectable
+  [12] DFS_ignition          [101] get_filename_ext       [22] is_prohibited
+   [2] DFS_manager            [73] get_head               [34] merge_lists
+  [77] already_free           [24] get_isla_adj           [32] pop_from_stack
+   [3] backtrack              [26] get_isla_bridge_s_avb  [41] print_adj
+  [19] basic_connections_ok   [43] get_isla_bridges_avb   [68] print_bridge
+  [96] change_file_ext        [82] get_isla_dfs_status    [31] print_bridge_to_file
+  [52] check_for_allzero      [36] get_isla_n_bridges     [29] print_created_map
+  [27] connect_islas          [72] get_isla_name          [89] print_isla
+  [17] connect_obvious         [9] get_isla_pos           [65] print_list
+  [78] create_bridge          [71] get_isla_used_bridge   [67] print_map
+  [44] create_isla            [10] get_isla_x_from_bridge [103] print_map_graphic
+  [76] create_list             [8] get_isla_y_from_bridge [30] print_output_per_map
+  [97] create_map             [95] get_list_size          [69] print_pos
+  [38] create_node            [75] get_map_mode           [62] print_stack
+  [45] create_pos            [102] get_map_mode_result    [46] push_item_to_list
+  [98] create_stack           [83] get_n_islas            [80] push_node_to_list
+   [5] crossed_fire           [21] get_next_node          [42] push_to_stack
+  [51] dec_isla_bridge_s_avb  [18] get_node_item          [92] read_line
+  [99] define_mode_result     [48] get_opposite_dir       [28] remove_bridge
+  [61] find_adj               [16] get_points             [39] reset_dfsed_values
+  [63] find_adj_y             [25] get_stack_head         [91] set_bridge_written
+  [90] find_next_isla_x       [81] get_stack_size         [88] set_isla_adj
+  [93] find_next_isla_y       [85] get_tile               [47] set_isla_dfs_status
+  [60] four_in_side           [14] get_x                  [20] set_isla_used_bridge
+  [79] free_bridge            [87] get_x_max             [104] set_map_mode_result
+  [54] free_connected_nodes   [15] get_y                  [64] set_tile
+  [56] free_isla              [86] get_y_max              [40] setup_isla
+  [70] free_list              [37] in_side_3              [57] sort_list
+ [100] free_map               [50] inc_isla_bridge_s_avb  [49] special_2
+  [74] free_node              [59] initial_fuck_up        [66] special_6
+  [94] free_pos                [4] is_connectable         [58] special_impar_treatment
+  [55] free_stack             [11] is_cross_horizontal    [53] <cycle 1>
+  [23] get_adj_number          [7] is_cross_vertical
+  [35] get_bridge_probi_list  [84] is_isla_greater_avb

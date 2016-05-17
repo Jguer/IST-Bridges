@@ -90,12 +90,9 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
             #ifdef HEAVY_DEBUG
             printf("Looking %d , Isla1: %d Isla2: %d ; Available1: %d ; Available2: %d\n", dir , get_isla_name(edgy), get_isla_name(_adj), get_isla_bridge_s_avb(edgy), get_isla_bridge_s_avb(_adj));
             #endif
-
             /* Create new bridge and push it to stack */
             push_to_stack(bridge_stack, connect_islas(edgy, _adj, dir));
         }
-
-
     }
 
     for(dir = 0; dir < 4; dir++)
@@ -136,36 +133,27 @@ void remove_bridge(bridge *got_bridge)
     return;
 }
 
-bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list, isla *aux_isla)
+bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list, isla *aux_isla, bool *visited)
 {
-    bool *visited  = (bool *) calloc(get_n_islas(got_map), sizeof(bool));
-    int  mode      = get_map_mode(got_map);
+    int mode = get_map_mode(got_map);
+    bool is_solved = FALSE;
 
     if( visited == NULL )
         memory_error("Unable to allocate visited vector");
 
-    if( aux_isla != NULL )
-    {
-        #ifdef HEAVY_DEBUG
-        printf("Going into isla %d \n", get_isla_name(aux_isla));
-        #endif
-        DFS_engine(aux_isla, visited, got_map, new_stack);
-        set_isla_dfs_status(aux_isla, 1); /* Increment DFS status of isla */
-        memset(visited, FALSE, sizeof(bool) * (get_n_islas(got_map)));  /*Reset visited array to FALSE*/
-        free(visited);
-        if( mode == 3 )
-        {
-            return check_for_allconnected(isla_list);
-        }
-        else
-        {
-            return check_for_allzero(isla_list);
-        }
-    }
-    else
-    {
-        return FALSE;
-    }
+    #ifdef HEAVY_DEBUG
+    printf("Going into isla %d \n", get_isla_name(aux_isla));
+    #endif
+
+    DFS_engine(aux_isla, visited, got_map, new_stack);
+    set_isla_dfs_status(aux_isla, 1); /* Increment DFS status of isla */
+    memset(visited, FALSE, sizeof(bool) * (get_n_islas(got_map)));  /*Reset visited array to FALSE*/
+
+    is_solved = check_for_allzero(isla_list);
+    if(mode == 3 && is_solved == TRUE)
+        is_solved = check_for_allconnected(isla_list);
+
+    return is_solved;
 }
 
 int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
@@ -177,7 +165,8 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
     bool   is_solved    = FALSE;
     int    mode         = get_map_mode(got_map);
     int    dfs_counter  = 0;
-    isla *aux_isla = NULL;
+    isla   *aux_isla    = NULL;
+    bool   *visited     = (bool *) calloc(get_n_islas(got_map), sizeof(bool));
 
     is_solved = check_for_allzero(isla_list);
     if(mode == 2 && is_solved == TRUE)
@@ -208,7 +197,7 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
                 free_node(aux_node, already_free);
             }
 
-            if(!connect_obvious(got_stack, isla_list))
+            if(connect_obvious(got_stack, isla_list) == FALSE)
             {
                 is_solved = FALSE;
             }
@@ -220,15 +209,17 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
             }
         }
 
-
-        aux_isla = is_map_connectable(isla_list, got_stack);
-        while (aux_isla != NULL)
+        if( is_solved == FALSE )
         {
-            is_solved = DFS_ignition(got_stack, got_map, isla_list, aux_isla); /* DFS remaining points */
-            dfs_counter ++;
             aux_isla = is_map_connectable(isla_list, got_stack);
+            while (aux_isla != NULL)
+            {
+                is_solved = DFS_ignition(got_stack, got_map, isla_list, aux_isla, visited); /* DFS remaining points */
+                dfs_counter ++;
+                aux_isla = is_map_connectable(isla_list, got_stack);
+            }
+            reset_dfsed_values(isla_list);
         }
-        reset_dfsed_values(isla_list);
 
         if((int) get_stack_size(got_stack) > obvious && is_solved == FALSE && get_next_node(get_stack_head(got_stack))!= NULL)
         {
@@ -245,6 +236,7 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
     printf(KGRN"Final DFS COUNT: %d\n "KNRM, dfs_counter);
     #endif
 
+    free(visited);
     return define_mode_result(mode, is_solved, isla_list);
 }
 
@@ -256,7 +248,7 @@ stack *DFS_manager(list *isla_list, map* got_map)
     bool is_solved = FALSE;
 
 
-    if(!connect_obvious(new_stack, isla_list))
+    if(connect_obvious(new_stack, isla_list) == FALSE)
     {
         define_mode_result(mode, FALSE, isla_list);
     }
