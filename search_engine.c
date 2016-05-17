@@ -151,6 +151,10 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
     int    mode         = get_map_mode(got_map);
     int    dfs_counter  = 0;
 
+    is_solved = check_for_allzero(isla_list);
+    if(mode == 2 && is_solved == TRUE)
+        is_solved = check_for_allconnected(isla_list);
+
     while(is_empty == FALSE && is_solved == FALSE)
     {
         if( last_bridge != NULL )
@@ -186,9 +190,12 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
                 if(mode == 3 && is_solved == TRUE)
                     is_solved = check_for_allconnected(isla_list);
             }
+            printf("obvious\n");
+            print_stack(got_stack, print_bridge);
         }
 
         is_solved = DFS_ignition(got_stack, got_map, isla_list); /* DFS remaining points */
+        print_stack(got_stack, print_bridge);
         dfs_counter ++;
 
         if((int) get_stack_size(got_stack) > obvious && is_solved == FALSE && get_next_node(get_stack_head(got_stack))!= NULL)
@@ -243,6 +250,7 @@ stack *DFS_manager(list *isla_list, map* got_map)
         #endif
 
         DFS_ignition(new_stack, got_map, isla_list);
+        print_stack(new_stack, print_bridge);
 
         set_map_mode_result(got_map, backtrack(new_stack, isla_list, got_map, obv_number + 1));
     }
