@@ -194,6 +194,18 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
         }
 
         is_solved = DFS_ignition(got_stack, got_map, isla_list); /* DFS remaining points */
+        if(!connect_obvious(got_stack, isla_list))
+        {
+            is_solved = FALSE;
+        }
+        else
+        {
+            if(mode == 1 || mode == 2)
+                is_solved = check_for_allzero(isla_list);
+            else if(mode == 3)
+                is_solved = check_for_allconnected(isla_list);
+        }
+
         dfs_counter ++;
 
         if((int) get_stack_size(got_stack) >= obvious && is_solved == FALSE && get_next_node(get_stack_head(got_stack))!= NULL)
