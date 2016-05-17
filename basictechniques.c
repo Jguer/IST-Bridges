@@ -324,9 +324,7 @@ bool n_four(isla *magica, stack *got_stack)
         aux = get_isla_adj( magica, dir);
         if (aux != NULL)
         {
-            printf("Test nfocked %d\n", connectable);
             connectable += is_connectable(magica, aux, dir, got_stack);
-            printf("Test nfour %d\n", connectable);
             if(a == 5)
             {
                 a = dir;
