@@ -31,5 +31,6 @@ void reset_dfsed_values(list *isla_list);
 
 /* - Logic -*/
 int is_isla_greater_avb(item item_a, item item_b);
+bool is_all_dfsed(list *isla_list);
 
 #endif

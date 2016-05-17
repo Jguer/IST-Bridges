@@ -53,17 +53,19 @@ void DFS_engine(isla *edgy, bool *visited, map* got_map, stack *bridge_stack)
         /* Check if exists, check if visited and check if islas are good for connect*/
         if(_adj != NULL && is_connectable(edgy, _adj, dir, bridge_stack) == TRUE )
         {
-            if(get_map_mode(got_map) && visited[get_isla_name(_adj) - 1] == TRUE )
+            if(get_map_mode(got_map) == 3 && visited[get_isla_name(_adj) - 1] == TRUE )
             {
                 continue;
             }
-
             #ifdef HEAVY_DEBUG
             printf("Looking %d , Isla1: %d Isla2: %d ; Available1: %d ; Available2: %d\n", dir , get_isla_name(edgy), get_isla_name(_adj), get_isla_bridge_s_avb(edgy), get_isla_bridge_s_avb(_adj));
             #endif
+
             /* Create new bridge and push it to stack */
             push_to_stack(bridge_stack, connect_islas(edgy, _adj, dir));
         }
+
+
     }
 
     for(dir = 0; dir < 4; dir++)
@@ -113,39 +115,29 @@ bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list)
     if( visited == NULL )
         memory_error("Unable to allocate visited vector");
 
-    if(mode == 1 || mode == 2) /* Connect all of them, doesn't matter if grouped or path*/
+    aux_isla = get_isla_for_dfs(isla_list);
+    if( aux_isla != NULL )
     {
-        aux_isla = get_isla_for_dfs(isla_list);
-        while(aux_isla != NULL)
+        #ifdef HEAVY_DEBUG
+        printf("Going into isla %d \n", get_isla_name(aux_isla));
+        #endif
+        DFS_engine(aux_isla, visited, got_map, new_stack);
+        set_isla_dfs_status(aux_isla, 1); /* Increment DFS status of isla */
+        memset(visited, FALSE, sizeof(bool) * (get_n_islas(got_map)));  /*Reset visited array to FALSE*/
+        free(visited);
+        if( mode == 3 )
         {
-            #ifdef HEAVY_DEBUG
-            printf("Going into isla %d \n", get_isla_name(aux_isla));
-            #endif
-            DFS_engine(aux_isla, visited, got_map, new_stack);
-            set_isla_dfs_status(aux_isla, get_isla_dfs_status(aux_isla) + 1); /* Increment DFS status of isla */
-            memset(visited, FALSE, sizeof(bool) * (get_n_islas(got_map)));  /*Reset visited array to FALSE*/
-            sort_list(isla_list, is_isla_greater_avb);
-            aux_isla = get_isla_for_dfs(isla_list); /* Get new isla for analysis*/
+            return check_for_allconnected(isla_list);
         }
-        reset_dfsed_values(isla_list);
-        free(visited);
-        return check_for_allzero(isla_list);
+        else
+        {
+            return check_for_allzero(isla_list);
+        }
     }
-    else if(mode == 3) /* Connect all of them, forcebly a path */
+    else
     {
-        aux_isla = get_node_item(get_head(isla_list));
-        /* Run 2 DFS engines to make sure path is generated*/
-        DFS_engine(aux_isla, visited, got_map, new_stack);
-        memset(visited, FALSE, sizeof(bool) * (get_n_islas(got_map))); /*Reset visited array to FALSE*/
-        DFS_engine(aux_isla, visited, got_map, new_stack);
         reset_dfsed_values(isla_list);
-        free(visited);
-        return check_for_allconnected(isla_list);
-    }
-    else /* Invalid Mode */
-    {
-        fprintf(stderr, KYEL "Good Job, you officially failed at map making. " KRED " Invalid mode\n"KNRM);
-        exit(0);
+        return FALSE;
     }
 }
 
@@ -159,56 +151,47 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
     int    mode         = get_map_mode(got_map);
     int    dfs_counter  = 0;
 
-    last_bridge = get_node_item(get_next_node(get_stack_head(got_stack))); /* We know backtrack starts from next node, so get first bridge */
-
-    if(mode == 1 || mode == 2)
-        is_solved = check_for_allzero(isla_list);
-    else if(mode == 3)
-        is_solved = check_for_allconnected(isla_list);
-    else
-        fprintf(stderr, KYEL "Good Job, you officially failed at map making. " KRED " Invalid mode\n"KNRM);
-
     while(is_empty == FALSE && is_solved == FALSE)
     {
-        #ifdef HEAVY_DEBUG
-        printf("Last Point: %d-%d \n", get_isla_name(get_points(last_bridge, 0)), get_isla_name(get_points(last_bridge, 1)));
-        printf("To remove : %d-%d \n", get_isla_name(get_points(get_node_item(get_head(got_stack)), 0)), get_isla_name(get_points(get_node_item(get_head(got_stack)), 1)));
-        printf("Trying to backtack. Last stack \n");
-        print_stack(got_stack, print_bridge);
-        #endif
-
-        /* free_connected_nodes(get_head(get_bridge_probi_list(get_node_item(get_stack_head(got_stack)))), free_bridge); */
-        merge_lists(get_bridge_probi_list(last_bridge), get_bridge_probi_list(get_node_item(get_stack_head(got_stack))));
-
-        /* Push head to prohibited list of head->next */
-        push_item_to_list(get_bridge_probi_list(last_bridge), get_node_item(get_stack_head(got_stack)));
-
-        /* Pop stack until last bridge */
-        while((bridge *)get_node_item(get_stack_head(got_stack)) != last_bridge) /* Free stack until analysis point */
+        if( last_bridge != NULL )
         {
-            aux_node = pop_from_stack(got_stack); /* Pop node from stack */
-            aux_bridge = (bridge *) get_node_item(aux_node);
+            #ifdef HEAVY_DEBUG
+            printf("Last Point: %d-%d \n", get_isla_name(get_points(last_bridge, 0)), get_isla_name(get_points(last_bridge, 1)));
+            printf("To remove : %d-%d \n", get_isla_name(get_points(get_node_item(get_head(got_stack)), 0)), get_isla_name(get_points(get_node_item(get_head(got_stack)), 1)));
+            printf("Trying to backtack. Last stack \n");
+            print_stack(got_stack, print_bridge);
+            #endif
 
-            remove_bridge(aux_bridge);
-            free_node(aux_node, already_free);
-        }
+            /* free_connected_nodes(get_head(get_bridge_probi_list(get_node_item(get_stack_head(got_stack)))), free_bridge); */
+            merge_lists(get_bridge_probi_list(last_bridge), get_bridge_probi_list(get_node_item(get_stack_head(got_stack))));
+            /* Push head to prohibited list of head->next */
+            push_item_to_list(get_bridge_probi_list(last_bridge), get_node_item(get_stack_head(got_stack)));
+            /* Pop stack until last bridge */
+            while((bridge *)get_node_item(get_stack_head(got_stack)) != last_bridge) /* Free stack until analysis point */
+            {
+                aux_node = pop_from_stack(got_stack); /* Pop node from stack */
+                aux_bridge = (bridge *) get_node_item(aux_node);
 
-        if(!connect_obvious(got_stack, isla_list))
-        {
-            is_solved = FALSE;
-        }
-        else
-        {
-            if(mode == 1 || mode == 2)
+                remove_bridge(aux_bridge);
+                free_node(aux_node, already_free);
+            }
+
+            if(!connect_obvious(got_stack, isla_list))
+            {
+                is_solved = FALSE;
+            }
+            else
+            {
                 is_solved = check_for_allzero(isla_list);
-            else if(mode == 3)
-                is_solved = check_for_allconnected(isla_list);
+                if(mode == 3 && is_solved == TRUE)
+                    is_solved = check_for_allconnected(isla_list);
+            }
         }
-        is_solved = DFS_ignition(got_stack, got_map, isla_list); /* DFS remaining points */
 
+        is_solved = DFS_ignition(got_stack, got_map, isla_list); /* DFS remaining points */
         dfs_counter ++;
 
-        if((int) get_stack_size(got_stack) >= obvious && is_solved == FALSE && get_next_node(get_stack_head(got_stack))!= NULL)
+        if((int) get_stack_size(got_stack) > obvious && is_solved == FALSE && get_next_node(get_stack_head(got_stack))!= NULL)
         {
             last_bridge = get_node_item(get_next_node(get_stack_head(got_stack)));
         }

@@ -195,3 +195,19 @@ isla *get_isla_for_dfs(list *isla_list)
     return NULL;
 }
 
+bool is_all_dfsed(list *isla_list)
+{
+    isla *got_isla;
+    node *aux_node;
+
+    for(aux_node = get_head(isla_list); aux_node != NULL; aux_node = get_next_node(aux_node))
+    {
+        got_isla = (isla *)get_node_item(aux_node);
+        if((get_isla_dfs_status(got_isla) == 0))
+        {
+            return FALSE;
+        }
+    }
+
+    return TRUE;  
+}
