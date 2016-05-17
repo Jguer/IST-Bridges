@@ -455,26 +455,149 @@ bool initial_fuck_up(list *isla_list)
     return FALSE;
 }
 
-bool is_impar(int n)
+bool loner_neighbour(isla *new_isla, stack *got_stack)
 {
-    if(n == 3 || n == 5 || n == 7)
-        return TRUE;
-    else
-        return FALSE;
+    int dir = 0;
+    isla *_adj = NULL;
+    bridge *new_bridge;
+
+    for(dir=0; dir<4; dir++)
+    {
+        _adj = get_isla_adj(new_isla, dir);
+        if(_adj != NULL)
+        {
+            if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE)
+            {
+                new_bridge = connect_islas(new_isla, _adj, dir);
+                push_to_stack(got_stack, (item)new_bridge);
+
+                if(get_isla_bridge_s_avb(new_isla) == 1)
+                {
+                    new_bridge = connect_islas(new_isla, _adj, dir);
+                    push_to_stack(got_stack, (item)new_bridge);
+                }
+
+            }
+            else
+                return FALSE;
+        }
+    }
+
+    return TRUE;
 }
 
-void basic_numeric_connections(isla *new_isla, stack *got_stack)
+bool special_impar_treatment(isla *new_isla, stack *got_stack)
 {
+    int dir = 0;
+    int flag_one = 0;
+    isla *_adj = NULL;
+    bridge *new_bridge = NULL;
 
- 
+    for(dir=0; dir<4; dir++)
+    {
+        _adj = get_isla_adj(new_isla, dir);
+        if(_adj != NULL)
+        {
+            if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE)
+            {
+                new_bridge = connect_islas(new_isla, _adj, dir);
+                push_to_stack(got_stack, (item)new_bridge);
+            }
+            else
+                return FALSE;
 
+            if(get_isla_bridge_s_avb(_adj) == 0)
+            {
+                flag_one = 1;
+            }
+        }
+    }
+
+    if(flag_one)
+    {
+        for(dir=0; dir<4; dir++)
+        {
+            _adj = get_isla_adj(new_isla, dir);
+            if(_adj != NULL)
+            {
+                if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE)
+                {
+                    new_bridge = connect_islas(new_isla, _adj, dir);
+                    push_to_stack(got_stack, (item)new_bridge);
+                }
+                else
+                    return FALSE;
+            }
+        }
+    }
+
+    return TRUE;
 }
 
-void connect_obvious(map *got_map, stack *got_stack, list *isla_list)
+bool in_side_3(isla *new_isla, stack *got_stack)
+{
+    int flag_one = 0;
+    int dir = 0;
+    isla *_adj = NULL;
+    bridge *new_bridge = NULL;
+
+    for(dir=0; dir<4; dir++)
+    {
+        _adj = get_isla_adj(new_isla, dir);
+        if(_adj != NULL)
+        {
+            if(get_isla_bridge_s_avb(_adj) == 1)
+            {
+                flag_one++;
+            }
+        }
+    }
+
+    if(flag_one == 3)
+    {
+        for(dir=0; dir<4; dir++)
+        {
+            if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE)
+            {
+                new_bridge = connect_islas(new_isla, _adj, dir);
+                push_to_stack(got_stack, (item)new_bridge);
+            }
+            else
+                return FALSE;
+        }
+    }
+
+    return TRUE;
+}
+
+
+bool basic_connections_ok(isla *new_isla, stack *got_stack)
+{
+    int n_still_bridges = get_isla_bridge_s_avb(new_isla);
+    int n_adj = get_adj_number(new_isla);
+    bool connections_ok = FALSE;
+
+    if(n_adj == 1)
+        connections_ok = loner_neighbour(new_isla, got_stack);
+
+    if((n_still_bridges == 3 && n_adj == 2) || (n_still_bridges == 5 && n_adj == 3) || (n_still_bridges == 7 && n_adj == 4))
+    {
+        connections_ok = special_impar_treatment(new_isla, got_stack);
+    }
+
+    if(n_still_bridges == 2 && n_adj == 3)
+    {
+        connections_ok = in_side_3(new_isla, got_stack);
+    }
+
+    return connections_ok;
+}
+
+bool connect_obvious(stack *got_stack, list *isla_list)
 {
     node *new_node = NULL;
     isla *new_isla = NULL;
-    bridge *new_bridge = NULL;
+    bool connections_ok = FALSE;
 
     new_node = get_head(isla_list);
 
@@ -482,8 +605,10 @@ void connect_obvious(map *got_map, stack *got_stack, list *isla_list)
     {
         new_isla = get_node_item(new_node);
 
-        basic_numeric_connections(new_isla, got_stack);
+        connections_ok = basic_connections_ok(new_isla, got_stack);
 
         new_node = get_next_node(new_node);
     }
+
+    return connections_ok;
 }
