@@ -257,12 +257,13 @@ bool loner_neighbour(isla *new_isla, stack *got_stack)
     return TRUE;
 }
 
-bool special_impar_treatment(isla *new_isla, stack *got_stack)
+bool special_impar_treatment(isla *new_isla, stack *got_stack, int n_adj)
 {
     int dir = 0;
     int flag_one = 0;
     isla *_adj = NULL;
     bridge *new_bridge = NULL;
+    int connectable = 0;
 
     for(dir=0; dir<4; dir++)
     {
@@ -271,21 +272,30 @@ bool special_impar_treatment(isla *new_isla, stack *got_stack)
         {
             if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE)
             {
-                new_bridge = connect_islas(new_isla, _adj, dir);
-                #ifdef BT_DEBUG
-                printf("Adding Bridge at special_impar_treatment\n");
-                #endif
-                push_to_stack(got_stack, (item)new_bridge);
-            }
-            else
-                return FALSE;
-
-            if(get_isla_bridge_s_avb(_adj) == 0)
-            {
-                flag_one = 1;
+                connectable++;
             }
         }
     }
+
+    if(connectable == n_adj)
+    {
+        for(dir=0; dir<4; dir++)
+        {
+            _adj = get_isla_adj(new_isla, dir);
+            if(_adj != NULL)
+            {
+                new_bridge = connect_islas(new_isla, _adj, dir);
+                push_to_stack(got_stack, (item)new_bridge);
+
+                if(get_isla_bridge_s_avb(_adj) == 0)
+                {
+                    flag_one = 1;
+                }
+            }
+        }
+    }
+    else
+        return FALSE;
 
     if(flag_one)
     {
@@ -294,16 +304,11 @@ bool special_impar_treatment(isla *new_isla, stack *got_stack)
             _adj = get_isla_adj(new_isla, dir);
             if(_adj != NULL)
             {
-                if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE)
+                if(get_isla_bridge_s_avb(_adj) != 0)
                 {
-                    #ifdef BT_DEBUG
-                    printf("Adding Bridge at special_impar_treatment\n");
-                    #endif
                     new_bridge = connect_islas(new_isla, _adj, dir);
                     push_to_stack(got_stack, (item)new_bridge);
                 }
-                else
-                    return FALSE;
             }
         }
     }
@@ -497,7 +502,7 @@ bool in_side_3(isla *new_isla, stack *got_stack)
         _adj = get_isla_adj(new_isla, dir);
         if(_adj != NULL)
         {
-            if(get_isla_bridge_s_avb(_adj) == 1)
+            if(get_isla_bridge_s_avb(_adj) == 1 && is_connectable(new_isla, _adj, dir, got_stack) == TRUE)
             {
                 flag_one++;
             }
@@ -633,7 +638,7 @@ bool basic_connections_ok(isla *new_isla, stack *got_stack)
 
     if(((n_still_bridges == 3 && n_adj == 2) || (n_still_bridges == 5 && n_adj == 3) || (n_still_bridges == 7 && n_adj == 4)) && (n_still_bridges == n_bridges))
     {
-        connections_ok = special_impar_treatment(new_isla, got_stack);
+        connections_ok = special_impar_treatment(new_isla, got_stack, n_adj);
     }
 
     if((n_still_bridges == 4 && n_adj == 2) && n_still_bridges == n_bridges)
