@@ -598,7 +598,7 @@ bool special_2(isla *new_isla, stack *got_stack)
         {
             _adj = get_isla_adj(new_isla, dir);
             if(_adj != NULL)
-            {   
+            {
                 if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE)
                 {
                     new_bridge = connect_islas(new_isla, _adj, dir);
