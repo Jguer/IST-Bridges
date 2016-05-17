@@ -17,7 +17,10 @@ isla *is_map_connectable(list *isla_list)
             _adj = get_isla_adj(new_isla, dir);
             if(_adj != NULL)
             {
-                return new_isla;
+                if(is_connectable(new_isla, _adj, dir, got_stack) == TRUE)
+                {
+                    return new_isla;
+                }
             }
         }
 
