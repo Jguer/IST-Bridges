@@ -193,7 +193,6 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
             free_node(aux_node, already_free);
         }
 
-        is_solved = DFS_ignition(got_stack, got_map, isla_list); /* DFS remaining points */
         if(!connect_obvious(got_stack, isla_list))
         {
             is_solved = FALSE;
@@ -205,6 +204,7 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
             else if(mode == 3)
                 is_solved = check_for_allconnected(isla_list);
         }
+        is_solved = DFS_ignition(got_stack, got_map, isla_list); /* DFS remaining points */
 
         dfs_counter ++;
 
