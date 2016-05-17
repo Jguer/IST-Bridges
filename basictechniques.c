@@ -1,5 +1,165 @@
 #include "basictechniques.h"
 
+bool check_for_allzero(list *isla_list)
+{
+    isla *new_isla;
+    node *new_node;
+
+    new_node = get_head(isla_list);
+
+    while(new_node != NULL)
+    {
+        new_isla = get_node_item(new_node);
+        if(get_isla_bridge_s_avb(new_isla) != 0)
+            return FALSE;
+
+        new_node = get_next_node(new_node);
+    }
+    return TRUE;
+}
+
+bool is_connected(isla* new_isla, int adj_index)
+{
+    bridge* new_bridge;
+    int i = 0;
+
+    for( i = 0; i < 2; i++)
+    {
+        new_bridge = (bridge*)get_isla_used_bridge(new_isla, adj_index, i);
+
+        if(new_bridge != NULL)
+            return TRUE;
+    }
+
+    return FALSE;
+}
+
+/* fills the vector inpath[] if islas are in path */
+void create_path_vector(isla *new_isla, bool *inpath, bool *visited)
+{
+    isla *_adj = NULL;
+    int i = 0;
+
+    visited[get_isla_name(new_isla)] = TRUE;
+
+    for(i = 0 ; i < 4; i++)
+    {
+        _adj = get_isla_adj(new_isla, i);
+        /* Check if exists and check if visited*/
+        if(is_connected(new_isla, i) == TRUE)
+        {
+            inpath[get_isla_name(new_isla)] = TRUE;
+        }
+        if(_adj != NULL && visited[get_isla_name(_adj)] == FALSE)
+        {
+            create_path_vector(_adj, inpath, visited); /* New recursion level */
+        }
+    }
+    return;
+}
+
+/* checks for all connected in path */
+bool check_for_allconnected(list *isla_list)
+{
+    isla *new_isla = NULL;
+    node *new_node = NULL;
+    bool *inpath = (bool*)calloc(get_list_size(isla_list)+1, sizeof(bool)); /*check if +1 need be*/
+    bool *visited = (bool*)calloc(get_list_size(isla_list)+1, sizeof(bool));
+    int index = 1;
+
+    new_node = get_head(isla_list);
+    new_isla = get_node_item(new_node);
+
+    create_path_vector(new_isla, inpath, visited);
+
+    while(index < (int) get_list_size(isla_list)+1)
+    {
+        if(inpath[index] == FALSE)
+        {
+            free(visited);
+            free(inpath);
+            return FALSE;
+        }
+        index++;
+    }
+    free(visited);
+    free(inpath);
+    return TRUE;
+}
+
+bool is_bridges_available(list *isla_list)
+{
+    int n_avb      = 0;
+    int n_probi    = 0;
+    node* new_node = NULL;
+
+    n_avb = get_numberof_bridges_avb(isla_list);
+
+    while(new_node != NULL)
+    {
+        n_probi++;
+        new_node = get_next_node(new_node);
+    }
+
+    if(n_probi < n_avb)
+    {
+        return TRUE;
+    }
+    else
+        return FALSE;
+}
+
+bool is_prohibited(isla *victim_isla, int dir, list* probi_list)
+{
+    bridge *aux_bridge    = NULL;
+    node   *aux_node      = NULL;
+    isla   *_adj          = NULL;
+
+    aux_node = get_head(probi_list);
+    _adj = get_isla_adj(victim_isla, dir);
+
+    while(aux_node != NULL)
+    {
+        aux_bridge = get_node_item(aux_node);
+
+        if(get_points(aux_bridge, 0) == victim_isla && get_points(aux_bridge, 1) == _adj)
+            return TRUE;
+        else if(get_points(aux_bridge, 1) == victim_isla && get_points(aux_bridge, 0) == _adj)
+            return TRUE;
+
+        aux_node = get_next_node(aux_node);
+
+    }
+    return FALSE;
+}
+
+bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, stack *got_stack)
+{
+    list *probi_list = NULL;
+
+    if(get_stack_head(got_stack) != NULL)
+    {
+        probi_list = get_bridge_probi_list(get_node_item(get_stack_head(got_stack)));
+    }
+
+    if(get_isla_bridge_s_avb(isla_a) > 0 && get_isla_bridge_s_avb(isla_b) > 0)
+    {
+        if(get_isla_n_bridges(isla_a, adj_index) >= 2)
+            return FALSE;
+
+        if(crossed_fire(isla_a, isla_b, got_stack))
+            return FALSE;
+
+        if(probi_list != NULL)
+        {
+            if(is_prohibited(isla_a, adj_index, probi_list))
+                return FALSE;
+        }
+        return TRUE;
+    }
+    return FALSE;
+}
+
 bool loner_neighbour(isla *new_isla, stack *got_stack)
 {
     int dir = 0;
@@ -287,11 +447,6 @@ bool in_side_3(isla *new_isla, stack *got_stack)
     return TRUE;
 }
 
-void basic_numeric_connections(isla *new_isla, stack *got_stack)
-{
-
-}
-
 bool basic_connections_ok(isla *new_isla, stack *got_stack)
 {
     int n_still_bridges = get_isla_bridge_s_avb(new_isla);
@@ -349,3 +504,4 @@ bool connect_obvious(stack *got_stack, list *isla_list)
 
     return connections_ok;
 }
+
