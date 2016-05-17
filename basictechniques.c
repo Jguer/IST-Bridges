@@ -287,11 +287,6 @@ bool in_side_3(isla *new_isla, stack *got_stack)
     return TRUE;
 }
 
-void basic_numeric_connections(isla *new_isla, stack *got_stack)
-{
-
-}
-
 bool basic_connections_ok(isla *new_isla, stack *got_stack)
 {
     int n_still_bridges = get_isla_bridge_s_avb(new_isla);
