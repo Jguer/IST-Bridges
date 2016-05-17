@@ -662,7 +662,6 @@ bool basic_connections_ok(isla *new_isla, stack *got_stack)
     {
         connections_ok = four_in_side(new_isla, got_stack);
     }
-    print_stack(got_stack, print_bridge);
     return connections_ok;
 }
 
