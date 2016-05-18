@@ -9,8 +9,8 @@
 #include "defs.h"
 
 struct _pos {
-    int x;
-    int y;
+    unsigned short x;
+    unsigned short y;
 };
 
 char *get_filename_ext(char *filename)

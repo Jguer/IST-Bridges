@@ -4,10 +4,10 @@ struct _isla {
     isla *adj[4];
     item used[4][2];
     pos *position;
-    unsigned int name;
-    unsigned int bridges_avb;
-    unsigned int bridges_still_avb;
-    unsigned int dfsed; /* Visited flag for big group operations */
+    unsigned short name;
+    unsigned short bridges_avb;
+    unsigned short bridges_still_avb;
+    bool dfsed; /* Visited flag for big group operations */
 };
 
 isla *create_isla(int name, int y, int x, int bridges_avb)
@@ -209,5 +209,5 @@ bool is_all_dfsed(list *isla_list)
         }
     }
 
-    return TRUE;  
+    return TRUE;
 }

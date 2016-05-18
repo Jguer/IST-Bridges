@@ -3,11 +3,11 @@
 
 struct _map {
     isla ***tile;
-    int x_max;
-    int y_max;
-    int n_islas;
+    unsigned short x_max;
+    unsigned short y_max;
+    unsigned short n_islas;
     char map_mode;
-    int  mode_result;
+    unsigned short  mode_result;
 };
 
 map *create_map(int x_max, int y_max, int n_islas, int map_mode)

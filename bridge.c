@@ -2,7 +2,7 @@
 
 struct _bridge {
     isla *point[2];
-    int written;
+    bool written;
     list *probi_list;
 };
 
