@@ -133,7 +133,7 @@ void remove_bridge(bridge *got_bridge)
     return;
 }
 
-bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list, isla *aux_isla, bool *visited)
+bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list, isla *aux_isla, bool *visited, size_t total_bridges)
 {
     int mode = get_map_mode(got_map);
     bool is_solved = FALSE;
@@ -149,14 +149,20 @@ bool DFS_ignition(stack *new_stack, map *got_map, list *isla_list, isla *aux_isl
     set_isla_dfs_status(aux_isla, 1); /* Increment DFS status of isla */
     memset(visited, FALSE, sizeof(bool) * (get_n_islas(got_map)));  /*Reset visited array to FALSE*/
 
-    is_solved = check_for_allzero(isla_list);
-    if(mode == 3 && is_solved == TRUE)
-        is_solved = check_for_allconnected(isla_list);
+    if(get_stack_size(new_stack) == total_bridges)
+    {
+        if(mode == 1 || mode == 2)
+        {
+            is_solved = TRUE;
+        }
+        else
+            is_solved = check_for_allconnected(isla_list);
+    }
 
     return is_solved;
 }
 
-int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
+int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious, size_t total_bridges)
 {
     node   *aux_node    = NULL;
     bridge *aux_bridge  = NULL;
@@ -168,9 +174,19 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
     isla   *aux_isla    = NULL;
     bool   *visited     = (bool *) calloc(get_n_islas(got_map), sizeof(bool));
 
-    is_solved = check_for_allzero(isla_list);
-    if(mode == 2 && is_solved == TRUE)
-        is_solved = check_for_allconnected(isla_list);
+    aux_isla = is_map_connectable(isla_list, got_stack);
+    DFS_ignition(got_stack, got_map, isla_list, aux_isla, visited, total_bridges);
+
+    if(get_stack_size(got_stack) == total_bridges)
+    {
+        if(mode == 1 || mode == 2)
+        {
+            is_solved = TRUE;
+        }
+        else
+            is_solved = check_for_allconnected(isla_list);
+    }
+
 
     while(is_empty == FALSE && is_solved == FALSE)
     {
@@ -203,25 +219,32 @@ int backtrack(stack *got_stack, list *isla_list, map *got_map, int obvious)
             }
             else
             {
-                is_solved = check_for_allzero(isla_list);
-                if(mode == 3 && is_solved == TRUE)
-                    is_solved = check_for_allconnected(isla_list);
+                if(get_stack_size(got_stack) == total_bridges)
+                {
+                    if(mode == 1 || mode == 2)
+                    {
+                        is_solved = TRUE;
+                    }
+                    else
+                        is_solved = check_for_allconnected(isla_list);
+                }
             }
         }
 
-        if( is_solved == FALSE )
+        if(is_solved == FALSE )
         {
             aux_isla = is_map_connectable(isla_list, got_stack);
             while (aux_isla != NULL)
             {
-                is_solved = DFS_ignition(got_stack, got_map, isla_list, aux_isla, visited); /* DFS remaining points */
+                is_solved = DFS_ignition(got_stack, got_map, isla_list, aux_isla, visited, total_bridges); /* DFS remaining points */
                 dfs_counter ++;
+                sort_list(isla_list, is_isla_greater_avb);
                 aux_isla = is_map_connectable(isla_list, got_stack);
             }
             reset_dfsed_values(isla_list);
         }
 
-        if((int) get_stack_size(got_stack) > obvious && is_solved == FALSE && get_next_node(get_stack_head(got_stack))!= NULL)
+        if((int) get_stack_size(got_stack) > obvious+1 && is_solved == FALSE && get_next_node(get_stack_head(got_stack))!= NULL)
         {
             last_bridge = get_node_item(get_next_node(get_stack_head(got_stack)));
         }
@@ -246,6 +269,7 @@ stack *DFS_manager(list *isla_list, map* got_map)
     stack *new_stack   = create_stack();
     int mode = get_map_mode(got_map);
     bool is_solved = FALSE;
+    size_t total_bridges = get_numberof_bridges(isla_list);
 
 
     if(connect_obvious(new_stack, isla_list) == FALSE)
@@ -253,13 +277,15 @@ stack *DFS_manager(list *isla_list, map* got_map)
         define_mode_result(mode, FALSE, isla_list);
     }
 
-    obv_number = get_stack_size(new_stack);
-
-    if(mode == 1 || mode == 2)
-        is_solved = check_for_allzero(isla_list);
-    else if(mode == 3)
-        is_solved = check_for_allconnected(isla_list);
-
+    if(get_stack_size(new_stack) == total_bridges)
+    {
+        if(mode == 1 || mode == 2)
+        {
+            is_solved = TRUE;
+        }
+        else
+            is_solved = check_for_allconnected(isla_list);
+    }
     #ifdef DEBUG
     print_stack(new_stack, print_bridge);
     #endif
@@ -273,7 +299,7 @@ stack *DFS_manager(list *isla_list, map* got_map)
         printf("Number of obvious generated: %d \n", obv_number);
         #endif
 
-        set_map_mode_result(got_map, backtrack(new_stack, isla_list, got_map, obv_number + 1));
+        set_map_mode_result(got_map, backtrack(new_stack, isla_list, got_map, obv_number, total_bridges));
     }
 
     return new_stack;
