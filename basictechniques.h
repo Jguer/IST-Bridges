@@ -10,9 +10,9 @@
 
 #include "bridge.h"
 
-bool check_for_allzero(list *isla_list);
 bool check_for_allconnected(list *isla_list);
 
-bool connect_obvious(stack *got_stack, list *isla_list);
+bool is_connectable(isla *isla_a, isla *isla_b, int adj_index, stack *got_stack, map *got_map);
+bool connect_obvious(stack *got_stack, list *isla_list, map *got_map);
 
 #endif

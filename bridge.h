@@ -10,8 +10,11 @@ typedef struct _bridge bridge;
 bridge *create_bridge(isla *isla_eins, isla *isla_zwei);
 void   print_bridge(item got_item);
 void   free_bridge(item);
+void make_all_visible(map *got_map);
 
 /* - Get - */
+bool get_bridge_visibility(bridge *got_bridge);
+bool get_bridge_stackness(bridge *got_bridge);
 bool get_bridge_written(bridge *got_bridge);
 isla *get_points(bridge *got_bridge, int index);
 int  get_numberof_bridges(list *isla_list);
@@ -20,11 +23,14 @@ int get_isla_n_bridges(isla *new_isla, int dir);
 
 /* - Set - */
 void set_bridge_written(bridge *got_bridge, int value);
+void set_bridge_stackness(bridge *got_bridge, int value);
+void set_bridge_visibility(bridge *got_bridge, int value);
 
 /* ----- ADJ ----- */
 /* - Object - */
 void print_adj(list* isla_list);
 void free_isla(item got_item);
+void print_bridge_vector(map *got_map);
 
 /* - Logic - */
 int     get_numberof_bridges_avb(list *isla_list);
@@ -36,7 +42,7 @@ isla*   find_next_isla_y(map *got_map, int static_x, int y, int y_max);
 isla*   find_next_isla_x(map *got_map, int x, int static_y, int x_max);
 bridge* search_for_bridge_inLine(map* got_map, int isla_x, int static_y);
 bridge* search_for_bridge_inCol(map* got_map, int isla_y, int static_x);
-bridge* connect_islas(isla *isla_a, isla *isla_b, int index);
+bridge* connect_islas(isla *isla_a, isla *isla_b, int index, map *got_map);
 bool    initial_fuck_up(list *isla_list);
 
 #endif

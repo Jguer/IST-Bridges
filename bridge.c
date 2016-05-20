@@ -3,6 +3,8 @@
 struct _bridge {
     isla *point[2];
     int written;
+    int visible;
+    int in_stack;
     list *probi_list;
 };
 
@@ -16,10 +18,65 @@ bridge *create_bridge(isla *point_one, isla *point_two)
 
     new_bridge->point[0]   = point_one;
     new_bridge->point[1]   = point_two;
-    new_bridge->probi_list = create_list();
+    new_bridge->visible    = 1;
     new_bridge->written    = 0;
+    new_bridge->in_stack   = 0;
+    new_bridge->probi_list = create_list();
 
     return new_bridge;
+}
+
+list *create_list_again(bridge *new_bridge)
+{
+    list *probi_list;
+    probi_list = create_list();
+    new_bridge->probi_list = probi_list;
+    return new_bridge->probi_list;
+}
+
+list *get_bridge_probi_list(bridge *got_bridge)
+{
+    return got_bridge->probi_list;
+}
+
+bool get_bridge_stackness(bridge *got_bridge)
+{
+    return got_bridge->in_stack;
+}
+
+void set_bridge_stackness(bridge *got_bridge, int value)
+{
+    got_bridge->in_stack = value;
+    return;
+}
+
+bool get_bridge_visibility(bridge *got_bridge)
+{
+    return got_bridge->visible;
+}
+
+void set_bridge_visibility(bridge *got_bridge, int value)
+{
+    got_bridge->visible = value;
+    return;
+}
+
+void make_all_visible(map *got_map)
+{
+    int i = 0;
+    int n_islas = get_n_islas(got_map);
+    bridge *new_bridge = NULL;
+
+    for(i=0; i<((n_islas) * (n_islas + 1))/2; i++)
+    {
+        new_bridge = get_bridge_from_vector_index(got_map, i, 0);
+        if(new_bridge != NULL)
+            set_bridge_visibility(new_bridge, 1);
+        new_bridge = get_bridge_from_vector_index(got_map, i, 1);
+        if(new_bridge != NULL)
+            set_bridge_visibility(new_bridge, 1);
+    }
+    return;
 }
 
 void set_bridge_written(bridge *got_bridge, int value)
@@ -38,11 +95,6 @@ isla *get_points(bridge *got_bridge, int index)
     return got_bridge->point[index];
 }
 
-list *get_bridge_probi_list(bridge *got_bridge)
-{
-    return got_bridge->probi_list;
-}
-
 int get_isla_x_from_bridge(bridge *got_bridge, int i)
 {
     return get_x(get_isla_pos(get_points(got_bridge, i)));
@@ -53,7 +105,6 @@ int get_isla_y_from_bridge(bridge *got_bridge, int i)
     return get_y(get_isla_pos(get_points(got_bridge, i)));
 }
 
-
 void print_bridge(item got_item)
 {
     bridge* got_bridge = (bridge *)got_item;
@@ -61,11 +112,6 @@ void print_bridge(item got_item)
             KMAG "Isla 1 name:" RESET " %d, "
             KMAG "Isla 2 name:" RESET " %d \n",
             get_isla_name(get_points(got_bridge, 0)), get_isla_name(get_points(got_bridge, 1)));
-
-    #ifdef PROBI_DEBUG
-    if(got_bridge->probi_list != NULL)
-        print_list(got_bridge->probi_list, print_bridge);
-    #endif
     return;
 }
 
@@ -86,12 +132,6 @@ void free_bridge(item got_item)
 {
     bridge *got_bridge = (bridge *)got_item;
 
-    if(get_head(got_bridge->probi_list) != NULL)
-    {
-        free_connected_nodes(get_head(got_bridge->probi_list), free_bridge);
-    }
-
-    free(got_bridge->probi_list);
     free(got_bridge);
 
     return;
@@ -350,7 +390,6 @@ int get_numberof_bridges_avb(list *isla_list)
 
         new_node = get_next_node(new_node);
     }
-
     return n/2;
 }
 
@@ -392,21 +431,33 @@ void free_isla(item got_item)
     return;
 }
 
-bridge *connect_islas(isla *isla_a, isla *isla_b, int dir)
+bridge *connect_islas(isla *isla_a, isla *isla_b, int dir, map *got_map)
 {
     bridge *got_bridge = NULL;
 
     if(get_isla_used_bridge(isla_a, dir, 0) == NULL)
     {
-        got_bridge = create_bridge(isla_a, isla_b);
-        set_isla_used_bridge(isla_a, dir, 0, (bridge *)got_bridge);
-        set_isla_used_bridge(isla_b, get_opposite_dir(dir), 0, (bridge *)got_bridge);
+        got_bridge = (bridge *)get_bridge_from_vector(got_map, get_isla_name(isla_a), get_isla_name(isla_b), 0);
+        if(got_bridge == NULL)
+        {
+            got_bridge = create_bridge(isla_a, isla_b);
+            set_bridge_from_vector(got_map, get_isla_name(isla_a), get_isla_name(isla_b), 0, (bridge *)got_bridge);
+        }
+            set_isla_used_bridge(isla_a, dir, 0, (bridge *)got_bridge);
+            set_isla_used_bridge(isla_b, get_opposite_dir(dir), 0, (bridge *)got_bridge);
+            set_bridge_stackness(got_bridge, TRUE);
     }
     else if(get_isla_used_bridge(isla_a, dir, 1) == NULL)
     {
-        got_bridge = create_bridge(isla_a, isla_b);
-        set_isla_used_bridge(isla_a, dir, 1, (bridge *)got_bridge);
-        set_isla_used_bridge(isla_b, get_opposite_dir(dir), 1, (bridge *)got_bridge);
+        got_bridge = (bridge *)get_bridge_from_vector(got_map, get_isla_name(isla_a), get_isla_name(isla_b), 1);
+        if(got_bridge == NULL)
+        {
+            got_bridge = create_bridge(isla_a, isla_b);
+            set_bridge_from_vector(got_map, get_isla_name(isla_a), get_isla_name(isla_b), 1, (bridge *)got_bridge);
+        }
+            set_isla_used_bridge(isla_a, dir, 1, (bridge *)got_bridge);
+            set_isla_used_bridge(isla_b, get_opposite_dir(dir), 1, (bridge *)got_bridge);
+            set_bridge_stackness(got_bridge, TRUE);
     }
 
     /* Decrease available connections in islas */
@@ -457,4 +508,26 @@ bool initial_fuck_up(list *isla_list)
     return FALSE;
 }
 
+void print_bridge_vector(map *got_map)
+{
+    int i;
+    int n_islas = get_n_islas(got_map);
+    bridge *new_bridge;
 
+    for(i=0; i<((n_islas) * (n_islas + 1))/2; i++)
+    {
+        new_bridge = (bridge *)get_bridge_from_vector_index(got_map, i, 0);
+        if(new_bridge != NULL)
+            printf("index %d|0: i exist %p-> a:%d b:%d\n", i, get_bridge_from_vector_index(got_map, i, 0), get_isla_name(get_points(new_bridge, 0)),
+                get_isla_name(get_points(new_bridge, 1)));
+        else
+            printf("index %d|0: x\n", i );
+
+        new_bridge = (bridge *)get_bridge_from_vector_index(got_map, i, 1);
+        if(new_bridge != NULL)
+            printf("index %d|1: i exist %p-> a:%d b:%d\n", i, get_bridge_from_vector_index(got_map, i, 1) ,get_isla_name(get_points(new_bridge, 0)), 
+                get_isla_name(get_points(new_bridge, 1)));
+        else
+            printf("index %d|1: x\n", i );
+    }
+}

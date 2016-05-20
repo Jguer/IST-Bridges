@@ -8,6 +8,7 @@ struct _map {
     int n_islas;
     char map_mode;
     int  mode_result;
+    item **bridge_vector;
 };
 
 map *create_map(int x_max, int y_max, int n_islas, int map_mode)
@@ -25,6 +26,7 @@ map *create_map(int x_max, int y_max, int n_islas, int map_mode)
     new_map->n_islas = n_islas;
     new_map->map_mode = map_mode;
     new_map->mode_result = NO_SOL;
+    new_map->bridge_vector = (item **) calloc(((n_islas) * (n_islas + 1))/2 , sizeof(item *));
 
     /* Allocate x axis so we can have a nice tile[x] */
     new_map->tile = (isla ***) calloc(x_max, sizeof(isla**));
@@ -42,7 +44,62 @@ map *create_map(int x_max, int y_max, int n_islas, int map_mode)
         }
     }
 
+    for(i=0; i<((n_islas) * (n_islas + 1))/2; i++)
+    {
+        new_map->bridge_vector[i] = (item *) calloc(2, sizeof(item));
+    }
+
+    for(i=0; i<((n_islas) * (n_islas + 1))/2; i++)
+    {
+        new_map->bridge_vector[0][i] = NULL;
+        new_map->bridge_vector[1][i] = NULL;
+    }
+
     return new_map;
+}
+
+item get_bridge_from_vector_index(map *got_map, int index, int select)
+{
+    return got_map->bridge_vector[select][index];
+}
+
+void set_bridge_from_vector_index(map *got_map, int index, int select, item new_item)
+{
+    got_map->bridge_vector[select][index] = new_item;
+    return;
+}
+
+item get_bridge_from_vector(map *got_map, int isla_a, int isla_b, int select)
+{
+    int index;
+    int list_size = got_map->n_islas;
+    isla_a--; 
+    isla_b--;
+    if (isla_a <= isla_b)
+        index = isla_a * list_size - (isla_a - 1) * isla_a / 2 + isla_b - isla_a;
+    else
+        index = isla_b * list_size - (isla_b - 1) * isla_b / 2 + isla_a - isla_b;
+
+    return get_bridge_from_vector_index(got_map, index, select);
+}
+
+
+void set_bridge_from_vector(map *got_map, int isla_a, int isla_b, int select, item new_item)
+{
+    int index;
+    int vector_size = got_map->n_islas;
+    isla_a--; 
+    isla_b--;
+
+    if (isla_a <= isla_b)
+        index = isla_a * vector_size - (isla_a - 1) * isla_a / 2 + isla_b - isla_a;
+    else
+        index = isla_b * vector_size - (isla_b - 1) * isla_b / 2 + isla_a - isla_b;
+
+    printf("setting index %d and select %d\n to %d - %d\n",index, select, isla_a, isla_b);
+
+    set_bridge_from_vector_index(got_map, index, select, new_item);
+    return;
 }
 
 isla *get_tile(map *got_map, int x, int y)
@@ -149,6 +206,19 @@ void print_map_graphic(map* got_map)
     return;
 }
 
+void free_bridge_vector(map *got_map)
+{
+    int i = 0;
+    int n_islas = get_n_islas(got_map);
+
+    for(i=0; i<((n_islas) * (n_islas + 1))/2; i++)
+    {
+        free(got_map->bridge_vector[i]);
+    }
+
+    free(got_map->bridge_vector);
+}
+
 void free_map(item got_item)
 {
     map *got_map = (map *)got_item;
@@ -162,6 +232,7 @@ void free_map(item got_item)
 
     /* If Cuba is present spread democracy through object destruction */
     free(got_map->tile);
+    free_bridge_vector(got_map);
     free(got_map);
 
     return;
